@@ -75,7 +75,7 @@
 
 % -----------------------------------------------------------------------
 \begin{document}
-\begin{multicols}{4}
+\begin{multicols*}{4}
 \footnotesize
 
 % Title box
@@ -265,8 +265,82 @@ $P(B_{i} | A) = \frac{P(A|B_{i})P(B_{i})}{P(A|B_{1})P(B_{1}) + ... + P(A|B_{n})P
 \end{itemize}
 
 \section{04. Random Variables}
+\begin{itemize}
+  \item \keyword{Random variable}{Unpredictable outcome of exp.}
+  \item \keyword{Probability distribution of random variable}{Possible values and their probabilities}
+\end{itemize}
 
+\subsection{Discrete Random Variables}
+\begin{itemize}
+  \item \textbf{Probability distribution}: ($P_{x}$) Prob. for each possible x. 
+  Sum of all $P_{x} = 1$
+\end{itemize}
 
+\subsubsection{Mean}
+\begin{itemize}
+  \item aka \ilkeyword{expected value}. $\mu = \sum_{x}xP_{x}$
+  \item Mean of observations approach $\mu$ with lots of obs.
+  \item Linear transformation: $E(Y) = a\mu + b$ and $E(a_{1}x_{1} + ... + a_{n}x_{n})
+  = a_{1}\mu_{1} + ... + a_{n}\mu_{n}$
+  \item If $x_{1}, ..., x_{n}$ have same prob. distri., mean of these variables 
+  ($\bar{X}$) is a random variable where $E(\bar{X}) = \frac{1}{n} \sum_{i = 1}^{n} \mu_{i} = \mu$
+\end{itemize}
+
+\subsubsection{Variance}
+\begin{itemize}
+  \item $\sigma ^2 = \sum_{x} P_{x}(x - \mu)^2$ and sd: $\sigma$
+  \item Linear transformation: $Var(Y) = b^2 Var(X) = b^2 \sigma^2$ and $Var(a_{1}x_{1} + ... + a_{n}x_{n})
+  = a_{1}^2 \sigma_{1}^2 + ... + a_{n}^2 \sigma_{n}^2$
+  \item Likewise, $Var(\bar{X}) = \frac{\sigma^2}{n}$
+\end{itemize}
+
+\subsection{Continuous Random Variables}
+\begin{itemize}
+  \item \textbf{Probability distribution}: Represented by \ilkeyword{probability density function}.
+  Area under curve = 1.
+  \item Mean and variance have same properties as discrete
+\end{itemize}
+
+\subsection{Binomial Distribution}
+\begin{itemize}
+  \item \keyword{Combinations}{${n \choose k} = \frac{n!}{k!(n - k)!}$}
+\end{itemize}
+\textbf{3 Conditions for binomial distribution:}
+\begin{enumerate}
+  \item n trials with 2 outcomes
+  \item Each trial has probability of p to succeed
+  \item All trials are independent
+\end{enumerate}
+\keyword{Binomial Random Variable}{\# of successes in n trials}
+\begin{itemize}
+  \item Follows distribution: $Bin(n, p)$
+  \item \keyword{Bernoulli Distribution}{$Bin(1, p)$. Sum of Ber. $\sim$ Bin.}
+\end{itemize}
+\textbf{Binomial Formula}: Suppose $X \sim Bin(n, p)$
+\begin{itemize}
+  \item $P(X = x) = {n \choose x} p^x (1 - p)^{n - x}$
+  \item $E(X) = np$
+  \item $Var(X) = np(1 - p)$
+\end{itemize}
+
+\subsection{Normal Distribution}
+\begin{itemize}
+  \item Symmetric about $\mu$, bell-shaped
+  \item $X \sim N(\mu, \sigma^2)$
+  \item \keyword{Standard Normal Distribution}{$N(0, 1)$}
+  \item Lin. transf. of Normal Random Variable: Same behavior for mean and variance 
+  \item Approximate binomial distribution using $N(np, np(1 - p))$ when $np(1 - p) \geq 5$
+\end{itemize}
+\keyword{Z-score}{$z = \frac{x - \mu}{\sigma} \sim N(0, 1)$}
+\begin{itemize}
+  \item Outlier: Any observation with z-score of $>3$ or $< -3$
+\end{itemize}
+
+\subsection{QQ Plot}
+\begin{itemize}
+  \item Purpose: To see if data follows $N(\mu, \sigma^2)$
+  \item Compare right/left tails with normal
+\end{itemize}
 
 \section{05. Sampling Distribution}
 
@@ -332,5 +406,5 @@ cor(size, price)
 
 \end{lstlisting}
 
-\end{multicols}
+\end{multicols*}
 \end{document}
