@@ -1,0 +1,209 @@
+\documentclass{article}
+\usepackage[a4paper, margin=3mm, landscape]{geometry}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{amsmath}
+
+\pdfinfo{
+  /Title (ST1131.pdf)
+  /Creator (TeX)
+  /Producer (pdfTeX 1.40.0)
+  /Author (Jason Qiu)
+  /Subject (ST1131)
+  /Keywords (ST1131, nus, cheatsheet,pdf)
+}
+
+\pagestyle{empty}
+\setcounter{secnumdepth}{0}
+\setlength{\columnseprule}{0.25pt}
+
+% Redefine section commands to use less space
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+  {-1ex plus -.5ex minus -.2ex}%
+  {0.5ex plus .2ex}%x
+{\normalfont\large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+  {-1explus -.5ex minus -.2ex}%
+  {0.5ex plus .2ex}%
+{\normalfont\normalsize\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+  {-1ex plus -.5ex minus -.2ex}%
+  {1ex plus .2ex}%
+{\normalfont\small\bfseries}}%
+\makeatother
+
+% Adjust spacing for all itemize/enumerate
+\setlength{\leftmargini}{0.5cm}
+\setlength{\leftmarginii}{0.5cm}
+\setlist[itemize,1]{leftmargin=2mm,labelindent=1mm,labelsep=1mm}
+\setlist[itemize,2]{leftmargin=4mm,labelindent=1mm,labelsep=1mm}
+
+% Font
+\renewcommand{\familydefault}{\sfdefault}
+
+% Define colors for math formulas
+\definecolor{myblue}{cmyk}{1,.72,0,.38}
+\everymath\expandafter{\the\everymath \color{myblue}}
+
+% -----------------------------------------------------------------------
+\begin{document}
+\begin{multicols}{3}
+\footnotesize
+
+  % Title box
+  \begin{center}
+    \fbox{
+      \parbox{0.8\linewidth}{
+        \centering \textcolor{black}{
+          {\Large\textbf{ST1131}} \\
+          \normalsize{AY21/22 Sem 2}} \\
+          {\footnotesize \textcolor{gray}{github.com/jasonqiu212}}
+      }
+    }
+  \end{center}
+
+  \section{01. Exploratory Data Analysis}
+
+  \subsection{Types of Variables}
+  \begin{itemize}
+    \item \textbf{Quantitative}: Discrete vs. Continuous
+    \item \textbf{Categorical}: Ordinal vs. Nominal
+    \item How to tell difference: Is distance between 2 points meaningful?
+  \end{itemize}
+
+  \subsection{1 Variable}
+
+  \subsubsection{Frequency Table - Categorical}
+    \begin{itemize}
+      \item \textbf{Proportion} - aka relative frequency. $\frac{\text{\# of obs. in 1 cat.}}
+      {Total \# of obs.}$
+      \item \textbf{Modal Frequency} - Category with highest frequency
+      \item Summarizing: Modal category and its proportion 
+    \end{itemize}
+
+  \subsubsection{Bar Plots - Categorical, Visual}
+    \begin{itemize}
+      \item Summarizing: Modal category and its proportion, Categories with high/low
+      proportions, Mention trends if ordinal
+    \end{itemize}
+
+  \subsubsection{Histogram - Quantitative}
+    \begin{itemize}
+      \item Summarizing: Gaps/Outliers, Unimodal/Bimodal/Multimodal, Symmetric/Skewed
+      \item Skewed left: Left tail is longer. Skewed right: Right tail is longer.
+    \end{itemize}
+
+  \subsubsection{Describing Center}
+  \begin{itemize}
+    \item \textbf{Mean} - $\bar{X} = \frac{1}{n} \sum_{i=1}^{n} x_{i}$
+      \begin{itemize}
+        \item Linear Transformation: $\hat{Y} = b \hat{X} + a$
+        \item Sensitive to outliers, unlike median
+      \end{itemize}
+    \item \textbf{Median} - $X_{(0.5)} = \begin{cases}
+      \frac{n + 1}{2} \text{th obs., if n is odd} \\
+      \text{Mean of $\frac{n}{2}$th and $\frac{n}{2} + 1$th obs., if n is even}
+    \end{cases}$
+    \item If $\bar{X} > X_{(0.5)}$, skewed right. If $\bar{X} < X_{(0.5)}$, skewed left
+  \end{itemize}
+
+  \subsubsection{Describing Variability}
+  \begin{itemize}
+    \item \textbf{Range} - Sensitive to outliers
+    \item \textbf{Variance} - $S^{2} = \frac{1}{n - 1} \sum_{i=1}^{n} (x_{i} - \bar{x})^2$
+    \item \textbf{Standard deviation} - $sd = \sqrt{S^2}$
+      \begin{itemize}
+        \item Linear Transformation: $S_{y}^2 = b^2s_{x}^2$ $S_{y} = |b|s_{x}$
+      \end{itemize}
+    \item \textbf{Inter-quartile Range (IQR)} - $Q_{3} - Q_{1}$
+    \begin{itemize}
+      \item \textbf{Quantile} - ($q_{p}$) Value such that p of observations are below
+      \item Lower quartile ($Q_{1}$), Median ($Q_{2}$), Upper quartile ($Q_{3}$)
+    \end{itemize}
+    \item If symmetric, mean and variance. If skewed, median and IQR.
+  \end{itemize}
+
+  \subsubsection{Boxplot}
+  \begin{itemize}
+    \item Includes: Min, Q1, Q2, Q3, Max
+    \item \textbf{Outliers} - $< Q_{1} - 1.5IQR \text{ or } > Q_{3} + 1.5IQR$
+    \item \textbf{Max/min Whisker Reach} - Boundary of outliers
+    \item \textbf{Upper/lower Whisker} - Min/max obs. excluding outliers
+    \item Does not show features of distribution. If unimodal, can show skewness.
+    \item Summarizing: Median, Outliers, Compare medians and IQR if 1+ boxplots
+  \end{itemize}
+
+  \subsection{2 Variables}
+  \begin{itemize}
+    \item \textbf{Response Variable} vs. \textbf{Explanatory Variable}
+    \item 2x categorical variables - Contingency table
+    \item 
+  \end{itemize}
+
+  \begin{verbatim}
+    test(2)
+  \end{verbatim}
+
+  \section{02. Data Collection}
+
+  \begin{itemize}
+    \item \textbf{Lurking Variable} - Influences association between 
+    variables of interest (Unobserved)
+    \item \textbf{Condounding Variable} - 2 explanatory variables are related to 
+    1 response variable, but also are related to each other
+    \item \textbf{Experimental Study} - Assign subjects to experimental 
+    conditions (\textbf{treatments}) and observe outcome of response variable
+    \item \textbf{Observational Study} - Values of explanatory and response 
+    variable observed for subjects, without anything done to them
+  \end{itemize}
+
+  \section{03. Probabililty}
+  \subsection{Axioms of Probability}
+  \begin{enumerate}
+    \item $0 \leq P(A) \leq 1$
+    \item $P(S) = 1$
+    \item If A and B are mutually exclusive, then $P(A \cup B) = P(A) + P(B)$
+    \item $P(A \cup B \cup C) = P(A) + P(B) + P(C) - P(A \cap B) - P(A \cap C) - 
+    P(B \cap C) + P(A \cap B \cap C)$
+  \end{enumerate}
+
+  \subsection{For any events A and B:}
+  \begin{itemize}
+    \item $P(A^{c}) = 1 - P(A)$
+    \item $P(A \cup B) = P(A) + P(B) - P(A \cap B)$
+    \item $P(A) = P(A \cap B) + P(A \cap B^{c})$
+    \item A and B are \textbf{independent} if $P(A \cap B) = P(A)P(B)$
+  \end{itemize}
+
+  \subsection{Conditional Probability}
+  $P(A|B) = \frac{P(A \cap B)}{P(B)}$
+
+  \subsection{Law of Total Probabililty}
+  $P(A) = P(A \cap B_{1}) + ... + P(A \cap B_{n})$
+
+  \subsection{Bayes' Theorem}
+  $P(B_{i} | A) = \frac{P(A|B_{i})P(B_{i})}{P(A|B_{1})P(B_{1})...P(A|B_{n})P(B_{n})}$
+
+  \subsection{Epidemiological Terms}
+  \begin{itemize}
+    \item \textbf{Sensitivity} - Given person has disease, prob. of positive test
+    \item \textbf{Specificty} - Given person has no disease, prob. of negative test 
+    \item \textbf{Prevalence} - No. of people with disease / Total population
+  \end{itemize}
+
+  \section{04. Random Variables}
+
+  \section{05. Sampling Distribution}
+
+  \section{06. Confidence Intervals}
+
+  \section{07. Hypothesis Testing}
+
+  \section{08. Linear Regression}
+  
+  \section{09. R Code}
+
+\end{multicols}
+\end{document}
