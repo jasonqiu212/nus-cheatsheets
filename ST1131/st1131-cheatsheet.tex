@@ -49,161 +49,205 @@
 
 % -----------------------------------------------------------------------
 \begin{document}
-\begin{multicols}{3}
+\begin{multicols}{4}
 \footnotesize
 
-  % Title box
-  \begin{center}
-    \fbox{
-      \parbox{0.8\linewidth}{
-        \centering \textcolor{black}{
-          {\Large\textbf{ST1131}} \\
-          \normalsize{AY21/22 Sem 2}} \\
-          {\footnotesize \textcolor{gray}{github.com/jasonqiu212}}
-      }
+% Title box
+\begin{center}
+  \fbox{
+    \parbox{0.8\linewidth}{
+      \centering \textcolor{black}{
+        {\Large\textbf{ST1131}} \\
+        \normalsize{AY21/22 Sem 2}} \\
+        {\footnotesize \textcolor{gray}{github.com/jasonqiu212}}
     }
-  \end{center}
+  }
+\end{center}
 
-  \section{01. Exploratory Data Analysis}
+\section{01. Exploratory Data Analysis}
 
-  \subsection{Types of Variables}
+\subsection{Types of Variables}
+\begin{itemize}
+  \item \textbf{Quantitative}: Discrete vs. Continuous
+  \item \textbf{Categorical}: Ordinal vs. Nominal
+  \item How to tell difference: Is distance between 2 points meaningful?
+\end{itemize}
+
+\subsection{1 Variable}
+
+\subsubsection{Frequency Table - Categorical}
+\begin{itemize}
+  \item \textbf{Proportion} - aka relative frequency. $\frac{\text{\# of obs. in 1 cat.}}
+  {Total \# of obs.}$
+  \item \textbf{Modal Frequency} - Category with highest frequency
+  \item Summarizing: Modal category and its proportion 
+\end{itemize}
+
+\subsubsection{Bar Plots - Categorical, Visual}
+\begin{itemize}
+  \item Summarizing: Modal category and its proportion, Categories with high/low
+  proportions, Mention trends if ordinal
+\end{itemize}
+
+\subsubsection{Histogram - Quantitative}
+\begin{itemize}
+  \item Summarizing: Gaps/Outliers, Unimodal/Bimodal/Multimodal, Symmetric/Skewed
+  \item Skewed left: Left tail is longer. Skewed right: Right tail is longer.
+\end{itemize}
+
+\subsubsection{Describing Center}
+\begin{itemize}
+  \item \textbf{Mean} - $\bar{X} = \frac{1}{n} \sum_{i=1}^{n} x_{i}$
   \begin{itemize}
-    \item \textbf{Quantitative}: Discrete vs. Continuous
-    \item \textbf{Categorical}: Ordinal vs. Nominal
-    \item How to tell difference: Is distance between 2 points meaningful?
+    \item Linear Transformation: $\hat{Y} = b \hat{X} + a$
+    \item Sensitive to outliers, unlike median
   \end{itemize}
+  \item \textbf{Median} - $X_{(0.5)}$
+  \item If $\bar{X} > X_{(0.5)}$, skewed right. If $\bar{X} < X_{(0.5)}$, skewed left
+\end{itemize}
 
-  \subsection{1 Variable}
-
-  \subsubsection{Frequency Table - Categorical}
-    \begin{itemize}
-      \item \textbf{Proportion} - aka relative frequency. $\frac{\text{\# of obs. in 1 cat.}}
-      {Total \# of obs.}$
-      \item \textbf{Modal Frequency} - Category with highest frequency
-      \item Summarizing: Modal category and its proportion 
-    \end{itemize}
-
-  \subsubsection{Bar Plots - Categorical, Visual}
-    \begin{itemize}
-      \item Summarizing: Modal category and its proportion, Categories with high/low
-      proportions, Mention trends if ordinal
-    \end{itemize}
-
-  \subsubsection{Histogram - Quantitative}
-    \begin{itemize}
-      \item Summarizing: Gaps/Outliers, Unimodal/Bimodal/Multimodal, Symmetric/Skewed
-      \item Skewed left: Left tail is longer. Skewed right: Right tail is longer.
-    \end{itemize}
-
-  \subsubsection{Describing Center}
+\subsubsection{Describing Variability}
+\begin{itemize}
+  \item \textbf{Range} - Sensitive to outliers
+  \item \textbf{Variance} - $S^{2} = \frac{1}{n - 1} \sum_{i=1}^{n} (x_{i} - \bar{x})^2$
+  \item \textbf{Standard deviation} - $sd = \sqrt{S^2}$
   \begin{itemize}
-    \item \textbf{Mean} - $\bar{X} = \frac{1}{n} \sum_{i=1}^{n} x_{i}$
-      \begin{itemize}
-        \item Linear Transformation: $\hat{Y} = b \hat{X} + a$
-        \item Sensitive to outliers, unlike median
-      \end{itemize}
-    \item \textbf{Median} - $X_{(0.5)} = \begin{cases}
-      \frac{n + 1}{2} \text{th obs., if n is odd} \\
-      \text{Mean of $\frac{n}{2}$th and $\frac{n}{2} + 1$th obs., if n is even}
-    \end{cases}$
-    \item If $\bar{X} > X_{(0.5)}$, skewed right. If $\bar{X} < X_{(0.5)}$, skewed left
+    \item Linear Transformation: $S_{y}^2 = b^2s_{x}^2$ $S_{y} = |b|s_{x}$
   \end{itemize}
-
-  \subsubsection{Describing Variability}
+  \item \textbf{Inter-quartile Range (IQR)} - $Q_{3} - Q_{1}$
   \begin{itemize}
-    \item \textbf{Range} - Sensitive to outliers
-    \item \textbf{Variance} - $S^{2} = \frac{1}{n - 1} \sum_{i=1}^{n} (x_{i} - \bar{x})^2$
-    \item \textbf{Standard deviation} - $sd = \sqrt{S^2}$
-      \begin{itemize}
-        \item Linear Transformation: $S_{y}^2 = b^2s_{x}^2$ $S_{y} = |b|s_{x}$
-      \end{itemize}
-    \item \textbf{Inter-quartile Range (IQR)} - $Q_{3} - Q_{1}$
-    \begin{itemize}
-      \item \textbf{Quantile} - ($q_{p}$) Value such that p of observations are below
-      \item Lower quartile ($Q_{1}$), Median ($Q_{2}$), Upper quartile ($Q_{3}$)
-    \end{itemize}
-    \item If symmetric, mean and variance. If skewed, median and IQR.
+    \item \textbf{Quantile} - ($q_{p}$) Value such that p of observations are below
+    \item Lower quartile ($Q_{1}$), Median ($Q_{2}$), Upper quartile ($Q_{3}$)
   \end{itemize}
+  \item If symmetric, mean and variance. If skewed, median and IQR.
+\end{itemize}
 
-  \subsubsection{Boxplot}
+\subsubsection{Boxplot - Variability}
   \begin{itemize}
     \item Includes: Min, Q1, Q2, Q3, Max
     \item \textbf{Outliers} - $< Q_{1} - 1.5IQR \text{ or } > Q_{3} + 1.5IQR$
     \item \textbf{Max/min Whisker Reach} - Boundary of outliers
     \item \textbf{Upper/lower Whisker} - Min/max obs. excluding outliers
     \item Does not show features of distribution. If unimodal, can show skewness.
-    \item Summarizing: Median, Outliers, Compare medians and IQR if 1+ boxplots
+    \item Summarizing: Median, Outliers, Compare medians and IQR if $>1$ boxplots
   \end{itemize}
 
-  \subsection{2 Variables}
+\subsection{2 Variables (Response Variable vs. Explanatory Variable)}
+
+\subsubsection{2 Categorical Variables}
+\textbf{Bar Plots} \\
+\textbf{Contingency Table}
+\begin{itemize}
+  \item \textbf{Conditional Percentage} - \% out of total
+  \item \textbf{Join Percentage} - \% out of some group. Use explanatory as group.
+  \item Be careful of phrasing (Eg. Ppl w/o cancer of PMH users vs. PMH users of 
+  those w/o cancer)
+  \item \textbf{Relative Risk} - Ratio of 2 percentages. (Eg. \% of cancer in PMH users
+  is 1.24 times the \% of cancer in non-PMH users)
+\end{itemize}
+
+\subsubsection{1 Categorical and 1 Quantitative}
+\textbf{2 Boxplots} - Split by categories
+
+\subsubsection{2 Quantitative Variables}
+\textbf{Scatter Plot}
+\begin{itemize}
+  \item Summarizing: Pos./neg. association, Linear, Constant variability, Outliers
+\end{itemize}
+\textbf{Correlation} - $r \in [-1, 1]$
+\begin{itemize}
+  \item 2 variables have same correalation, no matter $x \sim y$ or $y \sim x$
+  \item Correlation is linear, when $r = \pm 1$
+\end{itemize}
+
+\section{02. Data Collection}
+
+\begin{itemize}
+  \item \textbf{Confounding Variable} - Related to exp. and resp. variable. 
+  Confounds their association. Observed.
+  \item \textbf{Lurking Variable} - Unobserved
+  \item \textbf{Experimental Study} - Assign subjects to treatments and observe 
+  response variable
   \begin{itemize}
-    \item \textbf{Response Variable} vs. \textbf{Explanatory Variable}
-    \item 2x categorical variables - Contingency table
-    \item 
+    \item Pros: Control over lurking variables 
+    \item Cons: Costly, Unethical
   \end{itemize}
+  \item \textbf{Observational Study} - Explanatory and response variable observed 
+  for subjects. No treatments. 
+\end{itemize}
 
-  \begin{verbatim}
-    test(2)
-  \end{verbatim}
-
-  \section{02. Data Collection}
-
+\subsubsection{Sample Survey}
+\begin{enumerate}
+  \item Identify population
+  \item Compile \textbf{sampling frame} - Where sample is from
+  \item \textbf{Sampling design} - How to choose subjects from sampling frame
   \begin{itemize}
-    \item \textbf{Lurking Variable} - Influences association between 
-    variables of interest (Unobserved)
-    \item \textbf{Condounding Variable} - 2 explanatory variables are related to 
-    1 response variable, but also are related to each other
-    \item \textbf{Experimental Study} - Assign subjects to experimental 
-    conditions (\textbf{treatments}) and observe outcome of response variable
-    \item \textbf{Observational Study} - Values of explanatory and response 
-    variable observed for subjects, without anything done to them
+    \item \textbf{Simple Random Sample} - Each sample has same chance of being chosen
   \end{itemize}
+\end{enumerate}
+\textbf{Sources of Bias in Sample Survey:}
+\begin{itemize}
+  \item \textbf{Sampling Bias} - Sample not random or undercoverage
+  \item \textbf{Non-response Bias} - No response from subject 
+  \item \textbf{Response Bias} - Subject does not answer truthfully
+\end{itemize}
+\textbf{Elements of Good Experimental Study:}
+\begin{itemize}
+  \item Control comparison group
+  \item Randomization: Eliminate lurking variables
+  \item Blinding the study: Placebo
+\end{itemize}
 
-  \section{03. Probabililty}
-  \subsection{Axioms of Probability}
-  \begin{enumerate}
-    \item $0 \leq P(A) \leq 1$
-    \item $P(S) = 1$
-    \item If A and B are mutually exclusive, then $P(A \cup B) = P(A) + P(B)$
-    \item $P(A \cup B \cup C) = P(A) + P(B) + P(C) - P(A \cap B) - P(A \cap C) - 
-    P(B \cap C) + P(A \cap B \cap C)$
-  \end{enumerate}
 
-  \subsection{For any events A and B:}
-  \begin{itemize}
-    \item $P(A^{c}) = 1 - P(A)$
-    \item $P(A \cup B) = P(A) + P(B) - P(A \cap B)$
-    \item $P(A) = P(A \cap B) + P(A \cap B^{c})$
-    \item A and B are \textbf{independent} if $P(A \cap B) = P(A)P(B)$
-  \end{itemize}
+\section{03. Probabililty}
+\subsection{Axioms of Probability}
+\begin{enumerate}
+  \item $0 \leq P(A) \leq 1$
+  \item $P(S) = 1$
+  \item If A and B are mutually exclusive, then $P(A \cup B) = P(A) + P(B)$. 
+  $P(A \cap B) = 0$
+  \item $P(A \cup B \cup C) = P(A) + P(B) + P(C) - P(A \cap B) - P(A \cap C) - 
+  P(B \cap C) + P(A \cap B \cap C)$
+\end{enumerate}
+\textbf{For any events A and B:}
+\begin{itemize}
+  \item $P(A^{c}) = 1 - P(A)$
+  \item $P(A \cup B) = P(A) + P(B) - P(A \cap B)$
+  \item $P(A) = P(A \cap B) + P(A \cap B^{c})$
+  \item A and B are \textbf{independent} if $P(A \cap B) = P(A)P(B)$
+\end{itemize}
 
-  \subsection{Conditional Probability}
-  $P(A|B) = \frac{P(A \cap B)}{P(B)}$
+\subsection{Conditional Probability}
+$P(A|B) = \frac{P(A \cap B)}{P(B)}$
 
-  \subsection{Law of Total Probabililty}
-  $P(A) = P(A \cap B_{1}) + ... + P(A \cap B_{n})$
+\subsection{Law of Total Probabililty}
+$P(A) = P(A \cap B_{1}) + ... + P(A \cap B_{n})$
 
-  \subsection{Bayes' Theorem}
-  $P(B_{i} | A) = \frac{P(A|B_{i})P(B_{i})}{P(A|B_{1})P(B_{1})...P(A|B_{n})P(B_{n})}$
+\subsection{Bayes' Theorem}
+$P(B_{i} | A) = \frac{P(A|B_{i})P(B_{i})}{P(A|B_{1})P(B_{1})...P(A|B_{n})P(B_{n})}$
 
-  \subsection{Epidemiological Terms}
-  \begin{itemize}
-    \item \textbf{Sensitivity} - Given person has disease, prob. of positive test
-    \item \textbf{Specificty} - Given person has no disease, prob. of negative test 
-    \item \textbf{Prevalence} - No. of people with disease / Total population
-  \end{itemize}
+\subsection{Epidemiological Terms}
+\begin{itemize}
+  \item \textbf{Sensitivity} - Given person has disease, prob. of positive test
+  \item \textbf{Specificty} - Given person has no disease, prob. of negative test 
+  \item \textbf{Prevalence} - No. of people with disease / Total population
+\end{itemize}
 
-  \section{04. Random Variables}
+\section{04. Random Variables}
 
-  \section{05. Sampling Distribution}
+\section{05. Sampling Distribution}
 
-  \section{06. Confidence Intervals}
+\section{06. Confidence Intervals}
 
-  \section{07. Hypothesis Testing}
+\section{07. Hypothesis Testing}
 
-  \section{08. Linear Regression}
-  
-  \section{09. R Code}
+\section{08. Linear Regression}
+
+\section{09. R Code}
+
+\begin{verbatim}
+  test(2)
+\end{verbatim}
 
 \end{multicols}
 \end{document}
