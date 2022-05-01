@@ -4,6 +4,7 @@
 \usepackage{xcolor}
 \usepackage{enumitem}
 \usepackage{amsmath}
+\usepackage{listings}
 
 \pdfinfo{
   /Title (ST1131.pdf)
@@ -47,6 +48,25 @@
 \definecolor{myblue}{cmyk}{1,.72,0,.38}
 \everymath\expandafter{\the\everymath \color{myblue}}
 
+% Define colors and style for code
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codered}{HTML}{CC241D}
+\definecolor{backcolor}{rgb}{0.95,0.95,0.95}
+\lstdefinestyle{codestyle}{
+  backgroundcolor = \color{backcolor},
+  commentstyle = \color{codegray},
+  keywordstyle = \color{codered},
+  stringstyle = \color{codegreen},
+  basicstyle = \ttfamily,
+  breakatwhitespace = false,
+  showstringspaces = false,
+  breaklines = true,
+  showtabs = false,
+  tabsize = 2
+}
+\lstset{style = codestyle}
+
 % -----------------------------------------------------------------------
 \begin{document}
 \begin{multicols}{4}
@@ -66,14 +86,13 @@
 
 \section{01. Exploratory Data Analysis}
 
-\subsection{Types of Variables}
 \begin{itemize}
-  \item \textbf{Quantitative}: Discrete vs. Continuous
-  \item \textbf{Categorical}: Ordinal vs. Nominal
-  \item How to tell difference: Is distance between 2 points meaningful?
+  \item \textbf{Quantitative Variable}: Discrete vs. Continuous
+  \item \textbf{Categorical Variable}: Ordinal vs. Nominal
+  \item Difference: Is distance between 2 points meaningful?
 \end{itemize}
 
-\subsection{1 Variable}
+\subsection{Single Variable}
 
 \subsubsection{Frequency Table - Categorical}
 \begin{itemize}
@@ -83,7 +102,7 @@
   \item Summarizing: Modal category and its proportion 
 \end{itemize}
 
-\subsubsection{Bar Plots - Categorical, Visual}
+\subsubsection{Bar Plots - Categorical}
 \begin{itemize}
   \item Summarizing: Modal category and its proportion, Categories with high/low
   proportions, Mention trends if ordinal
@@ -91,8 +110,8 @@
 
 \subsubsection{Histogram - Quantitative}
 \begin{itemize}
-  \item Summarizing: Gaps/Outliers, Unimodal/Bimodal/Multimodal, Symmetric/Skewed
-  \item Skewed left: Left tail is longer. Skewed right: Right tail is longer.
+  \item Skewed left/right: Left/right tail is longer 
+  \item Summarizing: Outlier, Unimodal/Bimodal/Multimodal, Skewness 
 \end{itemize}
 
 \subsubsection{Describing Center}
@@ -103,7 +122,7 @@
     \item Sensitive to outliers, unlike median
   \end{itemize}
   \item \textbf{Median} - $X_{(0.5)}$
-  \item If $\bar{X} > X_{(0.5)}$, skewed right. If $\bar{X} < X_{(0.5)}$, skewed left
+  \item If $\bar{X} > X_{(0.5)}$, skew right. If $\bar{X} < X_{(0.5)}$, skew left.
 \end{itemize}
 
 \subsubsection{Describing Variability}
@@ -132,11 +151,14 @@
     \item Summarizing: Median, Outliers, Compare medians and IQR if $>1$ boxplots
   \end{itemize}
 
-\subsection{2 Variables (Response Variable vs. Explanatory Variable)}
+\subsection{Two Variables}
+\begin{itemize}
+  \item Response Variable vs. Explanatory Variable
+\end{itemize}
 
-\subsubsection{2 Categorical Variables}
-\textbf{Bar Plots} \\
-\textbf{Contingency Table}
+\subsubsection{Bar Plots - 2 categorical}
+
+\subsubsection{Contingency Table - 2 categorical}
 \begin{itemize}
   \item \textbf{Conditional Percentage} - \% out of total
   \item \textbf{Join Percentage} - \% out of some group. Use explanatory as group.
@@ -146,11 +168,9 @@
   is 1.24 times the \% of cancer in non-PMH users)
 \end{itemize}
 
-\subsubsection{1 Categorical and 1 Quantitative}
-\textbf{2 Boxplots} - Split by categories
+\subsubsection{2 Boxplots - 1 Categorical and 1 Quantitative}
 
-\subsubsection{2 Quantitative Variables}
-\textbf{Scatter Plot}
+\subsubsection{Scatter Plot - 2 Quantitative Variables}
 \begin{itemize}
   \item Summarizing: Pos./neg. association, Linear, Constant variability, Outliers
 \end{itemize}
@@ -198,7 +218,6 @@
   \item Blinding the study: Placebo
 \end{itemize}
 
-
 \section{03. Probabililty}
 \subsection{Axioms of Probability}
 \begin{enumerate}
@@ -224,9 +243,9 @@ $P(A|B) = \frac{P(A \cap B)}{P(B)}$
 $P(A) = P(A \cap B_{1}) + ... + P(A \cap B_{n})$
 
 \subsection{Bayes' Theorem}
-$P(B_{i} | A) = \frac{P(A|B_{i})P(B_{i})}{P(A|B_{1})P(B_{1})...P(A|B_{n})P(B_{n})}$
+$P(B_{i} | A) = \frac{P(A|B_{i})P(B_{i})}{P(A|B_{1})P(B_{1}) + ... + P(A|B_{n})P(B_{n})}$
 
-\subsection{Epidemiological Terms}
+\subsection{Epidemiological Terms:}
 \begin{itemize}
   \item \textbf{Sensitivity} - Given person has disease, prob. of positive test
   \item \textbf{Specificty} - Given person has no disease, prob. of negative test 
@@ -245,9 +264,59 @@ $P(B_{i} | A) = \frac{P(A|B_{i})P(B_{i})}{P(A|B_{1})P(B_{1})...P(A|B_{n})P(B_{n}
 
 \section{09. R Code}
 
-\begin{verbatim}
-  test(2)
-\end{verbatim}
+\begin{lstlisting}[language=R, breaklines=true]
+# Create matrix, Bind matrices
+matrix(c(1:6), nrow=2, ncol=3, byrow=T)
+rbind(m, c(1,2,3))
+
+# Read CSV, Add header, Get col. in df
+data = read.csv("./crab.txt")
+names(data) = c("Subject", "Gender")
+data$Subject # Or attach()
+
+# Select, Filter by condition
+data[1:8,]
+data[Gender == "M" & HW == "A",]
+
+# Summary of vector
+summary(marks)
+
+# Replace elements based on condition
+ifelse(Gender == "0", "F", "M")
+
+# Return indices that match condition
+which(flat == "3 ROOM")
+
+# Frequency Table
+table(data)
+prop.table(table(data))
+
+# Bar Plot
+barplot(table(data))
+
+# Contingency Table 
+tab = table(bbd, pmh) # (r, c)
+prop.table(tab) # Joint probabililty
+prop.table(tab, "pmh") # Conditional probability on pmh groups
+
+# Bar Plot with 2 variables
+barplot(proptab)
+
+# Boxplot
+bp = boxplot(age~cancer) # quan. ~ cat.
+bp$out # Values of outliers
+grp = bp$group # Outliers in each group
+which(grp == 1) # Index of outliers in group 1
+bp$out[which(grp == 1)] 
+
+# Histogram
+hist(flatPrice)
+
+# Scatter Plot, Correlation
+plot(size, price) # (x-axis, y-axis)
+cor(size, price)
+
+\end{lstlisting}
 
 \end{multicols}
 \end{document}
