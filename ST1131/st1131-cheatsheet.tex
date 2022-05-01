@@ -5,6 +5,7 @@
 \usepackage{enumitem}
 \usepackage{amsmath}
 \usepackage{listings}
+\usepackage{soul}
 
 \pdfinfo{
   /Title (ST1131.pdf)
@@ -47,6 +48,11 @@
 % Define colors for math formulas
 \definecolor{myblue}{cmyk}{1,.72,0,.38}
 \everymath\expandafter{\the\everymath \color{myblue}}
+
+% Custom command for keywords
+\definecolor{highlight}{RGB}{251,243,218}
+\newcommand{\keyword}[2][]{\sethlcolor{highlight}\hl{\textbf{#2}} #1 - }
+\newcommand{\ilkeyword}[1]{\sethlcolor{highlight}\hl{\textbf{#1}}}
 
 % Define colors and style for code
 \definecolor{codegreen}{rgb}{0,0.6,0}
@@ -96,9 +102,9 @@
 
 \subsubsection{Frequency Table - Categorical}
 \begin{itemize}
-  \item \textbf{Proportion} - aka relative frequency. $\frac{\text{\# of obs. in 1 cat.}}
-  {Total \# of obs.}$
-  \item \textbf{Modal Frequency} - Category with highest frequency
+  \item \keyword{Proportion}{aka relative frequency. $\frac{\text{\# of obs. in 1 cat.}}
+  {Total \# of obs.}$}
+  \item \keyword{Modal Frequency}{Category with highest frequency}
   \item Summarizing: Modal category and its proportion 
 \end{itemize}
 
@@ -116,26 +122,26 @@
 
 \subsubsection{Describing Center}
 \begin{itemize}
-  \item \textbf{Mean} - $\bar{X} = \frac{1}{n} \sum_{i=1}^{n} x_{i}$
+  \item \keyword{Mean}{$\bar{X} = \frac{1}{n} \sum_{i=1}^{n} x_{i}$}
   \begin{itemize}
     \item Linear Transformation: $\hat{Y} = b \hat{X} + a$
     \item Sensitive to outliers, unlike median
   \end{itemize}
-  \item \textbf{Median} - $X_{(0.5)}$
+  \item \keyword{Median}{$X_{(0.5)}$}
   \item If $\bar{X} > X_{(0.5)}$, skew right. If $\bar{X} < X_{(0.5)}$, skew left.
 \end{itemize}
 
 \subsubsection{Describing Variability}
 \begin{itemize}
-  \item \textbf{Range} - Sensitive to outliers
-  \item \textbf{Variance} - $S^{2} = \frac{1}{n - 1} \sum_{i=1}^{n} (x_{i} - \bar{x})^2$
-  \item \textbf{Standard deviation} - $sd = \sqrt{S^2}$
+  \item \keyword{Range}{Sensitive to outliers}
+  \item \keyword{Variance}{$S^{2} = \frac{1}{n - 1} \sum_{i=1}^{n} (x_{i} - \bar{x})^2$}
+  \item \keyword{Standard deviation}{$sd = \sqrt{S^2}$}
   \begin{itemize}
     \item Linear Transformation: $S_{y}^2 = b^2s_{x}^2$ $S_{y} = |b|s_{x}$
   \end{itemize}
-  \item \textbf{Inter-quartile Range (IQR)} - $Q_{3} - Q_{1}$
+  \item \keyword{Inter-quartile Range (IQR)}{$Q_{3} - Q_{1}$}
   \begin{itemize}
-    \item \textbf{Quantile} - ($q_{p}$) Value such that p of observations are below
+    \item \keyword{Quantile}{($q_{p}$) Value such that p of observations are below}
     \item Lower quartile ($Q_{1}$), Median ($Q_{2}$), Upper quartile ($Q_{3}$)
   \end{itemize}
   \item If symmetric, mean and variance. If skewed, median and IQR.
@@ -144,9 +150,9 @@
 \subsubsection{Boxplot - Variability}
   \begin{itemize}
     \item Includes: Min, Q1, Q2, Q3, Max
-    \item \textbf{Outliers} - $< Q_{1} - 1.5IQR \text{ or } > Q_{3} + 1.5IQR$
-    \item \textbf{Max/min Whisker Reach} - Boundary of outliers
-    \item \textbf{Upper/lower Whisker} - Min/max obs. excluding outliers
+    \item \keyword{Outliers}{$< Q_{1} - 1.5IQR \text{ or } > Q_{3} + 1.5IQR$}
+    \item \keyword{Max/min Whisker Reach}{Boundary of outliers}
+    \item \keyword{Upper/lower Whisker}{Min/max obs. excluding outliers}
     \item Does not show features of distribution. If unimodal, can show skewness.
     \item Summarizing: Median, Outliers, Compare medians and IQR if $>1$ boxplots
   \end{itemize}
@@ -160,12 +166,12 @@
 
 \subsubsection{Contingency Table - 2 categorical}
 \begin{itemize}
-  \item \textbf{Conditional Percentage} - \% out of total
-  \item \textbf{Join Percentage} - \% out of some group. Use explanatory as group.
+  \item \keyword{Conditional Percentage}{\% out of total}
+  \item \keyword{Join Percentage}{\% out of some group. Use explanatory as group.}
   \item Be careful of phrasing (Eg. Ppl w/o cancer of PMH users vs. PMH users of 
   those w/o cancer)
-  \item \textbf{Relative Risk} - Ratio of 2 percentages. (Eg. \% of cancer in PMH users
-  is 1.24 times the \% of cancer in non-PMH users)
+  \item \keyword{Relative Risk}{Ratio of 2 percentages. (Eg. \% of cancer in PMH users
+  is 1.24 times the \% of cancer in non-PMH users)}
 \end{itemize}
 
 \subsubsection{2 Boxplots - 1 Categorical and 1 Quantitative}
@@ -183,33 +189,34 @@
 \section{02. Data Collection}
 
 \begin{itemize}
-  \item \textbf{Confounding Variable} - Related to exp. and resp. variable. 
-  Confounds their association. Observed.
-  \item \textbf{Lurking Variable} - Unobserved
-  \item \textbf{Experimental Study} - Assign subjects to treatments and observe 
-  response variable
+  \item \keyword{Confounding Variable}{Related to exp. and resp. variable. 
+  Confounds their association. Observed.}
+  \item \keyword{Lurking Variable}{Unobserved}
+  \item \keyword{Experimental Study}{Assign subjects (or \ilkeyword{experimental units}) 
+  to \ilkeyword{treatments} and observe 
+  response variable}
   \begin{itemize}
     \item Pros: Control over lurking variables 
     \item Cons: Costly, Unethical
   \end{itemize}
-  \item \textbf{Observational Study} - Explanatory and response variable observed 
-  for subjects. No treatments. 
+  \item \keyword{Observational Study}{Explanatory and response variable observed 
+  for subjects. No treatments.}
 \end{itemize}
 
 \subsubsection{Sample Survey}
 \begin{enumerate}
   \item Identify population
-  \item Compile \textbf{sampling frame} - Where sample is from
-  \item \textbf{Sampling design} - How to choose subjects from sampling frame
+  \item Compile \keyword{sampling frame}{Where sample is from}
+  \item \keyword{Sampling design}{How to choose subjects from sampling frame}
   \begin{itemize}
-    \item \textbf{Simple Random Sample} - Each sample has same chance of being chosen
+    \item \keyword{Simple Random Sample}{Each sample has same chance of being chosen}
   \end{itemize}
 \end{enumerate}
 \textbf{Sources of Bias in Sample Survey:}
 \begin{itemize}
-  \item \textbf{Sampling Bias} - Sample not random or undercoverage
-  \item \textbf{Non-response Bias} - No response from subject 
-  \item \textbf{Response Bias} - Subject does not answer truthfully
+  \item \keyword{Sampling Bias}{Sample not random or undercoverage}
+  \item \keyword{Non-response Bias}{No response from subject}
+  \item \keyword{Response Bias}{Subject does not answer truthfully}
 \end{itemize}
 \textbf{Elements of Good Experimental Study:}
 \begin{itemize}
@@ -219,12 +226,17 @@
 \end{itemize}
 
 \section{03. Probabililty}
+\begin{itemize}
+  \item \keyword{Sample space}{($S$) Set of all possible outcomes}
+  \item \keyword{Event}{($E$) Subset of sample space}
+  \item $P(A) = \frac{\text{\# of outcomes in A}}{\text{Total \# of possible outcomes}}$
+\end{itemize}
 \subsection{Axioms of Probability}
 \begin{enumerate}
   \item $0 \leq P(A) \leq 1$
   \item $P(S) = 1$
-  \item If A and B are mutually exclusive, then $P(A \cup B) = P(A) + P(B)$. 
-  $P(A \cap B) = 0$
+  \item If A and B are mutually exclusive (or \ilkeyword{disjoint}), then $P(A \cup B) = P(A) + P(B)$ 
+  and $P(A \cap B) = 0$
   \item $P(A \cup B \cup C) = P(A) + P(B) + P(C) - P(A \cap B) - P(A \cap C) - 
   P(B \cap C) + P(A \cap B \cap C)$
 \end{enumerate}
@@ -247,12 +259,14 @@ $P(B_{i} | A) = \frac{P(A|B_{i})P(B_{i})}{P(A|B_{1})P(B_{1}) + ... + P(A|B_{n})P
 
 \subsection{Epidemiological Terms:}
 \begin{itemize}
-  \item \textbf{Sensitivity} - Given person has disease, prob. of positive test
-  \item \textbf{Specificty} - Given person has no disease, prob. of negative test 
-  \item \textbf{Prevalence} - No. of people with disease / Total population
+  \item \keyword{Sensitivity}{Given has disease, prob. of positive test}
+  \item \keyword{Specificty}{Given has no disease, prob. of neg. test}
+  \item \keyword{Prevalence}{$\frac{\text{\# of people with disease}}{\text{Total population}}$}
 \end{itemize}
 
 \section{04. Random Variables}
+
+
 
 \section{05. Sampling Distribution}
 
