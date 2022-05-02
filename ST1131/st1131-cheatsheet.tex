@@ -195,10 +195,6 @@
   \item \keyword{Experimental Study}{Assign subjects (or \ilkeyword{experimental units}) 
   to \ilkeyword{treatments} and observe 
   response variable}
-  \begin{itemize}
-    \item Pros: Control over lurking variables 
-    \item Cons: Costly, Unethical
-  \end{itemize}
   \item \keyword{Observational Study}{Explanatory and response variable observed 
   for subjects. No treatments.}
 \end{itemize}
@@ -343,8 +339,80 @@ $P(B_{i} | A) = \frac{P(A|B_{i})P(B_{i})}{P(A|B_{1})P(B_{1}) + ... + P(A|B_{n})P
 \end{itemize}
 
 \section{05. Sampling Distribution}
+\begin{itemize}
+  \item \keyword{Data Distribution}{Distribution of some observations}
+  \item \keyword{Sampling Distribution}{Distribution of $\bar{X}$ and $\hat{p}$}
+  \item \keyword{Central Limit Theorem}{Suppose there are independent observations that form
+  a distribution (not necessarily normal) with mean $\mu$ and variance $\sigma^2$ and 
+  sample size n is large, then sample mean $\bar{X} \sim N(\mu, \frac{\sigma^2}{n})$}
+\end{itemize}
+
+
+\subsection{Sample Proportion $\hat{p}$}
+\begin{itemize}
+  \item \keyword{Population Proportion}{$p$ that we want to estimate}
+  \item \keyword{Population Distribution}{$Ber(p)$ where $\mu = p$ and $\sigma^2 = p(1-p)$}
+  \item When $np(1-p) \geq 5$, $\hat{p} \sim N(p, \frac{p(1-p)}{n})$ appxorimately by CLT
+\end{itemize}
+
+\subsection{Sample Mean $\bar{X}$}
+
+\subsubsection{when population distribution is normal:}
+\begin{itemize}
+  \item $E(\bar{X}) = \mu$ and $Var(\bar{X}) = \frac{\sigma^2}{n}$
+  \item $\bar{X} \sim N(\mu, \frac{\sigma^2}{n})$ exactly
+\end{itemize}
+
+\subsubsection{when population distribution is not normal:}
+\begin{itemize}
+  \item $E(\bar{X}) = \mu$ and $Var(\bar{X}) = \frac{\sigma^2}{n}$
+  \item When $n \geq 30$, $\bar{X} \sim N(\mu, \frac{\sigma^2}{n})$ approximately by CLT
+\end{itemize}
 
 \section{06. Confidence Intervals}
+\begin{itemize}
+  \item In long run, 95\% of intervals will contain population proportion/mean.
+\end{itemize}
+
+\subsection{Point Estimate}
+\begin{itemize}
+  \item $\bar{X} \rightarrow \mu$ and $\hat{p} \rightarrow p$
+  \item Does not show how close they are to true value
+\end{itemize}
+
+\subsection{Confidence Interval for Proportion}
+\begin{itemize}
+  \item $\text{CI} = \text{Point estimate} \pm \text{Margin of error}$
+  \item \keyword{Standard Error}{($se$) Estimated sd of sampling distri.}
+\end{itemize}
+\textbf{Find CI given confidence lvl. ($x$):}
+\begin{enumerate}
+  \item Find $\hat{p}$ and check $n \hat{p}(1 - \hat{p}) \geq 5$
+  \item Let $\alpha = 1 - x$
+  \item $\text{CI} = \hat{p} \pm q_{1 - \frac{\alpha}{2}} \sqrt{\frac{\hat{p}(1 - \hat{p})}{n}}$
+\end{enumerate}
+\textbf{Determine sample size ($n$) before study:}
+\begin{enumerate}
+  \item Decide confidence level ($x$) and width of CI ($D$)
+  \item $n \geq (\frac{2 q_{1 - \frac{\alpha}{2}}}{D})^2 p (1 - p)$ where $p = \frac{1}{2}$
+\end{enumerate}
+
+\subsection{Confidence Interval for Mean}
+\begin{itemize}
+  \item \keyword{t-distribution}{($t_{df}$) Approaches $N(0, 1)$ as $df \uparrow$}
+\end{itemize}
+\textbf{Find CI given confidence lvl. ($x$):}
+\begin{enumerate}
+  \item Assumptions: Sample is random (\keyword{not robust}{crucial}), 
+  Data distribution symmetric (robust: or n is big)
+  \item $\text{CI} = \bar{X} \pm t_{n-1; 1 - \frac{\alpha}{2}} \frac{s}{\sqrt{n}}$
+\end{enumerate}
+\textbf{Determine sample size ($n$) before study:}
+\begin{enumerate}
+  \item Decide confidence level ($x$) and width of CI ($D$)
+  \item $n \geq (\frac{2 s q_{1 - \frac{\alpha}{2}}}{D})^2$
+  \item For $s$, look for similar studies. Ensure $n \geq 30$.
+\end{enumerate}
 
 \section{07. Hypothesis Testing}
 
@@ -403,6 +471,22 @@ hist(flatPrice)
 # Scatter Plot, Correlation
 plot(size, price) # (x-axis, y-axis)
 cor(size, price)
+
+# Combinations
+choose(6, 3)
+
+# Generate vector of 10 IID samples with given distri.
+rbinom(n=10, size=100, prob=0.5)
+rnorm(n=10, mean=100, sd=15)
+
+# P(X >= 70)
+pbinom(70, 100, 0.5, lower.tail=T)
+pnorm(70, 100, 15)
+
+# Find q0.9 where area on left = 0.9
+qbinom(0.9, 100, 0.5)
+qnorm(0.9, 100, 15)
+qt(0.9, 12)
 
 \end{lstlisting}
 
