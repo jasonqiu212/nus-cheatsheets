@@ -404,7 +404,7 @@ $P(B_{i} | A) = \frac{P(A|B_{i})P(B_{i})}{P(A|B_{1})P(B_{1}) + ... + P(A|B_{n})P
 \textbf{Find CI given confidence lvl. ($x$):}
 \begin{enumerate}
   \item Assumptions: Sample is random (\keyword{not robust}{crucial}), 
-  Data distribution symmetric (robust: or n is big)
+  Data distribution symmetric (or n is big)
   \item $\text{CI} = \bar{X} \pm t_{n-1; 1 - \frac{\alpha}{2}} \frac{s}{\sqrt{n}}$
 \end{enumerate}
 \textbf{Determine sample size ($n$) before study:}
@@ -415,6 +415,70 @@ $P(B_{i} | A) = \frac{P(A|B_{i})P(B_{i})}{P(A|B_{1})P(B_{1}) + ... + P(A|B_{n})P
 \end{enumerate}
 
 \section{07. Hypothesis Testing}
+\begin{itemize}
+  \item \ilkeyword{Null hypothesis} vs. \ilkeyword{Alternative hypothesis}
+  \item \ilkeyword{2-sided test} vs. \ilkeyword{Right/left-sided test}
+  \item \keyword{Test statistic}{How far point estimate falls from guess}
+  \item \keyword{Null distribution}{Distribution of test stat. under $H_{0}$}
+  \item \keyword{p-Value}{How unlikely observed value is, if $H_{0}$ is true}
+  \item \keyword{Significance level}{($\alpha$) Reject $H_{0}$ if $\text{p-Val} \leq \alpha$}
+  \item Test is \ilkeyword{statistically significant} when we reject $H_{0}$
+  \item \keyword{Type I Error}{Reject $H_{0}$, but $H_{0}$ is true}
+  \item \keyword{Type II Error}{Do not reject $H_{0}$, but $H_{0}$ is false}
+  \item Increase sample size to reduce both errors
+\end{itemize}
+
+\subsubsection{One sample, Proportion}
+\begin{enumerate}
+  \item Assumptions: Categorical, Random, $np_{0}(1 - p_{0}) \geq 5$
+  \item Hypothesis: $H_{0}: p = p_{0}$ and $H_{1}: p > < \neq p_{0}$
+  \item Test statistic: $z = \frac{\hat{p} - p_{0}}{\sqrt{\frac{p_{0}(1 - p_{0})}{n}}}$
+  and $z \sim N(0, 1)$
+  \item p-Value: If right/left sided, $P(z \geq \text{Test stat.} | z \sim N(0, 1))$
+  If 2-sided, $2 * P(z \geq \text{Test stat.} | z \sim N(0, 1))$
+  \item Conclusion: Reject $H_{0}$ if $\text{p-Val} \leq \alpha$. Else, cannot reject
+\end{enumerate}
+
+\subsubsection{One sample, Mean}
+\begin{enumerate}
+  \item Assumptions: Quantitative, Random, Data distri. is approx. normal (or $n \geq 30$)
+  \item Hypothesis: $H_{0}: \mu = \mu_{0}$ and $H_{1}: \mu > < \neq \mu_{0}$
+  \item Test statistic: $T = \frac{\bar{X} - \mu_{0}}{\frac{s}{\sqrt{n}}}$
+  and $T \sim t_{n-1}(0, 1)$
+  \item p-Value and Conclusion: Same as proportion
+\end{enumerate}
+\begin{itemize}
+  \item Results of 2-sided test for mean is same as using CI
+\end{itemize}
+
+\subsubsection{Two sample, Independent, Equal variance}
+\begin{enumerate}
+  \item Assumptions: Quantitative, Random, Independent samples, Pop. distri. is 
+  approx. normal (or n is large enough), \ilkeyword{Equal variance test} $> 0.05$
+  \item Hypothesis: $H_{0}: \mu_{1} = \mu_{2}$ and $H_{1}: \mu_{1} > < \neq \mu_{2}$
+  \item Test statistic: $T = \frac{\bar{X} - \bar{Y}}{se}$ where $se = s_{p} \sqrt{\frac{1}{n_{1}}
+  + \frac{1}{n_{2}}}$ and $S_{p}^2 = \frac{(n_{1} - 1)s_{1}^2 + (n_{2} - 1)s_{2}^2}{n_{1}+n_{2}-2}$
+  (\ilkeyword{Pooled estimate of common variance})
+  and $T \sim t_{n_{1} + n_{2} - 2}$
+  \item p-Value and Conclusion: Same 
+\end{enumerate}
+
+\subsubsection{Two sample, Independent, Unequal variance}
+\begin{enumerate}
+  \item Assumptions: Same, except pop. var. is different 
+  \item Hypothesis: $H_{0}: \mu_{1} = \mu_{2}$ and $H_{1}: \mu_{1} > < \neq \mu_{2}$
+  \item Test statistic: $T = \frac{\bar{X} - \bar{Y}}{se}$ where $se = \sqrt{\frac{s_{1}^2}{n_{1}}
+  + \frac{s_{2}^2}{n_{2}}}$ and $T \sim t_{df}$ where $df$ needs R
+  \item p-Value and Conclusion: Same 
+\end{enumerate}
+
+\subsubsection{Two sample, Dependent}
+\begin{itemize}
+  \item 2 samples are dependent $\leftrightarrow$ Each obs. has matching pair (Eg. Before and after)
+  \item Take difference of matched observations and compare mean of difference with 0. 
+  Similar to 1 sample test.
+\end{itemize}
+
 
 \section{08. Linear Regression}
 
