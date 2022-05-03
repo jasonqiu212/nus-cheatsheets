@@ -40,7 +40,7 @@
 \setlength{\leftmargini}{0.5cm}
 \setlength{\leftmarginii}{0.5cm}
 \setlist[itemize,1]{leftmargin=2mm,labelindent=1mm,labelsep=1mm}
-\setlist[itemize,2]{leftmargin=4mm,labelindent=1mm,labelsep=1mm}
+\setlist[itemize,2]{leftmargin=2mm,labelindent=1mm,labelsep=1mm,label=$\bullet$}
 
 % Font
 \renewcommand{\familydefault}{\sfdefault}
@@ -140,11 +140,9 @@
     \item Linear Transformation: $S_{y}^2 = b^2s_{x}^2$ $S_{y} = |b|s_{x}$
   \end{itemize}
   \item \keyword{Inter-quartile Range (IQR)}{$Q_{3} - Q_{1}$}
-  \begin{itemize}
-    \item \keyword{Quantile}{($q_{p}$) Value such that p of observations are below}
-    \item Lower quartile ($Q_{1}$), Median ($Q_{2}$), Upper quartile ($Q_{3}$)
-  \end{itemize}
-  \item If symmetric, mean and variance. If skewed, median and IQR.
+  \item \keyword{Quantile}{($q_{p}$) $100p\%$ of observations are below $q_p$}
+  \item Lower quartile ($Q_{1}$), Median ($Q_{2}$), Upper quartile ($Q_{3}$)
+  \item Symmetric $\rightarrow$ mean and variance. Skewed $\rightarrow$ median and IQR.
 \end{itemize}
 
 \subsubsection{Boxplot - Variability}
@@ -479,7 +477,6 @@ $P(B_{i} | A) = \frac{P(A|B_{i})P(B_{i})}{P(A|B_{1})P(B_{1}) + ... + P(A|B_{n})P
   Similar to 1 sample test.
 \end{itemize}
 
-
 \section{08. Linear Regression}
 
 \section{09. R Code}
@@ -542,6 +539,7 @@ choose(6, 3)
 # Generate vector of 10 IID samples with given distri.
 rbinom(n=10, size=100, prob=0.5)
 rnorm(n=10, mean=100, sd=15)
+rexp(n=10, rate=1/500)
 
 # P(X >= 70)
 pbinom(70, 100, 0.5, lower.tail=T)
@@ -550,7 +548,25 @@ pnorm(70, 100, 15)
 # Find q0.9 where area on left = 0.9
 qbinom(0.9, 100, 0.5)
 qnorm(0.9, 100, 15)
-qt(0.9, 12)
+qt(p=0.9, df=12)
+
+# Generate N samples with 10 obs.
+m = matrix(rnorm(10*N, 70, 10), N, 10)
+sampleMeans = rowMeans(m)
+
+# 1 Sample T-test
+t.test(x=data, mu=38, alternative="less", conf.level=0.95)
+
+# Other tests
+var.test(d1, d2) # Equal var. if >0.05
+shapiro.test(d) # Test normality. Normal if >0.1
+wilcox.test(d, 4) # Weaker than t-Test, Data not normal
+
+# 2 Sample T-test
+t.test(data1, data2, alternative="less", var.equal=T, conf.level=0.95)
+
+# Dependent samples
+t.test(data1 - data2, mu=0, alternative="less", conf.level=0.95)
 
 \end{lstlisting}
 
