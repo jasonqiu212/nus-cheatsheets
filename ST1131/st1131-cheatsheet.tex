@@ -110,14 +110,14 @@
 
 \subsubsection{Bar Plots - Categorical}
 \begin{itemize}
-  \item Summarizing: Modal category and its proportion, Categories with high/low
+  \item Summarizing: Modal category and its proportion, Cat. with high/low
   proportions, Mention trends if ordinal
 \end{itemize}
 
 \subsubsection{Histogram - Quantitative}
 \begin{itemize}
   \item Skewed left/right: Left/right tail is longer 
-  \item Summarizing: Outlier, Unimodal/Bimodal/Multimodal, Skewness 
+  \item Summarizing: Unimodal/Bimodal/Multimodal, Skewness, Outlier 
 \end{itemize}
 
 \subsubsection{Describing Center}
@@ -142,7 +142,7 @@
   \item \keyword{Inter-quartile Range (IQR)}{$Q_{3} - Q_{1}$}
   \item \keyword{Quantile}{($q_{p}$) $100p\%$ of observations are below $q_p$}
   \item Lower quartile ($Q_{1}$), Median ($Q_{2}$), Upper quartile ($Q_{3}$)
-  \item Symmetric $\rightarrow$ mean and variance. Skewed $\rightarrow$ median and IQR.
+  \item Symm. $\rightarrow$ Mean, Variance. Skewed $\rightarrow$ Median, IQR.
 \end{itemize}
 
 \subsubsection{Boxplot - Variability}
@@ -150,8 +150,8 @@
     \item Includes: Min, Q1, Q2, Q3, Max
     \item \keyword{Outliers}{$< Q_{1} - 1.5IQR \text{ or } > Q_{3} + 1.5IQR$}
     \item \keyword{Max/min Whisker Reach}{Boundary of outliers}
-    \item \keyword{Upper/lower Whisker}{Min/max obs. excluding outliers}
-    \item Does not show features of distribution. If unimodal, can show skewness.
+    \item \keyword{Upper/lower Whisker}{Min/max obs. exc. outliers}
+    \item If unimodal, can show skewness.
     \item Summarizing: Median, Outliers, Compare medians and IQR if $>1$ boxplots
   \end{itemize}
 
@@ -180,7 +180,6 @@
 \end{itemize}
 \textbf{Correlation} - $r \in [-1, 1]$
 \begin{itemize}
-  \item 2 variables have same correalation, no matter $x \sim y$ or $y \sim x$
   \item Correlation is linear, when $r = \pm 1$
 \end{itemize}
 
@@ -199,7 +198,6 @@
 
 \subsubsection{Sample Survey}
 \begin{enumerate}
-  \item Identify population
   \item Compile \keyword{sampling frame}{Where sample is from}
   \item \keyword{Sampling design}{How to choose subjects from sampling frame}
   \begin{itemize}
@@ -297,7 +295,7 @@ $P(B_{i} | A) = \frac{P(A|B_{i})P(B_{i})}{P(A|B_{1})P(B_{1}) + ... + P(A|B_{n})P
 
 \subsection{Binomial Distribution}
 \begin{itemize}
-  \item \keyword{Combinations}{${n \choose k} = \frac{n!}{k!(n - k)!}$}
+  \item \keyword{Combinations}{$\binom{n}{k} = \frac{n!}{k!(n - k)!}$}
 \end{itemize}
 \textbf{3 Conditions for binomial distribution:}
 \begin{enumerate}
@@ -308,19 +306,18 @@ $P(B_{i} | A) = \frac{P(A|B_{i})P(B_{i})}{P(A|B_{1})P(B_{1}) + ... + P(A|B_{n})P
 \keyword{Binomial Random Variable}{\# of successes in n trials}
 \begin{itemize}
   \item Follows distribution: $Bin(n, p)$
-  \item \keyword{Bernoulli Distribution}{$Bin(1, p)$. Sum of Ber. $\sim$ Bin.}
+  \item \keyword{Bernoulli Distri.}{$Bin(1, p)$. Sum of Ber. $\sim$ Bin.}
 \end{itemize}
 \textbf{Binomial Formula}: Suppose $X \sim Bin(n, p)$
 \begin{itemize}
-  \item $P(X = x) = {n \choose x} p^x (1 - p)^{n - x}$
+  \item $P(X = x) = \binom{n}{x} p^x (1 - p)^{n - x}$
   \item $E(X) = np$
   \item $Var(X) = np(1 - p)$
 \end{itemize}
 
 \subsection{Normal Distribution}
 \begin{itemize}
-  \item Symmetric about $\mu$, bell-shaped
-  \item $X \sim N(\mu, \sigma^2)$
+  \item Symmetric about $\mu$, bell-shaped, $X \sim N(\mu, \sigma^2)$
   \item \keyword{Standard Normal Distribution}{$N(0, 1)$}
   \item Lin. transf. of Normal Random Variable: Same behavior for mean and variance 
   \item Approximate binomial distribution using $N(np, np(1 - p))$ when $np(1 - p) \geq 5$
@@ -414,8 +411,7 @@ $P(B_{i} | A) = \frac{P(A|B_{i})P(B_{i})}{P(A|B_{1})P(B_{1}) + ... + P(A|B_{n})P
 
 \section{07. Hypothesis Testing}
 \begin{itemize}
-  \item \ilkeyword{Null hypothesis} vs. \ilkeyword{Alternative hypothesis}
-  \item \ilkeyword{2-sided test} vs. \ilkeyword{Right/left-sided test}
+  \item \ilkeyword{Null hypothesis} ($H_0$) vs. \ilkeyword{Alternative hypothesis} ($H_1$)
   \item \keyword{Test statistic}{How far point estimate falls from guess}
   \item \keyword{Null distribution}{Distribution of test stat. under $H_{0}$}
   \item \keyword{p-Value}{How unlikely observed value is, if $H_{0}$ is true}
@@ -446,7 +442,7 @@ $P(B_{i} | A) = \frac{P(A|B_{i})P(B_{i})}{P(A|B_{1})P(B_{1}) + ... + P(A|B_{n})P
   \item p-Value and Conclusion: Same as proportion
 \end{enumerate}
 \begin{itemize}
-  \item Results of 2-sided test for mean is same as using CI
+  \item Result of 2-sided test for mean is same as using CI
 \end{itemize}
 
 \subsubsection{Two sample, Independent, Equal variance}
@@ -479,94 +475,143 @@ $P(B_{i} | A) = \frac{P(A|B_{i})P(B_{i})}{P(A|B_{1})P(B_{1}) + ... + P(A|B_{n})P
 
 \section{08. Linear Regression}
 
+\subsection{Simple Linear Regression}
+\begin{itemize}
+  \item $Y = \beta_0 + \beta_1x + \epsilon$
+  \item Assumptions: Random data, Relationship is linear, $\epsilon \sim N(0, \sigma^2)$ 
+  which implies $Y \sim N(\beta_0 + \beta_1x, \sigma^2)$
+  \item \keyword{Ordinary Least Square Estimate}{Line with least sum of square residuals.
+  $ss_{Res} = \sum_{i = 1}^{n} e_i^2$ where $e_i = y_i - \hat{y}_i$}
+  \item \keyword{Interpolation}{Estimate not observed. Within range}
+  \item \keyword{Extrapolation}{Estimate that's outside range. Avoid!}
+\end{itemize}
+
+\subsubsection{T-test and F-test}
+\begin{itemize}
+  \item \keyword{T-test}{Test significance of 1 coefficient}
+  \item \keyword{F-test}{Test significance of entire model}
+  \item If coeff. are not significant, \ilkeyword{intercept model} $\hat{Y} = \hat{\beta_0}$
+\end{itemize}
+\begin{enumerate}
+  \item Assumptions: Same as building model
+  \item Hypothesis for T-test: $H_0: \beta_1 = 0$ and $H_1: \beta_1 \neq 0$
+  \item Hypothesis for F-test: $H_0:$ All coeff. (except $\beta_0$) = 0 and $H_1:$
+  At least 1 coeff. is non-zero.
+  \item t-stat: Check from summary. Null distri: $t_{\text{n - \# of coeff}}$
+  \item F-stat: For simple lin. reg., $F = t^2$. Null Distri: $F_{\text{\# of coeff; n - \# of coeff}}$
+\end{enumerate}
+
+\subsection{Regression Diagnostics}
+\textbf{Plots and what to look out for:}
+\begin{itemize}
+  \item Scatter plot $r_i vs. X_i/\hat{Y_i}$ and $X vs. \hat{Y}$ $\rightarrow$ Linearity 
+  (Curved band), Constant variance (Funnel shape), Normality (Many points outside $(-3,3)$)
+  \item QQ Plot/Histogram of $r_i$ $\rightarrow$ Normality
+\end{itemize}
+\textbf{How to fix:}
+\begin{itemize}
+  \item Constant variance: Transform response variable
+  \item Linearity: Add higher order term
+\end{itemize}
+\keyword{Coefficient of Determination}{($R^2$) Goodness of fit}
+\begin{itemize}
+  \item $|Cor(x, y)| = \sqrt{R^2} = R$
+  \item Weakness: More variables $\rightarrow$ $R^2 \uparrow$
+  \item Thus, can use \ilkeyword{Adjusted $R^2$}
+\end{itemize}
+
+\subsection{Multivariable Linear Regression}
+\textbf{Regression Function with Categorical Var:}
+\begin{itemize}
+  \item \keyword{Indicator Variable}{1 if cat. is observed. 0 otherwise.}
+  \item \keyword{Reference Category}{The category not in equation}
+\end{itemize}
+Eg. $Y = \beta_0 + \beta_1 x_1 + \beta_2 I(x_2 = Auto) + \epsilon$
+\begin{itemize}
+  \item Auto: $Y = \beta_0 + \beta_1 x_1 + \beta 2 + \epsilon$
+  \item Manual: $Y = \beta_0 + \beta_1 x_1 + \epsilon$
+\end{itemize}
+\textbf{Interaction between variables:} $Y = \beta_0 + \beta_1 x_1 + \beta_2 I(x_2 = Auto) + \beta_3 x_1 I(x_2 = Auto) + \epsilon$
+
 \section{09. R Code}
 
 \begin{lstlisting}[language=R, breaklines=true]
-# Create matrix, Bind matrices
 matrix(c(1:6), nrow=2, ncol=3, byrow=T)
 rbind(m, c(1,2,3))
-
-# Read CSV, Add header, Get col. in df
 data = read.csv("./crab.txt")
 names(data) = c("Subject", "Gender")
 data$Subject # Or attach()
-
 # Select, Filter by condition
 data[1:8,]
 data[Gender == "M" & HW == "A",]
-
-# Summary of vector
-summary(marks)
-
 # Replace elements based on condition
 ifelse(Gender == "0", "F", "M")
-
 # Return indices that match condition
 which(flat == "3 ROOM")
-
+for (i in 1:100) {...}
+choose(6, 3)
+summary(marks)
 # Frequency Table
 table(data)
 prop.table(table(data))
-
 # Bar Plot
 barplot(table(data))
-
 # Contingency Table 
 tab = table(bbd, pmh) # (r, c)
 prop.table(tab) # Joint probabililty
 prop.table(tab, "pmh") # Conditional probability on pmh groups
-
 # Bar Plot with 2 variables
 barplot(proptab)
-
 # Boxplot
 bp = boxplot(age~cancer) # quan. ~ cat.
 bp$out # Values of outliers
 grp = bp$group # Outliers in each group
 which(grp == 1) # Index of outliers in group 1
 bp$out[which(grp == 1)] 
-
 # Histogram
 hist(flatPrice)
-
 # Scatter Plot, Correlation
 plot(size, price) # (x-axis, y-axis)
 cor(size, price)
-
-# Combinations
-choose(6, 3)
-
+# QQ plot
 # Generate vector of 10 IID samples with given distri.
 rbinom(n=10, size=100, prob=0.5)
 rnorm(n=10, mean=100, sd=15)
 rexp(n=10, rate=1/500)
-
 # P(X >= 70)
 pbinom(70, 100, 0.5, lower.tail=T)
 pnorm(70, 100, 15)
-
 # Find q0.9 where area on left = 0.9
 qbinom(0.9, 100, 0.5)
 qnorm(0.9, 100, 15)
 qt(p=0.9, df=12)
-
 # Generate N samples with 10 obs.
 m = matrix(rnorm(10*N, 70, 10), N, 10)
 sampleMeans = rowMeans(m)
-
 # 1 Sample T-test
 t.test(x=data, mu=38, alternative="less", conf.level=0.95)
-
 # Other tests
 var.test(d1, d2) # Equal var. if >0.05
 shapiro.test(d) # Test normality. Normal if >0.1
-wilcox.test(d, 4) # Weaker than t-Test, Data not normal
-
-# 2 Sample T-test
+wilcox.test(d, 4) # If data not normal
+# 2 Sample, Independent
 t.test(data1, data2, alternative="less", var.equal=T, conf.level=0.95)
-
-# Dependent samples
-t.test(data1 - data2, mu=0, alternative="less", conf.level=0.95)
+# 2 Sample, Dependent
+t.test(d1 - d2, mu=0)
+# Linear Regression
+m1 = lm(price~area) # y~x
+m2 = lm(price~area+type+area*type) 
+summary(m1)
+confint(m1, level=0.95) # CI of coeff.
+# Predict
+new1 = data.frame(area = c(20, 40))
+predict(m1, new1)
+predict(m1, new1, interval="confidence", level=0.95) # with CI
+# Residuals
+rawRes = m1$res
+SR = rstandard(m1)
+which(SR > 3 | SR < -3) # Outliers
+which(cooks.distance(m1)>1) #Influen.
 
 \end{lstlisting}
 
