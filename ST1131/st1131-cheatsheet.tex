@@ -147,12 +147,12 @@
 
 \subsubsection{Boxplot - Variability}
   \begin{itemize}
-    \item Includes: Min, Q1, Q2, Q3, Max
+    \item Includes: Min, $Q_1$, $Q_2$, $Q_3$, Max
     \item \keyword{Outliers}{$< Q_{1} - 1.5IQR \text{ or } > Q_{3} + 1.5IQR$}
     \item \keyword{Max/min Whisker Reach}{Boundary of outliers}
     \item \keyword{Upper/lower Whisker}{Min/max obs. exc. outliers}
     \item If unimodal, can show skewness.
-    \item Summarizing: Median, Outliers, Compare medians and IQR if $>1$ boxplots
+    \item Summarizing: Median, Outliers, Compare medians and IQRs if $>1$ boxplots
   \end{itemize}
 
 \subsection{Two Variables}
@@ -180,7 +180,7 @@
 \end{itemize}
 \textbf{Correlation} - $r \in [-1, 1]$
 \begin{itemize}
-  \item Correlation is linear, when $r = \pm 1$
+  \item $r = \pm 1 \rightarrow$ Correlation is linear
 \end{itemize}
 
 \section{02. Data Collection}
@@ -428,7 +428,7 @@ $P(B_{i} | A) = \frac{P(A|B_{i})P(B_{i})}{P(A|B_{1})P(B_{1}) + ... + P(A|B_{n})P
   \item Hypothesis: $H_{0}: p = p_{0}$ and $H_{1}: p > < \neq p_{0}$
   \item Test statistic: $z = \frac{\hat{p} - p_{0}}{\sqrt{\frac{p_{0}(1 - p_{0})}{n}}}$
   and $z \sim N(0, 1)$
-  \item p-Value: If right/left sided, $P(z \geq \text{Test stat.} | z \sim N(0, 1))$
+  \item p-Value: If right sided, $P(z \geq \text{Test stat.} | z \sim N(0, 1))$.
   If 2-sided, $2 * P(z \geq \text{Test stat.} | z \sim N(0, 1))$
   \item Conclusion: Reject $H_{0}$ if $\text{p-Val} \leq \alpha$. Else, cannot reject
 \end{enumerate}
@@ -480,6 +480,7 @@ $P(B_{i} | A) = \frac{P(A|B_{i})P(B_{i})}{P(A|B_{1})P(B_{1}) + ... + P(A|B_{n})P
   \item $Y = \beta_0 + \beta_1x + \epsilon$
   \item Assumptions: Random data, Relationship is linear, $\epsilon \sim N(0, \sigma^2)$ 
   which implies $Y \sim N(\beta_0 + \beta_1x, \sigma^2)$
+  (Check if response var. is symmetric)
   \item \keyword{Ordinary Least Square Estimate}{Line with least sum of square residuals.
   $ss_{Res} = \sum_{i = 1}^{n} e_i^2$ where $e_i = y_i - \hat{y}_i$}
   \item \keyword{Interpolation}{Estimate not observed. Within range}
@@ -541,7 +542,6 @@ rbind(m, c(1,2,3))
 data = read.csv("./crab.txt")
 names(data) = c("Subject", "Gender")
 data$Subject # Or attach()
-# Select, Filter by condition
 data[1:8,]
 data[Gender == "M" & HW == "A",]
 # Replace elements based on condition
@@ -566,7 +566,7 @@ barplot(proptab)
 bp = boxplot(age~cancer) # quan. ~ cat.
 bp$out # Values of outliers
 grp = bp$group # Outliers in each group
-which(grp == 1) # Index of outliers in group 1
+which(grp == 1) # Outliers in group 1
 bp$out[which(grp == 1)] 
 # Histogram
 hist(flatPrice)
@@ -574,7 +574,9 @@ hist(flatPrice)
 plot(size, price) # (x-axis, y-axis)
 cor(size, price)
 # QQ plot
-# Generate vector of 10 IID samples with given distri.
+qqnorm(data)
+qqline(data)
+# Generate vector of 10 IID samples 
 rbinom(n=10, size=100, prob=0.5)
 rnorm(n=10, mean=100, sd=15)
 rexp(n=10, rate=1/500)
@@ -590,10 +592,10 @@ m = matrix(rnorm(10*N, 70, 10), N, 10)
 sampleMeans = rowMeans(m)
 # 1 Sample T-test
 t.test(x=data, mu=38, alternative="less", conf.level=0.95)
-# Other tests
 var.test(d1, d2) # Equal var. if >0.05
 shapiro.test(d) # Test normality. Normal if >0.1
 wilcox.test(d, 4) # If data not normal
+anova(m1) # Test sig. of var. with >2 categories. Add at end.
 # 2 Sample, Independent
 t.test(data1, data2, alternative="less", var.equal=T, conf.level=0.95)
 # 2 Sample, Dependent
@@ -603,16 +605,15 @@ m1 = lm(price~area) # y~x
 m2 = lm(price~area+type+area*type) 
 summary(m1)
 confint(m1, level=0.95) # CI of coeff.
+abline(m1) # Add fitted model to plot
 # Predict
 new1 = data.frame(area = c(20, 40))
 predict(m1, new1)
 predict(m1, new1, interval="confidence", level=0.95) # with CI
-# Residuals
-rawRes = m1$res
-SR = rstandard(m1)
+rawRes = m1$res # Raw residuals
+SR = rstandard(m1) # Standard residuals
 which(SR > 3 | SR < -3) # Outliers
 which(cooks.distance(m1)>1) #Influen.
-
 \end{lstlisting}
 
 \end{multicols*}
