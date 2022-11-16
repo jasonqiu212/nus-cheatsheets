@@ -1,0 +1,340 @@
+\documentclass{article}
+\usepackage[a4paper, margin=3mm, landscape]{geometry}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{listings}
+\usepackage{soul}
+
+\pdfinfo{
+  /Title (ST2334.pdf)
+  /Creator (TeX)
+  /Producer (pdfTeX 1.40.0)
+  /Author (Jason Qiu)
+  /Subject (ST2334)
+  /Keywords (ST2334, nus, cheatsheet,pdf)
+}
+
+\pagestyle{empty}
+\setcounter{secnumdepth}{0}
+\setlength{\columnseprule}{0.25pt}
+
+% Redefine section commands to use less space
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+  {-1ex plus -.5ex minus -.2ex}%
+  {0.5ex plus .2ex}%x
+{\normalfont\large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+  {-1explus -.5ex minus -.2ex}%
+  {0.5ex plus .2ex}%
+{\normalfont\normalsize\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+  {-1ex plus -.5ex minus -.2ex}%
+  {1ex plus .2ex}%
+{\normalfont\small\bfseries}}%
+\makeatother
+
+% Adjust spacing for all itemize/enumerate
+\setlength{\leftmargini}{0.5cm}
+\setlength{\leftmarginii}{0.5cm}
+\setlist[itemize,1]{leftmargin=2mm,labelindent=1mm,labelsep=1mm}
+\setlist[itemize,2]{leftmargin=2mm,labelindent=1mm,labelsep=1mm,label=$\bullet$}
+
+% Font
+\renewcommand{\familydefault}{\sfdefault}
+
+% Define colors for math formulas
+\definecolor{myblue}{cmyk}{1,.72,0,.38}
+\everymath\expandafter{\the\everymath \color{myblue}}
+
+% Custom command for keywords
+\definecolor{highlight}{RGB}{251,243,218}
+\newcommand{\keyword}[2][]{\sethlcolor{highlight}\hl{\textbf{#2}} #1 - }
+\newcommand{\ilkeyword}[1]{\sethlcolor{highlight}\hl{\textbf{#1}}}
+
+% Define colors and style for code
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codered}{HTML}{CC241D}
+\definecolor{backcolor}{rgb}{0.95,0.95,0.95}
+\lstdefinestyle{codestyle}{
+  backgroundcolor = \color{backcolor},
+  commentstyle = \color{codegray},
+  keywordstyle = \color{codered},
+  stringstyle = \color{codegreen},
+  basicstyle = \ttfamily,
+  breakatwhitespace = false,
+  showstringspaces = false,
+  breaklines = true,
+  showtabs = false,
+  tabsize = 2
+}
+\lstset{style = codestyle}
+
+% -----------------------------------------------------------------------
+\begin{document}
+\begin{multicols*}{3}
+\footnotesize
+
+% Title box
+\begin{center}
+  \fbox{
+    \parbox{0.8\linewidth}{
+      \centering \textcolor{black}{
+        {\Large\textbf{ST2334}} \\
+        \normalsize{AY22/23 Sem 1}} \\
+        {\footnotesize \textcolor{gray}{github.com/jasonqiu212}}
+    }
+  }
+\end{center}
+
+\section{01. Basic Concepts of Probability}
+
+\subsection{Event Operations}
+
+\begin{itemize}
+  \item \keyword{Mututally Exclusive}{$A \cap B = \emptyset$}
+  \item \keyword{Contained}{$A \subset B$}
+  \item \keyword{Equivalence}{$A \subset B$ and $A \supset B \rightarrow A = B$}
+  \item \keyword{Distributive}{$A \cap (B \cup C) = (A \cup B) \cup (A \cup C)$}
+  \item \keyword{DeMorgan's}{$(A \cup B)' = A' \cap B'$}
+  \item $A = (A \cap B) \cup (A \cap B')$
+\end{itemize}
+
+\subsection{Counting Methods}
+
+\begin{itemize}
+  \item \keyword{Multiplcation Principle}{Given r experiments performed \textbf{sequentially} and each has $n_1, n_2, ..., n_r$ outcomes. After r experiments, there are $n_1 n_2 ... n_r$ outcomes.}
+  \item \keyword{Addition Principle}{Given experiment can be done in k different ways and each has $n_1, n_2, ..., n_r$ ways. There are $n_1 + n_2 + ... + n_k$ total ways.}
+  \item \keyword{Permutation}{$_{n}P_{r} = \frac{n!}{(n-r)!}$}
+  \item \keyword{Combination}{$\binom{n}{r} = \frac{n!}{(n-r)!r!}$}
+\end{itemize}
+
+\subsection{Probability}
+
+\subsubsection{Axioms of Probability}
+\begin{enumerate}
+    \item For any event A, $0 \leq P(A) \leq 1$
+    \item P(S) = 1
+    \item If $A \cap B = \emptyset$, then $P(A \cup B) = P(A) + P(B)$
+\end{enumerate}
+\begin{itemize}
+  \item $P(A') = 1 - P(A)$
+  \item $P(A) = P(A \cap B) + P(A \cap B')$
+  \item $P(A \cup B) = P(A) + P(B) - P(A \cap B)$
+  \item If $A \subset B$, then $P(A) < P(B)$
+\end{itemize}
+
+\subsection{Finite Sample Space with Equally Likely Outcomes}
+
+Given sample space $S = \{a_1, ..., a_k\}$ and all outcomes are \textbf{equally likely}, i.e. $P(a_1) = ... = P(a_k)$:
+\[\text{For any event } A \subset S, P(A) = \frac{\text{No. of sample points in A}}{\text{No. of sample points in S}}\]
+
+\subsection{Conditional Probability}
+
+\[P(B|A) = \frac{P(B \cap A)}{P(A)} = \frac{P(A|B)P(B)}{P(A)}\]
+
+\subsection{Independence}
+
+\begin{itemize}
+    \item $A \perp B \leftrightarrow P(A \cap B) = P(A)P(B)$
+    \item $A \perp B \leftrightarrow P(A|B) = P(A)$
+\end{itemize}
+
+\subsection{Law of Total Probability}
+
+\begin{itemize}
+    \item \keyword{Partition}{If $A_1, ..., A_n$ are mutually exclusive events and $\bigcup _{i=1} ^{n} A_i = S$, then $A_1, ..., A_n$ are partitions}
+    \item If $A_1, ..., A_n$ are partitions of S, then for any event B:
+    \[P(B) = \sum _{i=1} ^{n} P(B \cap A_i) = \sum _{i=1} ^{n} P(B|A_i)P(A_i)\]
+\end{itemize}
+
+\subsection{Bayes' Theorem}
+
+Let $A_1, ..., A_n$ be partitions of S. For any event B:
+\[P(A_k|B) = \frac{P(B|A_k)P(A_k)}{\sum _{i=1} ^{n} P(B|A_k)P(A_i)}\]
+
+\section{02. Random Variables}
+
+\begin{itemize}
+    \item Motivation: Assign value to outcome of experiment
+    \item \keyword{Random Variable}{Let S be sample space. Function X which maps $\mathbb{R}$ to every $s \in S$}
+\end{itemize}
+
+\subsection{Probability Distribution}
+
+\begin{itemize}
+    \item Probability assigned to each possible $X$
+    \item Given RV $X$ with range of $R_x$:
+      \subitem \keyword{Discrete}{Numbers in $R_x$ are finite or countable}
+      \subitem \keyword{Continuous}{$R_x$ is interval}
+\end{itemize}
+
+\subsubsection{Discrete Probability Distribution}
+\begin{itemize}
+    \item \keyword{Probability Function}{Given $R_x = \{x_1, ...\}$. For each $x_i$, there's some probability that $X = x_i$:}
+    \[f(x) = P(X = x)\]
+    \item $p.f.$ must satisfy:
+        \begin{enumerate}
+            \item $f(x_i) = P(X = x_i)$ for $x_i \in R_x$
+            \item $f(x_i) = 0$ for $x_i \notin R_x$
+            \item $\sum _{i=1} ^{\infty} f(x_i) = 1$
+            \item $\forall B \subseteq \mathbb{R}, P(X \in B) = \sum _{x_i \in B \cap R_x} f(x_i)$
+        \end{enumerate}
+    \item \keyword{Probability Distribution}{Collection of pairs $(x_i, f(x_i))$}
+\end{itemize}
+
+\subsubsection{Continuous Probability Distribution}
+\begin{itemize}
+    \item \keyword{Probability Function}{Given $R_x$ is interval. Quantifies probability that $X$ is in some range.}
+    \item $p.f.$ must satisfy:
+        \begin{enumerate}
+            \item $f(x) \geq 0$
+            \item $f(x) = 0$ for $x \notin R_x$
+            \item $\int _{R_x} f(x) dx = 1$
+            \item $\forall a,b \text{ s.t. } a \leq b, P(a \leq X \leq b) = \int _{a} ^{b} f(x) dx$
+        \end{enumerate}
+    \item Note: $P(X = x_0) = \int _{x_0} ^{x_0} f(x) dx = 0$
+\end{itemize}
+
+\subsection{Cumulative Distributive Function}
+
+Given RV $X$, which can be discrete or continuous:
+\[F(x) = P(X \leq x)\]
+
+\begin{itemize}
+    \item $F(x)$ is non-decreasing and $0 \leq F(x) \leq 1$
+    \item \textbf{For discrete RV}: Step function
+    \[F(x) = \sum _{t \in R_x; t \leq x} f(t)\]
+    \begin{itemize}
+        \item $P(a \leq X \leq b) = F(b) - \lim _{x \to a^-} F(x)$
+        \item $0 \leq f(x) \leq 1$
+    \end{itemize}
+
+    \item \textbf{For continuous RV}:
+    \[F(x) = \int _{-\infty} ^{x} f(t) dt\]
+    \[f(x) = \frac{d(F(x))}{dx}\]
+    \begin{itemize}
+        \item $P(a \leq X \leq b) = P(a < X < b) = F(b) - F(a)$
+        \item $0 \leq f(x)$ e.g. $f(x) = 3x^2$ is a valid $p.f.$ since $\int _{R_x} f(x) dx = 1$
+    \end{itemize}
+\end{itemize}
+
+\subsection{Expectation of Random Variable}
+
+\begin{itemize}
+    \item \textbf{Mean of discrete RV}: 
+    \[\mu = E(X) = \sum _{x \in R_x} x_i f(x_i) = \sum _{i=1} ^{\infty} P(X \geq i)\]
+    \begin{itemize}
+        \item Let $g$ be some function. $E(g(x)) = \sum _{x \in R_x} g(x)f(x)$
+    \end{itemize}
+    \item \textbf{Mean of continuous RV}: 
+    \[\mu = E(X) = \int _{x \in R_x} x f(x) dx\]
+    \begin{itemize}
+        \item Let $g$ be some function. $E(g(x)) = \int _{x \in R_x} g(x)f(x)dx$
+    \end{itemize}
+    \item $E(aX + b) = aE(X) + b$
+    \item Linearity of expectation: $E(X + Y) = E(X) + E(Y)$
+\end{itemize}
+
+\subsection{Variance of Random Variable}
+
+\[\sigma_X^2 = V(X) = E((X - \mu_X)^2)\]
+
+\begin{itemize}
+    \item \textbf{Variance of discrete RV}: 
+    \[V(X) = \sum _{x \in R_x} (x - \mu_X)^2 f(x)\]
+    \item \textbf{Variance of continuous RV}: 
+    \[V(X) = \int _{x \in R_x} (x - \mu_X)^2 f(x) dx\]
+    \item $V(X) = 0$ when $X$ is a constant
+    \item $V(aX+b) = a^2V(X)$
+    \item $V(X) = E(X^2) - (E(X))^2$
+    \item \keyword{Standard Deviation}{$\sigma_X = \sqrt{V(X)}$}
+\end{itemize}
+
+\section{03. Joint Distributions}
+
+\section{04. Special Probability Distributions}
+
+\subsection{Discrete Uniform Distribution}
+
+\begin{itemize}
+  \item If $X$ has values $x_1, x_2, ..., x_k$ with \textbf{equal probability}
+  \item p.f.: $f_X(x) = \frac{1}{k}$ where $x = x_1, ..., x_k$ and $0$ otherwise
+  \item Expectation: $\mu_X = E(X) = \sum_{i = 1} ^{k} x_i f_X (x_i) = \frac{1}{k} \sum_{i=1} ^{k} x_i$
+  \item Variance: $\sigma_X^2 = V(X) = E(X^2) - (E(X))^2 = \frac{1}{k} \sum_{i=1} ^{k} x_i^2 - \mu_X^2$
+\end{itemize}
+
+\subsection{Bernoulli}
+
+\begin{itemize}
+  \item \keyword{Bernoulli Trial}{Random experiment with 2 possible outcomes (success and failure)}
+\end{itemize}
+
+\subsubsection{Bernoulli Random Variable}
+\begin{itemize}
+  \item Number of successes in Bernoulli trial (Either 1 or 0)
+  \item Let $0 \leq p \leq 1$ be the probability of success in Bernoulli trial
+  \[ f_X (x) = P(X = x) = 
+  \begin{cases}
+    p & x = 1\\
+    1 - p & x = 0\\
+    0 & otherwise
+  \end{cases}
+    \]
+  \item $f_X (x) = p^x (1-p)^{1-x}$ for $x=0$ or $1$
+  \item Notation: $X \sim Ber(p)$ and $q = 1 - p$
+  \item $\mu_X = E(X) = p$ and $\sigma_X^2 = V(X) = p(1-p)$
+\end{itemize}
+
+\subsubsection{Bernoulli Process}
+\begin{itemize}
+  \item Sequence of repeatedly performed \textbf{independent and identical} Ber. trials
+  \item Generates sequence of \textbf{independet and identically distributed (i.i.d.)} Ber. RVs: $X_1, X_2, ...$
+\end{itemize}
+
+\subsection{Binomial Distribution}
+
+\begin{itemize}
+  \item \keyword{Binomial RV}{Counts the number of successes in n trials in a Ber. process}
+  \item Given n trials with each trial having probability p of success: 
+  \[P(X = x) = \binom{n}{x} p^x (1-p)^{n-x}\]
+  \item Notation: $X \sim B(n, p)$
+  \item $E(X) = np$ and $V(X) = np(1-p)$
+\end{itemize}
+
+\subsection{Negative Binomial Distribution}
+
+\begin{itemize}
+  \item Let X = Number of i.i.d. Bernoulli(p) trials until kth success occurs
+  \[P(X = x) = \binom{x-1}{k-1} p^k (1-p)^{x-k}\]
+  \item Notation: $X \sim NB(k, p)$
+  \item $E(X) = \frac{1}{p}$ and $V(X) = \frac{(1-p)}{p^2}$
+\end{itemize}
+
+\subsubsection{Geometric Distribution}
+\begin{itemize}
+  \item Let X = Number of i.i.d. Bernoulli(p) trials until 1st success occurs
+  \[
+    P(X = x) = p (1-p)^{x-1}
+  \]
+  \item Notation: $X \sim G(p)$
+  \item $E(X) = \frac{1}{p}$ and $V(X) = \frac{1-p}{p^2}$
+\end{itemize}
+
+\subsection{Poisson Distribution}
+\begin{itemize}
+  \item \keyword{Poisson RV}{Denotes number of events happening in \textbf{fixed period of time}}
+  \[
+    P(X = k) = \frac{e^{-\lambda}\lambda^k}{k!}
+  \]
+  \item Notation: $X \sim Poisson(\lambda)$ where $\lambda > 0$ is expected number of occurences during some period
+  \item $E(X) = \lambda$ and $V(X) = \lambda$
+  \item \keyword{Poisson Process}{Continuous time process, where we count number of correucesn within some internval of time}
+\end{itemize}
+
+\end{multicols*}
+\end{document}
