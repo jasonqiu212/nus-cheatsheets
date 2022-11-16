@@ -9,12 +9,12 @@
 \usepackage{soul}
 
 \pdfinfo{
-  /Title (ST2334.pdf)
-  /Creator (TeX)
-  /Producer (pdfTeX 1.40.0)
-  /Author (Jason Qiu)
-  /Subject (ST2334)
-  /Keywords (ST2334, nus, cheatsheet,pdf)
+    /Title (ST2334.pdf)
+    /Creator (TeX)
+    /Producer (pdfTeX 1.40.0)
+    /Author (Jason Qiu)
+    /Subject (ST2334)
+    /Keywords (ST2334, nus, cheatsheet,pdf)
 }
 
 \pagestyle{empty}
@@ -24,16 +24,16 @@
 % Redefine section commands to use less space
 \makeatletter
 \renewcommand{\section}{\@startsection{section}{1}{0mm}%
-  {-1ex plus -.5ex minus -.2ex}%
-  {0.5ex plus .2ex}%x
+    {-1ex plus -.5ex minus -.2ex}%
+    {0.5ex plus .2ex}%x
 {\normalfont\large\bfseries}}
 \renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
-  {-1explus -.5ex minus -.2ex}%
-  {0.5ex plus .2ex}%
+    {-1explus -.5ex minus -.2ex}%
+    {0.5ex plus .2ex}%
 {\normalfont\normalsize\bfseries}}
 \renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
-  {-1ex plus -.5ex minus -.2ex}%
-  {1ex plus .2ex}%
+    {-1ex plus -.5ex minus -.2ex}%
+    {1ex plus .2ex}%
 {\normalfont\small\bfseries}}%
 \makeatother
 
@@ -61,16 +61,16 @@
 \definecolor{codered}{HTML}{CC241D}
 \definecolor{backcolor}{rgb}{0.95,0.95,0.95}
 \lstdefinestyle{codestyle}{
-  backgroundcolor = \color{backcolor},
-  commentstyle = \color{codegray},
-  keywordstyle = \color{codered},
-  stringstyle = \color{codegreen},
-  basicstyle = \ttfamily,
-  breakatwhitespace = false,
-  showstringspaces = false,
-  breaklines = true,
-  showtabs = false,
-  tabsize = 2
+    backgroundcolor = \color{backcolor},
+    commentstyle = \color{codegray},
+    keywordstyle = \color{codered},
+    stringstyle = \color{codegreen},
+    basicstyle = \ttfamily,
+    breakatwhitespace = false,
+    showstringspaces = false,
+    breaklines = true,
+    showtabs = false,
+    tabsize = 2
 }
 \lstset{style = codestyle}
 
@@ -81,14 +81,14 @@
 
 % Title box
 \begin{center}
-  \fbox{
-    \parbox{0.8\linewidth}{
-      \centering \textcolor{black}{
-        {\Large\textbf{ST2334}} \\
-        \normalsize{AY22/23 Sem 1}} \\
-        {\footnotesize \textcolor{gray}{github.com/jasonqiu212}}
+    \fbox{
+        \parbox{0.8\linewidth}{
+            \centering \textcolor{black}{
+                {\Large\textbf{ST2334}} \\
+                \normalsize{AY22/23 Sem 1}} \\
+                {\footnotesize \textcolor{gray}{github.com/jasonqiu212}}
+        }
     }
-  }
 \end{center}
 
 \section{01. Basic Concepts of Probability}
@@ -96,21 +96,21 @@
 \subsection{Event Operations}
 
 \begin{itemize}
-  \item \keyword{Mututally Exclusive}{$A \cap B = \emptyset$}
-  \item \keyword{Contained}{$A \subset B$}
-  \item \keyword{Equivalence}{$A \subset B$ and $A \supset B \rightarrow A = B$}
-  \item \keyword{Distributive}{$A \cap (B \cup C) = (A \cup B) \cup (A \cup C)$}
-  \item \keyword{DeMorgan's}{$(A \cup B)' = A' \cap B'$}
-  \item $A = (A \cap B) \cup (A \cap B')$
+    \item \keyword{Mututally Exclusive}{$A \cap B = \emptyset$}
+    \item \keyword{Contained}{$A \subset B$}
+    \item \keyword{Equivalence}{$A \subset B$ and $A \supset B \rightarrow A = B$}
+    \item \keyword{Distributive}{$A \cap (B \cup C) = (A \cup B) \cup (A \cup C)$}
+    \item \keyword{DeMorgan's}{$(A \cup B)' = A' \cap B'$}
+    \item $A = (A \cap B) \cup (A \cap B')$
 \end{itemize}
 
 \subsection{Counting Methods}
 
 \begin{itemize}
-  \item \keyword{Multiplcation Principle}{Given r experiments performed \textbf{sequentially} and each has $n_1, n_2, ..., n_r$ outcomes. After r experiments, there are $n_1 n_2 ... n_r$ outcomes.}
-  \item \keyword{Addition Principle}{Given experiment can be done in k different ways and each has $n_1, n_2, ..., n_r$ ways. There are $n_1 + n_2 + ... + n_k$ total ways.}
-  \item \keyword{Permutation}{$_{n}P_{r} = \frac{n!}{(n-r)!}$}
-  \item \keyword{Combination}{$\binom{n}{r} = \frac{n!}{(n-r)!r!}$}
+    \item \keyword{Multiplcation Principle}{Given r experiments performed \textbf{sequentially} and each has $n_1, n_2, ..., n_r$ outcomes. After r experiments, there are $n_1 n_2 ... n_r$ outcomes.}
+    \item \keyword{Addition Principle}{Given experiment can be done in k different ways and each has $n_1, n_2, ..., n_r$ ways. There are $n_1 + n_2 + ... + n_k$ total ways.}
+    \item \keyword{Permutation}{$_{n}P_{r} = \frac{n!}{(n-r)!}$}
+    \item \keyword{Combination}{$\binom{n}{r} = \frac{n!}{(n-r)!r!}$}
 \end{itemize}
 
 \subsection{Probability}
@@ -122,10 +122,10 @@
     \item If $A \cap B = \emptyset$, then $P(A \cup B) = P(A) + P(B)$
 \end{enumerate}
 \begin{itemize}
-  \item $P(A') = 1 - P(A)$
-  \item $P(A) = P(A \cap B) + P(A \cap B')$
-  \item $P(A \cup B) = P(A) + P(B) - P(A \cap B)$
-  \item If $A \subset B$, then $P(A) < P(B)$
+    \item $P(A') = 1 - P(A)$
+    \item $P(A) = P(A \cap B) + P(A \cap B')$
+    \item $P(A \cup B) = P(A) + P(B) - P(A \cap B)$
+    \item If $A \subset B$, then $P(A) < P(B)$
 \end{itemize}
 
 \subsection{Finite Sample Space with Equally Likely Outcomes}
@@ -169,8 +169,8 @@ Let $A_1, ..., A_n$ be partitions of S. For any event B:
 \begin{itemize}
     \item Probability assigned to each possible $X$
     \item Given RV $X$ with range of $R_x$:
-      \subitem \keyword{Discrete}{Numbers in $R_x$ are finite or countable}
-      \subitem \keyword{Continuous}{$R_x$ is interval}
+        \subitem \keyword{Discrete}{Numbers in $R_x$ are finite or countable}
+        \subitem \keyword{Continuous}{$R_x$ is interval}
 \end{itemize}
 
 \subsubsection{Discrete Probability Distribution}
@@ -257,83 +257,185 @@ Given RV $X$, which can be discrete or continuous:
 
 \section{03. Joint Distributions}
 
+\begin{itemize}
+    \item Motivation: What if interested in more than 1 RV simultaneously?
+    \item Given sample space $S$. Let $X$ and $Y$ be functions mapping $s \in S \to \mathbb{R}$:
+    \[(X, Y) \text{is 2D random vector}\]
+    \[\text{Range space: } R_{X, Y} = \{(x,y) | x = X(s), y=Y(s), s \in S\}\]
+    \item \keyword{Discrete 2D RV}{If no. of possible values of $(X(s), Y(s))$ are finite or countable}
+    \item \keyword{Continuous 2D RV}{If no. of possible values of $(X(s), Y(s))$ can be any value in Euclidean space $\mathbb{R}^2$}
+    \item If both $X$ and $Y$ are discrete/continuous, then $(X, Y)$ is discrete/countinuous.
+\end{itemize}
+
+\subsection{Joint Probability Function}
+
+\begin{itemize}
+    \item \textbf{For discrete}:
+    \[f_{X,Y} (x,y) = P(X = x, Y = y)\]
+    \begin{itemize}
+        \item $f_{X,Y} (x,y) \geq 0$ for any $(x,y) \in R_{X,Y}$
+        \item $f_{X,Y} (x,y) = 0$ for any $(x,y) \notin R_{X,Y}$
+        \item $\sum _{i=1} ^{\infty} \sum _{j=1} ^{\infty} P(X = x_i, Y = y_i) = 1$
+        \item Let $A \subseteq R_{X, Y}$. $P((X,Y) \in A) = \sum \sum _{(x,y) \in A} f_{X, Y}(x,y)$
+    \end{itemize}
+    \item \textbf{For continuous}:
+    \[P(a \leq X \leq b, c \leq Y \leq d) = \int _a ^b \int _c ^d f_{X, Y} (x, y)dydx\]
+    \begin{itemize}
+        \item $f_{X,Y} (x,y) \geq 0$ for any $(x,y) \in R_{X,Y}$
+        \item $f_{X,Y} (x,y) = 0$ for any $(x,y) \notin R_{X,Y}$
+        \item $\int _{-\infty} ^{\infty} \int _{-\infty} ^{\infty} f_{X,Y} (x,y)dxdy = 1$
+    \end{itemize}
+\end{itemize}
+
+\subsection{Marginal Probability Function}
+
+Let $(X,Y)$ be a 2D RV with joint probability function $f_{X,Y} (x,y)$:
+\[\text{If $Y$ is discrete, } f_X(x) = \sum _y f_{X,Y} (x,y)\]
+\[\text{If $Y$ is continuous, } f_X(x) = \int _{-\infty} ^\infty f_{X,Y} (x,y)dy\]
+
+\begin{itemize}
+    \item $f_Y (y)$ defined similarly
+    \item Intuition: Marginal distribution for $X$ ignores presence of $Y$
+    \item $f_X(x)$ is a $p.f.$
+\end{itemize}
+
+\subsection{Conditional Distribution}
+
+Let $(X,Y)$ be a 2D RV with joint probability function $f_{X,Y} (x,y)$. Then $\forall x$ s.t. $f_X(x) > 0$:
+\[f_{Y|X} (y|x) = \frac{f_{X,Y}(x,y)}{f_X (x)}\]
+
+\begin{itemize}
+    \item Intuition: Distribution of $Y$ given $X = x$
+    \item Only defined for $x$ s.t. $f_X(x) > 0$
+    \item $f_{Y|X} (y|x)$ is a $p.f.$ if we fix $x$
+    \item But, $f_{Y|X} (y|x)$ is not a $p.f.$ for $x$
+    \item $P(Y \leq y | X = x) = \int _{-\infty} ^y f_{Y|X} (y|x)dy$
+    \item $E(Y|X=x) = \int _{-\infty} ^{\infty} y f_{Y|X} (y|x)dy$
+\end{itemize}
+
+\subsection{Independent Random Variables}
+
+\[X \perp Y \leftrightarrow \forall x,y, f_{X,Y} (x,y) = f_X (x) f_Y (y)\]
+
+\begin{itemize}
+    \item Necessary condition: $R_{X,Y}$ must be a product space. Else, dependent.
+\end{itemize}
+
+\subsubsection{Properties}
+Suppose $X,Y$ are independent RV:
+\begin{itemize}
+    \item If $A,B \subseteq \mathbb{R}$, then events $X \in A$ and $Y \in B$ are independent:
+    \[P(X \in A; Y \in B) = P(X \in A) P(Y \in B)\]
+    \item $g_1(X)$ and $g_2(Y)$ are independent
+    \item Independence is related with conditional distribution:
+    \[f_X(x) > 0 \to f_{Y|X} (y|x) = f_Y(y)\]
+    \[f_Y(y) > 0 \to f_{X|Y} (x|y) = f_X(x)\]
+\end{itemize}
+
+\subsubsection{Quick way to check independence}
+\begin{enumerate}
+    \item $R_{X,Y}$ is a product space. i.e. $R_X$ does not depend on $Y$ and vice versa.
+    \item $f_{X,Y} (x,y)$ can be written as $cg_1(x)g_2(y)$ where $g_1$ depends on $x$ only and $g_2$ depends on $y$ only.
+    \item For discrete: $f_X (x) = \frac{g_1(x)}{\sum _{t \in R_X} g_1 (t)}$
+    \item For continuous: $f_X (x) = \frac{g_1(x)}{\int _{t \in R_X} g_1 (t)dt}$
+\end{enumerate}
+
+\subsection{Expectation}
+
+Given 2 variable function $g(x,y)$:
+\[\text{If $(X,Y)$ is discrete, } E(g(X,Y)) = \sum _x \sum _y g(x,y) f_{X,Y} (x,y)\]
+\[\text{If $(X,Y)$ is continuous, } E(g(X,Y)) = \int _{-\infty} ^\infty \int _{-\infty} ^\infty g(x,y) f_{X,Y} (x,y) dydx\]
+
+\begin{itemize}
+    \item $E(XY) = E(X)E(Y)$ if $X \perp Y$
+\end{itemize}
+
+\subsection{Covariance}
+
+\[cov(X,Y) = E((X - E(X))(Y - E(Y)))\]
+\[\text{If $(X,Y)$ is discrete, } cov(X,Y) = \sum _x \sum _y (x - \mu_X)(y - \mu_Y) f_{X,Y} (x,y)\]
+\[\text{If $(X,Y)$ is cont., } cov(X,Y) = \int _{-\infty} ^\infty \int _{-\infty} ^\infty (x - \mu_X)(y - \mu_Y) f_{X,Y} (x,y)dxdy\]
+
+\begin{itemize}
+    \item $cov(X,Y) = E(XY) - E(X)E(Y)$
+    \item $X \perp Y \to cov(X,Y) = 0$. But converse is not always true.
+    \item $cov(aX+b, cY+d) = (ac) cov(X,Y)$
+    \item $V(aX+bY) = a^2V(X) + b^2V(Y) + 2abcov(X,Y)$
+    \item $X \perp Y \to V(X + Y) = V(X) + V(Y)$
+\end{itemize}
 \section{04. Special Probability Distributions}
 
 \subsection{Discrete Uniform Distribution}
 
 \begin{itemize}
-  \item If $X$ has values $x_1, x_2, ..., x_k$ with \textbf{equal probability}
-  \item p.f.: $f_X(x) = \frac{1}{k}$ where $x = x_1, ..., x_k$ and $0$ otherwise
-  \item Expectation: $\mu_X = E(X) = \sum_{i = 1} ^{k} x_i f_X (x_i) = \frac{1}{k} \sum_{i=1} ^{k} x_i$
-  \item Variance: $\sigma_X^2 = V(X) = E(X^2) - (E(X))^2 = \frac{1}{k} \sum_{i=1} ^{k} x_i^2 - \mu_X^2$
+    \item If $X$ has values $x_1, x_2, ..., x_k$ with \textbf{equal probability}
+    \item p.f.: $f_X(x) = \frac{1}{k}$ where $x = x_1, ..., x_k$ and $0$ otherwise
+    \item Expectation: $\mu_X = E(X) = \sum_{i = 1} ^{k} x_i f_X (x_i) = \frac{1}{k} \sum_{i=1} ^{k} x_i$
+    \item Variance: $\sigma_X^2 = V(X) = E(X^2) - (E(X))^2 = \frac{1}{k} \sum_{i=1} ^{k} x_i^2 - \mu_X^2$
 \end{itemize}
 
 \subsection{Bernoulli}
 
 \begin{itemize}
-  \item \keyword{Bernoulli Trial}{Random experiment with 2 possible outcomes (success and failure)}
+    \item \keyword{Bernoulli Trial}{Random experiment with 2 possible outcomes (success and failure)}
 \end{itemize}
 
 \subsubsection{Bernoulli Random Variable}
 \begin{itemize}
-  \item Number of successes in Bernoulli trial (Either 1 or 0)
-  \item Let $0 \leq p \leq 1$ be the probability of success in Bernoulli trial
-  \[ f_X (x) = P(X = x) = 
-  \begin{cases}
-    p & x = 1\\
-    1 - p & x = 0\\
-    0 & otherwise
-  \end{cases}
+    \item Number of successes in Bernoulli trial (Either 1 or 0)
+    \item Let $0 \leq p \leq 1$ be the probability of success in Bernoulli trial
+    \[ f_X (x) = P(X = x) = 
+    \begin{cases}
+        p & x = 1\\
+        1 - p & x = 0\\
+        0 & otherwise
+    \end{cases}
     \]
-  \item $f_X (x) = p^x (1-p)^{1-x}$ for $x=0$ or $1$
-  \item Notation: $X \sim Ber(p)$ and $q = 1 - p$
-  \item $\mu_X = E(X) = p$ and $\sigma_X^2 = V(X) = p(1-p)$
+    \item $f_X (x) = p^x (1-p)^{1-x}$ for $x=0$ or $1$
+    \item Notation: $X \sim Ber(p)$ and $q = 1 - p$
+    \item $\mu_X = E(X) = p$ and $\sigma_X^2 = V(X) = p(1-p)$
 \end{itemize}
 
 \subsubsection{Bernoulli Process}
 \begin{itemize}
-  \item Sequence of repeatedly performed \textbf{independent and identical} Ber. trials
-  \item Generates sequence of \textbf{independet and identically distributed (i.i.d.)} Ber. RVs: $X_1, X_2, ...$
+    \item Sequence of repeatedly performed \textbf{independent and identical} Ber. trials
+    \item Generates sequence of \textbf{independet and identically distributed (i.i.d.)} Ber. RVs: $X_1, X_2, ...$
 \end{itemize}
 
 \subsection{Binomial Distribution}
 
 \begin{itemize}
-  \item \keyword{Binomial RV}{Counts the number of successes in n trials in a Ber. process}
-  \item Given n trials with each trial having probability p of success: 
-  \[P(X = x) = \binom{n}{x} p^x (1-p)^{n-x}\]
-  \item Notation: $X \sim B(n, p)$
-  \item $E(X) = np$ and $V(X) = np(1-p)$
+    \item \keyword{Binomial RV}{Counts the number of successes in n trials in a Ber. process}
+    \item Given n trials with each trial having probability p of success: 
+    \[P(X = x) = \binom{n}{x} p^x (1-p)^{n-x}\]
+    \item Notation: $X \sim B(n, p)$
+    \item $E(X) = np$ and $V(X) = np(1-p)$
 \end{itemize}
 
 \subsection{Negative Binomial Distribution}
 
 \begin{itemize}
-  \item Let X = Number of i.i.d. Bernoulli(p) trials until kth success occurs
-  \[P(X = x) = \binom{x-1}{k-1} p^k (1-p)^{x-k}\]
-  \item Notation: $X \sim NB(k, p)$
-  \item $E(X) = \frac{1}{p}$ and $V(X) = \frac{(1-p)}{p^2}$
+    \item Let X = Number of i.i.d. Bernoulli(p) trials until kth success occurs
+    \[P(X = x) = \binom{x-1}{k-1} p^k (1-p)^{x-k}\]
+    \item Notation: $X \sim NB(k, p)$
+    \item $E(X) = \frac{1}{p}$ and $V(X) = \frac{(1-p)}{p^2}$
 \end{itemize}
 
 \subsubsection{Geometric Distribution}
 \begin{itemize}
-  \item Let X = Number of i.i.d. Bernoulli(p) trials until 1st success occurs
-  \[
-    P(X = x) = p (1-p)^{x-1}
-  \]
-  \item Notation: $X \sim G(p)$
-  \item $E(X) = \frac{1}{p}$ and $V(X) = \frac{1-p}{p^2}$
+    \item Let X = Number of i.i.d. Bernoulli(p) trials until 1st success occurs
+    \[P(X = x) = p (1-p)^{x-1}\]
+    \item Notation: $X \sim G(p)$
+    \item $E(X) = \frac{1}{p}$ and $V(X) = \frac{1-p}{p^2}$
 \end{itemize}
 
 \subsection{Poisson Distribution}
 \begin{itemize}
-  \item \keyword{Poisson RV}{Denotes number of events happening in \textbf{fixed period of time}}
-  \[
-    P(X = k) = \frac{e^{-\lambda}\lambda^k}{k!}
-  \]
-  \item Notation: $X \sim Poisson(\lambda)$ where $\lambda > 0$ is expected number of occurences during some period
-  \item $E(X) = \lambda$ and $V(X) = \lambda$
-  \item \keyword{Poisson Process}{Continuous time process, where we count number of correucesn within some internval of time}
+    \item \keyword{Poisson RV}{Denotes number of events happening in \textbf{fixed period of time}}
+    \[P(X = k) = \frac{e^{-\lambda}\lambda^k}{k!}\]
+    \item Notation: $X \sim Poisson(\lambda)$ where $\lambda > 0$ is expected number of occurences during some period
+    \item $E(X) = \lambda$ and $V(X) = \lambda$
+    \item \keyword{Poisson Process}{Continuous time process, where we count number of correucesn within some internval of time}
 \end{itemize}
 
 \end{multicols*}
