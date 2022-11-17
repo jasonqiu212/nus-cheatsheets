@@ -7,6 +7,7 @@
 \usepackage{amsfonts}
 \usepackage{listings}
 \usepackage{soul}
+\usepackage{graphicx}
 
 \pdfinfo{
     /Title (ST2334.pdf)
@@ -16,6 +17,8 @@
     /Subject (ST2334)
     /Keywords (ST2334, nus, cheatsheet,pdf)
 }
+
+\graphicspath{ {./img/} }
 
 \pagestyle{empty}
 \setcounter{secnumdepth}{0}
@@ -536,10 +539,11 @@ then $Z \sim N(0, 1)$
     \item For any $z$, $\phi(z) = P(Z \leq z) = P(Z \geq -z) = 1-\phi(-z)$
     \item $-Z \sim N(0, 1)$
     \item If $Z \sim N(0, 1)$, then $\sigma Z + \mu \sim N(\mu, \sigma^2)$
-    \item \keyword{Quantile}{The $\alpha$th quantile is $x_\alpha$ that satisfies:}
+    \item \keyword{Upper Quantile}{Given $\alpha$ is upper-tail percentage. The $\alpha$th upper quantile is $x_\alpha$ that satisfies:}
     \[P(X \geq x_\alpha) = \alpha\]
-    e.g. The 0.05th quantile of $Z \sim N(0,1)$ is 1.645, i.e. $z_{0.05} = 1.645$.
+    e.g. The 0.05th (upper) quantile of $Z \sim N(0,1)$ is 1.645, i.e. $z_{0.05} = 1.645$.
     \item $P(Z \geq z_\alpha) = P(Z \leq -z_\alpha) = \alpha$
+    \item $\text{Upper } z_\alpha = \text{Lower } z_{1-\alpha}$
 \end{itemize}
 
 \subsubsection{Normal Approximation to Binomial Distribution}
@@ -645,8 +649,7 @@ where $t(n)$ is called t-distribution with $n$ degrees of freedom
     \item If $T \sim t(n)$, then $E(T) = 0$ and $V(T) = \frac{n}{n-2}$ for $n > 2$
     \item Symmetric about vertical axis and resembles standard normal distribution
     \item If $X_1, \cdots, X_n$ are independent and identically distributed normal RVs with mean $\mu$ and variance $\sigma^2$, then:
-    \[\frac{X - \mu}{S / \sqrt{n}}\]
-    follows t-distribution with $n-1$ degrees of freedom
+    \[\frac{X - \mu}{S / \sqrt{n}} \sim t(n-1)\]
 \end{itemize}
 
 \subsubsection{F-Distribution}
@@ -664,7 +667,56 @@ is called F-distribution with $(m,n)$ degrees of freedom
 
 \section{06. Estimation}
 
+\subsection{Point Estimation for Mean}
 
+\begin{itemize}
+    \item Single number to estimate population parameter
+    \item \keyword{Point Estimator}{Formula that describes this calculation}
+    \item \keyword{Point Estimate}{Result of point estimator}
+    \item Notation: $\theta$ represents parameter of interest. $\theta$ can be $p$, $\mu$, $\sigma$, etc.
+\end{itemize}
+
+\subsubsection{Unbiased Estimator}
+Let $\hat{\theta}$ be an estimator of $\theta$. Then $\hat{\theta}$ is unbiased if:
+\[E(\hat{\theta}) = \theta\]
+
+\subsubsection{Maximum Error of Estimate}
+\begin{itemize}
+    \item Motivation: Usually $\bar{X} \neq \mu$. So $\bar{X} - \mu$ measures difference between estimator and parameter
+    \item Let $z_\alpha$ be $\alpha$th upper quantile of standard normal distribution $Z$. i.e. $P(Z > z_\alpha) = \alpha$
+    \[P(-z_{\alpha/2} \leq \frac{\bar{X} - \mu}{\sigma / \sqrt{n}} \leq z_{\alpha/2}) = P(|\bar{X} - \mu| \leq z_{\alpha/2} \frac{\sigma}{\sqrt{n}}) = 1 - \alpha\]
+    \item \keyword{Maximum Error of Estimate}{Given probability $1-\alpha$:}
+    \[E = z_{\alpha / 2} \frac{\sigma}{\sqrt{n}}\]
+\end{itemize}
+
+\subsubsection{Determination of Sample Size}
+Given probability $1-\alpha$ and maximum error $E$, what is the minimum sample size $n$?
+\[n \geq (\frac{z_{\alpha/2} \sigma}{E})^2\]
+
+\subsubsection{Different Cases}
+\includegraphics[scale=0.4]{point-estimation}
+
+\subsection{Confidence Interval for Mean}
+
+\begin{itemize}
+    \item \keyword{Interval Estimator}{Rule for calculating an interval $(a,b)$ in which we are fairly certain the parameter lies}
+    \item \keyword{Confidence Level}{Probability that interval contains parameter. i.e. $1 - \alpha$}
+    \[P(a < \mu < b) = 1 - \alpha\]
+    \item \keyword{Confidence Interval}{Interval calculated by interval estimator. i.e. $(a,b)$}
+\end{itemize}
+
+\subsubsection{Case 1: $\sigma$ known, data normal}
+Previously:
+\[P(-z_{\alpha/2} \leq \frac{\bar{X} - \mu}{\sigma / \sqrt{n}} \leq z_{a/2}) = 1 - \alpha\]
+By rearranging, the $1 - \alpha$ confidence interval is:
+\[(\bar{X} - z_{\alpha/2} \frac{\sigma}{\sqrt{n}}, \bar{X} + z_{\alpha/2} \frac{\sigma}{\sqrt{n}})\]
+
+\subsubsection{Other Cases}
+\includegraphics[scale=0.45]{confidence-interval}
+
+\begin{itemize}
+    \item $n$ is considered large when $n \geq 30$
+\end{itemize}
 
 \section{07. Hypothesis Testing}
 
