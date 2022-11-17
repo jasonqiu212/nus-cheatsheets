@@ -107,8 +107,8 @@
 \subsection{Counting Methods}
 
 \begin{itemize}
-    \item \keyword{Multiplcation Principle}{Given r experiments performed \textbf{sequentially} and each has $n_1, n_2, ..., n_r$ outcomes. After r experiments, there are $n_1 n_2 ... n_r$ outcomes.}
-    \item \keyword{Addition Principle}{Given experiment can be done in k different ways and each has $n_1, n_2, ..., n_r$ ways. There are $n_1 + n_2 + ... + n_k$ total ways.}
+    \item \keyword{Multiplcation Principle}{Given r experiments performed \textbf{sequentially} and each has $n_1, n_2, \cdots, n_r$ outcomes. After r experiments, there are $n_1 n_2 \cdots n_r$ outcomes.}
+    \item \keyword{Addition Principle}{Given experiment can be done in k different ways and each has $n_1, n_2, \cdots, n_r$ ways. There are $n_1 + n_2 + \cdots + n_k$ total ways.}
     \item \keyword{Permutation}{$_{n}P_{r} = \frac{n!}{(n-r)!}$}
     \item \keyword{Combination}{$\binom{n}{r} = \frac{n!}{(n-r)!r!}$}
 \end{itemize}
@@ -130,7 +130,7 @@
 
 \subsection{Finite Sample Space with Equally Likely Outcomes}
 
-Given sample space $S = \{a_1, ..., a_k\}$ and all outcomes are \textbf{equally likely}, i.e. $P(a_1) = ... = P(a_k)$:
+Given sample space $S = \{a_1, \cdots, a_k\}$ and all outcomes are \textbf{equally likely}, i.e. $P(a_1) = \cdots = P(a_k)$:
 \[\text{For any event } A \subset S, P(A) = \frac{\text{No. of sample points in A}}{\text{No. of sample points in S}}\]
 
 \subsection{Conditional Probability}
@@ -147,14 +147,14 @@ Given sample space $S = \{a_1, ..., a_k\}$ and all outcomes are \textbf{equally 
 \subsection{Law of Total Probability}
 
 \begin{itemize}
-    \item \keyword{Partition}{If $A_1, ..., A_n$ are mutually exclusive events and $\bigcup _{i=1} ^{n} A_i = S$, then $A_1, ..., A_n$ are partitions}
-    \item If $A_1, ..., A_n$ are partitions of S, then for any event B:
+    \item \keyword{Partition}{If $A_1, \cdots, A_n$ are mutually exclusive events and $\bigcup _{i=1} ^{n} A_i = S$, then $A_1, \cdots, A_n$ are partitions}
+    \item If $A_1, \cdots, A_n$ are partitions of S, then for any event B:
     \[P(B) = \sum _{i=1} ^{n} P(B \cap A_i) = \sum _{i=1} ^{n} P(B|A_i)P(A_i)\]
 \end{itemize}
 
 \subsection{Bayes' Theorem}
 
-Let $A_1, ..., A_n$ be partitions of S. For any event B:
+Let $A_1, \cdots, A_n$ be partitions of S. For any event B:
 \[P(A_k|B) = \frac{P(B|A_k)P(A_k)}{\sum _{i=1} ^{n} P(B|A_k)P(A_i)}\]
 
 \section{02. Random Variables}
@@ -175,7 +175,7 @@ Let $A_1, ..., A_n$ be partitions of S. For any event B:
 
 \subsubsection{Discrete Probability Distribution}
 \begin{itemize}
-    \item \keyword{Probability Function}{Given $R_x = \{x_1, ...\}$. For each $x_i$, there's some probability that $X = x_i$:}
+    \item \keyword{Probability Function}{Given $R_x = \{x_1, \cdots\}$. For each $x_i$, there's some probability that $X = x_i$:}
     \[f(x) = P(X = x)\]
     \item $p.f.$ must satisfy:
         \begin{enumerate}
@@ -368,8 +368,8 @@ Given 2 variable function $g(x,y)$:
 \subsection{Discrete Uniform Distribution}
 
 \begin{itemize}
-    \item If $X$ has values $x_1, x_2, ..., x_k$ with \textbf{equal probability}
-    \item $p.f.$: $f_X(x) = \frac{1}{k}$ where $x = x_1, ..., x_k$ and $0$ otherwise
+    \item If $X$ has values $x_1, x_2, \cdots, x_k$ with \textbf{equal probability}
+    \item $p.f.$: $f_X(x) = \frac{1}{k}$ where $x = x_1, \cdots, x_k$ and $0$ otherwise
     \item Expectation: $\mu_X = E(X) = \sum_{i = 1} ^{k} x_i f_X (x_i) = \frac{1}{k} \sum_{i=1} ^{k} x_i$
     \item Variance: $\sigma_X^2 = V(X) = E(X^2) - (E(X))^2 = \frac{1}{k} \sum_{i=1} ^{k} x_i^2 - \mu_X^2$
 \end{itemize}
@@ -399,7 +399,7 @@ Given 2 variable function $g(x,y)$:
 \subsubsection{Bernoulli Process}
 \begin{itemize}
     \item Sequence of repeatedly performed \textbf{independent and identical} Ber. trials
-    \item Generates sequence of \textbf{independet and identically distributed (i.i.d.)} Ber. RVs: $X_1, X_2, ...$
+    \item Generates sequence of \textbf{independet and identically distributed (i.i.d.)} Ber. RVs: $X_1, X_2, \cdots$
 \end{itemize}
 
 \subsection{Binomial Distribution}
@@ -549,6 +549,124 @@ Let $X \sim B(n, p)$, then as $n \to \infty$:
 \begin{itemize}
     \item Approximation is good when $np > 5$ and $n(1-p) > 5$
 \end{itemize}
+
+\section{05. Sampling Distributions}
+
+\subsection{Population and Sample}
+
+\begin{itemize}
+    \item Motivation: Infer something about population using sample
+    \item \keyword{Population}{All possible observations of survey}
+    \item \keyword{Sample}{Subset of population}
+    \item Every observation can be numerical or categorical
+    \item Finite population vs. Infinite population
+\end{itemize}
+
+\subsection{Random Sampling}
+
+\begin{itemize}
+    \item Motivation: We usually know what distribution the population belongs to, but we don't know the parameters of the distribution. We can use sample to estimate the parameters.
+    \item \keyword{Simple Random Sample}{Given sample of size $n$, each sample has equal chance of being selected}
+\end{itemize}
+
+\subsubsection{SRS for Infinite Population}
+Let $X$ be RV with $p.f.$ $f_X (x)$. Let $X_1, X_2, \cdots, X_n$ be independent random variables with same distribution as $X$. Then $X_1, X_2, \cdots, X_n$ is a simple random sample of size $n$. Joint probability function of $X_1, \cdots, X_n$:
+\[f_{X_1, \cdots, X_n} (x_1, \cdots, x_n) = f_X (x_1) f_X (x_2) \cdots f_X (x_n)\]
+
+\subsubsection{Sampling with Replacement}
+\begin{itemize}
+    \item Sampling with replacement from finite population is considered as sampling from infinite population
+    \item Sample is random if:
+    \begin{itemize}
+        \item Every element in population has same probability
+        \item Successive draws are independent
+    \end{itemize}
+\end{itemize}
+
+\subsection{Sample Distribution of Sample Mean}
+
+\begin{itemize}
+    \item \keyword{Statistic}{Suppose random sample of $n$ observations is $X_1, X_2, \cdots, X_n$. A statistic is a function of $X_1, \cdots, X_n$}
+    \item \keyword{Sample Mean}{}
+    \[\bar{X} = \frac{1}{n} \sum _{i=1} ^n X_i\]
+    \item \keyword{Sample Variance}{}
+    \[S^2 = \frac{1}{n-1} \sum _{i=1} ^n (X_i - \bar{X})^2\]
+    \item \textbf{Statistics are random variables}. We can look at distribution of statistics.
+    \item \keyword{Sample Distribution}{Distribution of a statistic}
+    \item Mean and variance of $\bar{X}:$
+    \[E(\bar{X}) = \mu \text{ and } V(\bar{X}) = \frac{\sigma_X ^2}{n}\]
+    Intuition: $\mu_X$ is some unknown constant. $\bar{X}$ guesses that. As $n$ increases, accuracy of $\bar{X}$ increases.
+    \item \keyword{Standard Error}{Standard deviation of sampling distribution (e.g. $\sigma_{\bar{X}}$)}
+    \item \keyword{Law of Large Numbers}{As $n$ increases, $\bar{X}$ converges to $\mu_X$. i.e. For any $\epsilon \in \mathbb{R}$:}
+    \[P(|\bar{X} - \mu| > \epsilon) \to 0 \text{ as } n \to \infty\]
+\end{itemize}
+
+\subsection{Central Limit Theorem}
+
+If $\bar{X}$ is mean of random sample of size $n$ from population with mean $\mu$ and variance $\sigma^2$, then as $n \to \infty$:
+\[\bar{X} \sim N(\mu, \frac{\sigma^2}{n}) \text{ approximately}\]
+
+\begin{itemize}
+    \item Intuition: For a large $n$, $\bar{X}$ is approximately normally distributed.
+    \item If random sample is from normal population, $\bar{X}$ is normally distributed no matter value of $n$
+    \item If very skewed, CLT may not hold even with large $n$
+\end{itemize}
+
+\subsection{Other Sampling Distributions}
+
+\subsubsection{$\chi^2$ Distribution}
+\begin{itemize}
+    \item Let $Z_1, \cdots, Z_n$ be $n$ independent and identically distributed standard normal RVs. A $\chi^2$ RV with $n$ degrees of freedom is defined as a RV with same distribution as $Z_1^2 + \cdots + Z_n^2$
+    \item Notation: $\chi^2 (n)$ with $n$ degrees of freedom
+    \item If $Y \sim \chi^2 (n)$, then $E(Y) = n$ and $V(Y) = 2n$
+    \item For large $n$, $\chi^2 (n)$ is approximately $N(n,2n)$
+    \item If $Y_1$ and $Y_2$ are independent $\chi^2$ RVs with $m$ and $n$ degrees of freedom respectively, then $Y_1 + Y_2$ is $\chi^2 (m+n)$
+    \item $\chi^2$ is family of curves. All density functions have long right tail.
+\end{itemize}
+
+\subsubsection{Sampling Distribution of $S^2$}
+\begin{itemize}
+    \item $E(S^2) = \sigma^2$
+\end{itemize}
+
+\subsubsection{Sampling Distribution of $\frac{(n-1)S^2}{\sigma^2}$}
+If $S^2$ is variance of random sample of size $n$ from normal population of variance $\sigma^2$, then:
+\[\frac{(n-1)S^2}{\sigma^2} = \frac{\sum _{i=1} ^{n} (X_i - \bar{X})^2}{\sigma^2}\]
+has $\chi^2 (n-1)$ distribution
+
+\subsubsection{t-Distribution}
+Suppose $Z \sim N(0, 1)$ and $U \sim \chi^2 (n)$. If $Z$ and $U$ are independent, then:
+\[T = \frac{Z}{\sqrt{U/n}} \sim t(n)\]
+where $t(n)$ is called t-distribution with $n$ degrees of freedom
+
+\begin{itemize}
+    \item t-Distribution approaches $N(0,1)$ as $n \to \infty$
+    \item When $n \geq 30$, t-distribution is approximately normal
+    \item If $T \sim t(n)$, then $E(T) = 0$ and $V(T) = \frac{n}{n-2}$ for $n > 2$
+    \item Symmetric about vertical axis and resembles standard normal distribution
+    \item If $X_1, \cdots, X_n$ are independent and identically distributed normal RVs with mean $\mu$ and variance $\sigma^2$, then:
+    \[\frac{X - \mu}{S / \sqrt{n}}\]
+    follows t-distribution with $n-1$ degrees of freedom
+\end{itemize}
+
+\subsubsection{F-Distribution}
+Suppose $U \sim \chi^2 (m)$ and $V \sim \chi^2 (n)$. If $U_1$ and $U_2$ are independent, then:
+\[F = \frac{U / m}{V / m} \sim F(m,n)\]
+is called F-distribution with $(m,n)$ degrees of freedom
+
+\begin{itemize}
+    \item If $X \sim F(m,n)$, then 
+    \[E(X) = \frac{n}{n-2} \text{ for } n > 2\] 
+    and 
+    \[V(X) = \frac{2n^2(m+n-2)}{m(n-2)^2(n-4)} \text{ for } n>4\]
+    \item If $F \sim F(m,n)$, then $1/F \sim F(n,m)$
+\end{itemize}
+
+\section{06. Estimation}
+
+
+
+\section{07. Hypothesis Testing}
 
 \end{multicols*}
 \end{document}
