@@ -369,7 +369,7 @@ Given 2 variable function $g(x,y)$:
 
 \begin{itemize}
     \item If $X$ has values $x_1, x_2, ..., x_k$ with \textbf{equal probability}
-    \item p.f.: $f_X(x) = \frac{1}{k}$ where $x = x_1, ..., x_k$ and $0$ otherwise
+    \item $p.f.$: $f_X(x) = \frac{1}{k}$ where $x = x_1, ..., x_k$ and $0$ otherwise
     \item Expectation: $\mu_X = E(X) = \sum_{i = 1} ^{k} x_i f_X (x_i) = \frac{1}{k} \sum_{i=1} ^{k} x_i$
     \item Variance: $\sigma_X^2 = V(X) = E(X^2) - (E(X))^2 = \frac{1}{k} \sum_{i=1} ^{k} x_i^2 - \mu_X^2$
 \end{itemize}
@@ -431,11 +431,123 @@ Given 2 variable function $g(x,y)$:
 
 \subsection{Poisson Distribution}
 \begin{itemize}
-    \item \keyword{Poisson RV}{Denotes number of events happening in \textbf{fixed period of time}}
+    \item \keyword{Poisson RV}{Denotes number of events happening in \textbf{fixed period of time or fixed region}}
     \[P(X = k) = \frac{e^{-\lambda}\lambda^k}{k!}\]
-    \item Notation: $X \sim Poisson(\lambda)$ where $\lambda > 0$ is expected number of occurences during some period
+    \item Notation: $X \sim Poisson(\lambda)$ where $\lambda > 0$ is expected number of occurrences during given period/region
     \item $E(X) = \lambda$ and $V(X) = \lambda$
-    \item \keyword{Poisson Process}{Continuous time process, where we count number of correucesn within some internval of time}
+\end{itemize}
+
+\subsubsection{Poisson Process}
+\begin{itemize}
+    \item Continuous time process, where we count number of occurrences within some interval of time
+    \item Given Poisson process with rate parameter $\alpha$:
+    \begin{itemize}
+        \item Expected number of occurrences in interval of length $T$ is $\alpha T$
+        \item No simultaneous occurrences
+        \item Number of occurrences in disjoint intervals are independent
+    \end{itemize}
+    \item Number of occurrences in any interval $T$ of Poisson process follows $Poisson(\alpha T)$ distribution
+\end{itemize}
+
+\subsubsection{Poisson Approximation of Binomial Distribution}
+Let $X \sim B(n, p)$. Suppose $n \to \infty$ and $p \to 0$ s.t. $\lambda = np$ remains constant. Then $X \sim Poisson(\lambda)$ approximately.
+\[\lim _{p \to 0; n \to \infty} P(X = x) = \frac{e^{-np} (np)^x}{x!}\]
+
+\begin{itemize}
+    \item Approximation is good when $n \geq 20$ and $p \leq 0.05$, or $n \geq 100$ and $np \leq 10$
+\end{itemize}
+
+\subsection{Continuous Uniform Distribution}
+
+X follows uniform distribution over interval $(a,b)$ if $p.f.$ is given by:
+\[f_X (x) = 
+\begin{cases}
+    \frac{1}{b-a} & a \leq x \leq b\\
+    0 & otherwise
+\end{cases}
+\]
+
+\begin{itemize}
+    \item Notation: $X \sim U(a, b)$
+    \item $E(X) = \frac{a+b}{2}$ and $V(X) = \frac{(b-a)^2}{12}$
+    \item $c.d.f.$ is given by:
+    \[F_X (x) = 
+    \begin{cases}
+        0 & x < a\\
+        \frac{x-a}{b-a} & a \leq x \leq b\\
+        1 & x > b
+    \end{cases}
+    \]
+\end{itemize}
+
+\subsection{Exponential Distribution}
+
+X follows exponential distribution with parameter $\lambda > 0$ if $p.f.$ is given by:
+\[f_x (x) = 
+\begin{cases}
+    \lambda e^{-\lambda x} & x \geq 0\\
+    0 & x < 0
+\end{cases}\]
+
+\begin{itemize}
+    \item Notation: $X \sim Exp(\lambda)$
+    \item $E(X) = \frac{1}{\lambda}$ and $V(X) = \frac{1}{\lambda^2}$
+    \item $c.d.f.$ is given by:
+    \[F_X (x) = 
+    \begin{cases}
+        1 - e^{-\lambda x} & x > 0\\
+        0 & x \leq 0\\
+    \end{cases}
+    \]
+    \item Suppose $X$ has exponential distribution with parameter $\lambda > 0$. Then for any positive numbers $s$ and $t$, we have:
+    \[P(X > s+t | X > s) = P(X > t)\]
+\end{itemize}
+
+\subsection{Normal Distribution}
+
+X follows normal distribution with mean $\mu$ and variance $\sigma^2$ if $p.f.$ is given by:
+\[f_X (x) = \frac{1}{\sqrt{2 \pi} \sigma}e^{-(x-\mu)^2 / (2 \sigma ^2)}\]
+
+\begin{itemize}
+    \item Notation: $X \sim N(\mu, \sigma^2)$
+    \item $E(X) = \mu$ and $V(X) = \sigma^2$
+    \item $p.f.$ is bell-shaped curve and symmetric about $x = \mu$
+    \item Total area under curve is 1
+    \item 2 normal curves are identical in shape if they have same $\sigma ^2$. They differ in location by $\mu_1 - \mu_2$.
+    \item As $\sigma$ increases, curve becomes more spread out
+    \item If $X \sigma N(\mu, \sigma^2)$ and let $Z = \frac{X - \mu}{\sigma}$
+\end{itemize}
+
+\subsubsection{Standardized Normal Distribution}
+If $X \sim N(\mu, \sigma ^2)$ and let 
+\[Z = \frac{X - \mu}{\sigma}\]
+then $Z \sim N(0, 1)$
+
+\begin{itemize}
+    \item $E(Z) = 0$ and $V(Z) = 1$
+    \item $p.f.$ is given by:
+    \[f_Z (z) = \frac{1}{\sqrt{2 \pi}} e^{-z^2 / 2}\]
+    \item Importance of standardizing normal distribution is that it allows us to use tables to find probabilities
+    \item Let $X \sim N(\mu, \sigma^2)$. We can compute $P(x_1 < X < x_2)$ by standadization:
+    \[x_1 < X < x_2 \leftrightarrow \frac{x_1 - \mu}{\sigma} < \frac{X - \mu}{\sigma} < \frac{x_2 - \mu}{\sigma}\]
+    \item $c.d.f.$ is given by:
+    \[\phi(z) = F_Z (z) = \int _{-\infty} ^{z} f_Z (z) = \frac{1}{\sqrt{2 \pi}}\int _{-\infty} ^{z} e^{-t^2 / 2} dt\]
+    \item $P(Z \geq 0) = P(Z \leq 0) = \phi(0) = 0.5$
+    \item For any $z$, $\phi(z) = P(Z \leq z) = P(Z \geq -z) = 1-\phi(-z)$
+    \item $-Z \sim N(0, 1)$
+    \item If $Z \sim N(0, 1)$, then $\sigma Z + \mu \sim N(\mu, \sigma^2)$
+    \item \keyword{Quantile}{The $\alpha$th quantile is $x_\alpha$ that satisfies:}
+    \[P(X \geq x_\alpha) = \alpha\]
+    e.g. The 0.05th quantile of $Z \sim N(0,1)$ is 1.645, i.e. $z_{0.05} = 1.645$.
+    \item $P(Z \geq z_\alpha) = P(Z \leq -z_\alpha) = \alpha$
+\end{itemize}
+
+\subsubsection{Normal Approximation to Binomial Distribution}
+Let $X \sim B(n, p)$, then as $n \to \infty$:
+\[Z = \frac{X - E(X)}{\sqrt{V(X)}} = \frac{X - np}{\sqrt{np(1-p)}} \sim N(0, 1)\]
+
+\begin{itemize}
+    \item Approximation is good when $np > 5$ and $n(1-p) > 5$
 \end{itemize}
 
 \end{multicols*}
