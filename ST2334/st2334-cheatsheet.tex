@@ -421,7 +421,7 @@ Given 2 variable function $g(x,y)$:
     \item Let X = Number of i.i.d. Bernoulli(p) trials until kth success occurs
     \[P(X = x) = \binom{x-1}{k-1} p^k (1-p)^{x-k}\]
     \item Notation: $X \sim NB(k, p)$
-    \item $E(X) = \frac{1}{p}$ and $V(X) = \frac{(1-p)}{p^2}$
+    \item $E(X) = \frac{k}{p}$ and $V(X) = \frac{(1-p)k}{p^2}$
 \end{itemize}
 
 \subsubsection{Geometric Distribution}
@@ -791,8 +791,26 @@ Thus, the $100(1-\alpha)\%$ confidence interval for $\mu_1 - \mu_2$ is:
 \[(\bar{X} - \bar{Y}) \pm z_{\alpha/2} S_p \sqrt{\frac{1}{n_1} + \frac{1}{n_2}}\]
 
 \subsection{Paired Data}
+Assumptions:
+\begin{enumerate}
+    \item Given: $(X_1, Y_1), \cdots, (X_n, Y_n)$ are matched pairs, where $X_1, \cdots, X_n$ is random sample from population 1 and $Y_1, \cdots, Y_n$ is random sample from population 2
+    \item $X_i$ and $Y_i$ are dependent
+    \item $(X_i, Y_i)$ and $(X_j, Y_j)$ are independent for any $i \neq j$
+\end{enumerate}
+Define $D_i = X_i - Y_i \text{ , } \mu_D = \mu_1 - \mu_2$. We can treat $D_1, \cdots, D_n$ as random sample from single population with $\mu_D$ and $\sigma_D^2$. Consider the statistic:
+\[T = \frac{\bar{D} - \mu_D}{S_D / \sqrt{n}} \text{, where } \bar{D} = \frac{\sum _{i=1} ^n D_i}{n} \text{ and } S_D^2 = \frac{\sum _{i=1} ^n (D_i - \bar{D})^2}{n-1}\]
+If $n < 30$ and population is normally distributed:
+\[T \sim t_{n-1}\]
+Thus, if $n < 30$ and the population is normally distributed, the $100(1-\alpha)\%$ confidence interval for $\mu_D$ is:
+\[\bar{d} \pm t_{n-1; \alpha/2} \frac{S_D}{\sqrt{n}}\]
+If $n \geq 30$:
+\[T \sim N(0,1)\]
+Thus, if $n \geq 30$, the $100(1-\alpha)\%$ confidence interval for $\mu_D$ is:
+\[\bar{d} \pm z_{\alpha/2} \frac{S_D}{\sqrt{n}}\]
 
 \section{07. Hypothesis Testing}
+
+
 
 \section{08. Miscellaneous}
 
