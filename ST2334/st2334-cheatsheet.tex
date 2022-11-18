@@ -810,7 +810,149 @@ Thus, if $n \geq 30$, the $100(1-\alpha)\%$ confidence interval for $\mu_D$ is:
 
 \section{07. Hypothesis Testing}
 
+\subsection{Steps for Hypothesis Testing}
 
+\subsubsection{Step 1: Null Hypothesis and Alternative Hypothesis}
+\begin{itemize}
+    \item \keyword{Null Hypothesis}{$H_0$ Statement that parameter takes some value}
+    \item \keyword{Alternative Hypothesis}{$H_1$ Statement that parameter falls in alt. range}
+    \item \keyword{2-Sided Test}{If $H_1$ is "Parameter is $\neq$ to value under $H_0$"}
+    \item \keyword{Right-Sided Test}{If $H_1$ is "Parameter is $>$ to value under $H_0$"}
+    \item \keyword{Left-Sided Test}{If $H_1$ is "Parameter is $<$ to value under $H_0$"}
+\end{itemize}
+
+\subsubsection{Step 2: Level of Significance}
+\includegraphics[scale=0.5]{hypothesis-testing-errors}
+
+\begin{itemize}
+    \item \keyword{Level of Significance}{$\alpha$ Probability of rejecting $H_0$ when it is true. i.e.}
+    \[\alpha = P(\text{Type I error})\]
+    \item \keyword{Power of the Test}{$1 - \beta = P(\text{Reject $H_0$} | \text{$H_0$ is false})$ where}
+    \[\beta = P(\text{Type II error})\]
+\end{itemize}
+
+\subsubsection{Step 3: Test Statistic, Distribution, and Rejection Region}
+\begin{itemize}
+    \item \keyword{Test Statistic}{Statistic used to see how far away from $H_0$ the data is}
+\end{itemize}
+
+\subsubsection{Step 4: Conclusion}
+Given test statistic, determine if it is in the rejection region:
+\begin{itemize}
+    \item If it is, reject $H_0$ and fail to reject $H_1$
+    \item Otherwise, fail to reject $H_0$
+\end{itemize}
+
+\subsection{Hypotheses for Mean}
+
+\subsubsection{Case 1: Known Variance}
+Assumptions:
+\begin{enumerate}
+    \item Population variance is known
+    \item Underlying distribution is normal OR $n \geq 30$
+\end{enumerate} 
+Steps:
+\begin{enumerate}
+    \item Set null and alternative hypotheses. e.g.
+    \[H_0: \mu = \mu_0 \text{ vs } H_1: \mu \neq \mu_0\]
+    \item Set level of significance
+    \item With $\sigma^2$ known and population normal (or $n \geq 30$), the test statistic is:
+    \[Z = \frac{\bar{X} - \mu_0}{\sigma / \sqrt{n}} \sim N(0,1)\]
+    Rejection region, where we let observed value of $Z$ be $z$:
+    \begin{itemize}
+        \item $H_1: \mu \neq \mu_0$: $z < -z_{\alpha/2}$ or $z > z_{\alpha/2}$
+        \item $H_1: \mu < \mu_0$: $z < -z_{\alpha}$
+        \item $H_1: \mu > \mu_0$: $z > z_{\alpha}$
+    \end{itemize}
+
+    \includegraphics[scale=0.45]{rejection-region}
+    \begin{itemize}
+        \item \keyword{p-Value}{Conditional probability that test statistic is as extreme as observed value, given $H_0$ is true}
+        \item $H_1: \mu \neq \mu_0$: $p = 2P(Z < -|z|)$
+        \item $H_1: \mu < \mu_0$: $p = P(Z < -|z|)$
+        \item $H_1: \mu > \mu_0$: $p = P(Z > |z|)$
+    \end{itemize}
+
+    \includegraphics[scale=0.4]{p-value}
+    \item 
+    \begin{itemize}
+        \item Rejection region: If $z$ is inside rejection region, reject $H_0$. Otherwise do not reject.
+        \item p-Value: If $p$ is less than $\alpha$, reject $H_0$. Otherwise do not reject.
+    \end{itemize}
+\end{enumerate}
+
+\subsubsection{Case 2: Unknown Variance}
+Assumptions:
+\begin{enumerate}
+    \item Population variance is unknown
+    \item Underlying distribution is normal
+\end{enumerate} 
+\begin{itemize}
+    \item Test statistic:
+    \[T = \frac{\bar{X} - \mu_0}{S / \sqrt{n}} \sim t_{n-1}\]
+    \item Rejection region:
+    \begin{itemize}
+        \item $H_1: \mu \neq \mu_0$: $t < -t_{n-1;\alpha/2}$ or $t > t_{n-1;\alpha/2}$
+        \item $H_1: \mu < \mu_0$: $t < -t_{n-1;\alpha}$
+        \item $H_1: \mu > \mu_0$: $t > t_{n-1;\alpha}$
+    \end{itemize}
+    \item When $n \geq 30$, we can replace $t_{n-1}$ by $Z$
+\end{itemize}
+
+\subsection{Comparing Means: Independent Samples}
+
+\begin{itemize}
+    \item Motivation: Given 2 independent samples from 2 populations, interested in testing $H_0: \mu_1 - \mu_2 = \delta_0$
+\end{itemize}
+
+\subsubsection{Rejection Regions and p-Values}
+\includegraphics[scale=0.4]{comparing-means}
+
+\subsubsection{Case 1: Known Variance}
+Assumptions:
+\begin{enumerate}
+    \item Population variances are known
+    \item Underlying distributions are normal OR $n_1 \geq 30$ and $n_2 \geq 30$
+\end{enumerate}
+\begin{itemize}
+    \item Test statistic:
+    \[Z = \frac{(\bar{X} - \bar{Y}) - \delta_0}{\sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}} \sim N(0,1)\]
+\end{itemize}
+
+\subsubsection{Case 2: Unknown Variance}
+Assumptions:
+\begin{enumerate}
+    \item Population variances are unknown
+    \item $n_1 \geq 30$ and $n_2 \geq 30$
+\end{enumerate}
+\begin{itemize}
+    \item Test statistic:
+    \[Z = \frac{(\bar{X} - \bar{Y}) - \delta_0}{\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}} \sim N(0,1)\]
+\end{itemize}
+
+\subsubsection{Case 3: Unknown, Equal Variance}
+Assumptions:
+\begin{enumerate}
+    \item Population variances are unknown but equal
+    \item Underlying distributions are normal
+    \item $n_1 < 30$ and $n_2 < 30$
+\end{enumerate}
+\begin{itemize}
+    \item Test statistic:
+    \[Z = \frac{(\bar{X} - \bar{Y}) - \delta_0}{S_p \sqrt{\frac{1}{n_1} + \frac{1}{n_2}}} \sim t_{n_1 + n_2 - 2}\]
+\end{itemize}
+
+\subsection{Comparing Means: Paired Data}
+
+\begin{itemize}
+    \item Intuition: Get difference, then use methods from single samples
+    \item Define $D_i = X_i - Y_i$. For $H_0: \mu_D = \mu_{D_0}$, test statistic:
+    \[T = \frac{\bar{D} - \mu_{D_0}}{S_D / \sqrt{n}}\]
+    \begin{itemize}
+        \item If $n<30$ and population is normally distributed, $T \sim t_{n-1}$
+        \item If $n \geq 30$, $T \sim N(0,1)$
+    \end{itemize}
+\end{itemize}
 
 \section{08. Miscellaneous}
 
