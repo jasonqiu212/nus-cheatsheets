@@ -718,7 +718,90 @@ By rearranging, the $1 - \alpha$ confidence interval is:
     \item $n$ is considered large when $n \geq 30$
 \end{itemize}
 
+\subsection{Comparing 2 Populations}
+
+\begin{itemize}
+    \item Goal: Make inference on $\mu_1 - \mu_2$
+\end{itemize}
+
+\subsubsection{Experimental Design}
+
+\begin{itemize}
+    \item \keyword{Independent Samples}{Completely randomized}
+    \item \keyword{Matched Pairs Samples}{Randomization between matches pairs}
+\end{itemize}
+
+\subsubsection{Independent Samples: Known and Unequal Variance}
+Assumptions:
+\begin{enumerate}
+    \item Given: Random sample of size $n_1$ from population 1 with $\mu_1$ and $\sigma^2$ and random sample of size $n_2$ from population 2 with $\mu_2$ and $\sigma^2$
+    \item 2 samples are independent
+    \item Population variances are known and $\sigma_1 ^2 \neq \sigma_2 ^2$
+    \item Both populations are normal OR $n_1 \geq 30$ and $n_2 \geq 30$
+\end{enumerate}
+Let $X_1, \cdots, X_{n_1}$ and $Y_1, \cdots, Y_{n_2}$ be random samples:
+\[E(\bar{X}) = \mu_1 \text{ , } V(\bar{X}) = \frac{\sigma_1 ^ 2}{n_1} \text{ , } E(\bar{Y}) = \mu_2 \text{ , } V(\bar{Y}) = \frac{\sigma_2 ^ 2}{n_2}\]
+\[E(\bar{X} - \bar{Y}) = \mu_1 - \mu_2 \text{ , } V(\bar{X} - \bar{Y}) = \frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}\]
+Thus, by normalizing RV $\bar{X} - \bar{Y}$ and using assumption 4:
+\[Z = \frac{(\bar{X} - \bar{Y}) - (\mu_1 - \mu_2)}{\sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}} \sim N(0,1)\]
+Thus, the $100(1-\alpha)\%$ confidence interval for $\mu_1 - \mu_2$ is:
+\[(\bar{X} - \bar{Y}) \pm z_{\alpha/2} \sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}\]
+
+\subsubsection{Independent Samples: Unknown and Unequal Variance}
+Assumptions:
+\begin{enumerate}
+    \item Given: Random sample of size $n_1$ from population 1 with $\mu_1$ and $\sigma^2$ and random sample of size $n_2$ from population 2 with $\mu_2$ and $\sigma^2$
+    \item 2 samples are independent
+    \item Population variances are unknown and $\sigma_1 ^2 \neq \sigma_2 ^2$
+    \item $n_1 \geq 30$ and $n_2 \geq 30$
+\end{enumerate}
+Since $\sigma_1$ and $\sigma_2$ are unknown, we use the standard error instead:
+\[S_1^2 = \frac{1}{n_1 - 1} \sum _{i=1} ^{n_1} (X_i - \bar{X})^2 \text{ , } S_2^2 = \frac{1}{n_2 - 1} \sum _{i=1} ^{n_2} (Y_i - \bar{Y})^2 \]
+Thus, by normalizing RV $\bar{X} - \bar{Y}$ and using assumption 4:
+\[Z = \frac{(\bar{X} - \bar{Y}) - (\mu_1 - \mu_2)}{\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}} \sim N(0,1)\]
+Thus, the $100(1-\alpha)\%$ confidence interval for $\mu_1 - \mu_2$ is:
+\[(\bar{X} - \bar{Y}) \pm z_{\alpha/2} \sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}\]
+
+\subsubsection{Independent Samples: Small $n$, Unknown and Equal Variance}
+Assumptions:
+\begin{enumerate}
+    \item Given: Random sample of size $n_1$ from population 1 with $\mu_1$ and $\sigma^2$ and random sample of size $n_2$ from population 2 with $\mu_2$ and $\sigma^2$
+    \item 2 samples are independent
+    \item Population variances are unknown and $\sigma_1 ^2 = \sigma_2 ^2$
+    \item $n_1 < 30$ and $n_2 < 30$
+    \item Both populations are normally distributed
+\end{enumerate}
+Thus, by normalizing RV $\bar{X} - \bar{Y}$ and using assumptions 3 and 4:
+\[Z = \frac{(\bar{X} - \bar{Y}) - (\mu_1 - \mu_2)}{S_p \sqrt{\frac{1}{n_1} + \frac{1}{n_2}}} \sim t_{n_1 + n_2 - 2}\]
+where $S_p$ is the pooled sample variance, which estimates $\sigma^2$
+\[S_p^2 = \frac{(n_1 - 1)S_1^2 + (n_2 - 1)S_2^2}{n_1 + n_2 - 2}\]
+Thus, the $100(1-\alpha)\%$ confidence interval for $\mu_1 - \mu_2$ is:
+\[(\bar{X} - \bar{Y}) \pm t_{n_1 + n_2 - 2; \alpha/2} S_p \sqrt{\frac{1}{n_1} + \frac{1}{n_2}}\]
+
+\subsubsection{Independent Samples: Large $n$, Unknown and Equal Variance}
+Assumptions:
+\begin{enumerate}
+    \item Given: Random sample of size $n_1$ from population 1 with $\mu_1$ and $\sigma^2$ and random sample of size $n_2$ from population 2 with $\mu_2$ and $\sigma^2$
+    \item 2 samples are independent
+    \item Population variances are unknown and $\sigma_1 ^2 = \sigma_2 ^2$
+    \item $n_1 \geq 30$ and $n_2 \geq 30$
+\end{enumerate}
+By applying CLT on assumption 4, we can replace $t_{n_1 + n_2 - 2; \alpha/2}$ with $z_{\alpha/2}$.
+Thus, the $100(1-\alpha)\%$ confidence interval for $\mu_1 - \mu_2$ is:
+\[(\bar{X} - \bar{Y}) \pm z_{\alpha/2} S_p \sqrt{\frac{1}{n_1} + \frac{1}{n_2}}\]
+
+\subsection{Paired Data}
+
 \section{07. Hypothesis Testing}
+
+\section{08. Miscellaneous}
+
+\subsubsection{Integration by Parts}
+\[\int udv = uv - \int vdu\]
+
+\begin{itemize}
+    \item How to choose u? LIPET
+\end{itemize}
 
 \end{multicols*}
 \end{document}
