@@ -267,7 +267,7 @@ Given RV $X$, which can be discrete or continuous:
     \[\text{Range space: } R_{X, Y} = \{(x,y) | x = X(s), y=Y(s), s \in S\}\]
     \item \keyword{Discrete 2D RV}{If no. of possible values of $(X(s), Y(s))$ are finite or countable}
     \item \keyword{Continuous 2D RV}{If no. of possible values of $(X(s), Y(s))$ can be any value in Euclidean space $\mathbb{R}^2$}
-    \item If both $X$ and $Y$ are discrete/continuous, then $(X, Y)$ is discrete/countinuous.
+    \item If both $X$ and $Y$ are discrete/continuous, then $(X, Y)$ is discrete/continuous.
 \end{itemize}
 
 \subsection{Joint Probability Function}
@@ -402,7 +402,7 @@ Given 2 variable function $g(x,y)$:
 \subsubsection{Bernoulli Process}
 \begin{itemize}
     \item Sequence of repeatedly performed \textbf{independent and identical} Ber. trials
-    \item Generates sequence of \textbf{independet and identically distributed (i.i.d.)} Ber. RVs: $X_1, X_2, \cdots$
+    \item Generates sequence of \textbf{independent and identically distributed (i.i.d.)} Ber. RVs: $X_1, X_2, \cdots$
 \end{itemize}
 
 \subsection{Binomial Distribution}
@@ -531,7 +531,7 @@ then $Z \sim N(0, 1)$
     \item $p.f.$ is given by:
     \[f_Z (z) = \frac{1}{\sqrt{2 \pi}} e^{-z^2 / 2}\]
     \item Importance of standardizing normal distribution is that it allows us to use tables to find probabilities
-    \item Let $X \sim N(\mu, \sigma^2)$. We can compute $P(x_1 < X < x_2)$ by standadization:
+    \item Let $X \sim N(\mu, \sigma^2)$. We can compute $P(x_1 < X < x_2)$ by standardization:
     \[x_1 < X < x_2 \leftrightarrow \frac{x_1 - \mu}{\sigma} < \frac{X - \mu}{\sigma} < \frac{x_2 - \mu}{\sigma}\]
     \item $c.d.f.$ is given by:
     \[\phi(z) = F_Z (z) = \int _{-\infty} ^{z} f_Z (z) = \frac{1}{\sqrt{2 \pi}}\int _{-\infty} ^{z} e^{-t^2 / 2} dt\]

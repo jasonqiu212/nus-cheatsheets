@@ -9,4 +9,4 @@
 
 ## Acknowledgements
 
-- Format inspired from [jovyntls/cheatsheets](https://github.com/jovyntls/cheatsheets)
+- Format inspired by [jovyntls/cheatsheets](https://github.com/jovyntls/cheatsheets)
