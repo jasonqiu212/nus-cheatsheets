@@ -1,0 +1,165 @@
+\documentclass{article}
+\usepackage[a4paper, margin=3mm, landscape]{geometry}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{listings}
+\usepackage{soul}
+\usepackage{graphicx}
+
+\pdfinfo{
+    /Title (CS2109S.pdf)
+    /Creator (TeX)
+    /Producer (pdfTeX 1.40.0)
+    /Author (Jason Qiu)
+    /Subject (CS2109S)
+    /Keywords (CS2109S, nus, cheatsheet, pdf)
+}
+
+\graphicspath{ {./img/} }
+
+\pagestyle{empty}
+\setcounter{secnumdepth}{0}
+\setlength{\columnseprule}{0.25pt}
+
+% Redefine section commands to use less space
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+    {-1ex plus -.5ex minus -.2ex}%
+    {0.5ex plus .2ex}%x
+{\normalfont\large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+    {-1explus -.5ex minus -.2ex}%
+    {0.5ex plus .2ex}%
+{\normalfont\normalsize\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+    {-1ex plus -.5ex minus -.2ex}%
+    {1ex plus .2ex}%
+{\normalfont\small\bfseries}}%
+\makeatother
+
+% Adjust spacing for all itemize/enumerate
+\setlength{\leftmargini}{0.5cm}
+\setlength{\leftmarginii}{0.5cm}
+\setlist[itemize,1]{leftmargin=2mm,labelindent=1mm,labelsep=1mm}
+\setlist[itemize,2]{leftmargin=2mm,labelindent=1mm,labelsep=1mm,label=$\bullet$}
+
+% Font
+\renewcommand{\familydefault}{\sfdefault}
+
+% Define colors for math formulas
+\definecolor{myblue}{cmyk}{1,.72,0,.38}
+\everymath\expandafter{\the\everymath \color{myblue}}
+
+% Custom command for keywords
+\definecolor{highlight}{RGB}{251,243,218}
+\newcommand{\keyword}[2][]{\sethlcolor{highlight}\hl{\textbf{#2}} #1 - }
+\newcommand{\ilkeyword}[1]{\sethlcolor{highlight}\hl{\textbf{#1}}}
+
+% Define colors and style for code
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codered}{HTML}{CC241D}
+\definecolor{backcolor}{rgb}{0.95,0.95,0.95}
+\lstdefinestyle{codestyle}{
+    backgroundcolor = \color{backcolor},
+    commentstyle = \color{codegray},
+    keywordstyle = \color{codered},
+    stringstyle = \color{codegreen},
+    basicstyle = \ttfamily,
+    breakatwhitespace = false,
+    showstringspaces = false,
+    breaklines = true,
+    showtabs = false,
+    tabsize = 2
+}
+\lstset{style = codestyle}
+
+% -----------------------------------------------------------------------
+\begin{document}
+\begin{multicols*}{3}
+\footnotesize
+
+% Title box
+\begin{center}
+    \fbox{
+        \parbox{0.8\linewidth}{
+            \centering \textcolor{black}{
+                {\Large\textbf{CS2109S}} \\
+                \normalsize{AY22/23 Sem 2}} \\
+                {\footnotesize \textcolor{gray}{github.com/jasonqiu212}}
+        }
+    }
+\end{center}
+
+\section{01. Introduction}
+
+\begin{itemize}
+    \item \keyword{Agent}{Anything that can perceive its environment through sensors and acting upon that env. through actuators}
+    \item \keyword{Agent Function}{Maps from percept histories to actions}
+    \item \keyword{Rational Agent}{Chooses an action that is expected to maximize its performance measure, given by percept sequence and built-in knowledge}
+    \item \keyword{Autonomous Agent}{If behavior is determined by its own expereince}
+\end{itemize}
+
+\subsection{Performance Measure of Function}
+
+\begin{itemize}
+    \item Motivation: For an agent to do the right thing, need a measure of goodness
+    \item Performance vs. Cost
+\end{itemize}
+
+
+\begin{enumerate}
+    \item Best for whom?
+    \item What are we optimizing?
+    \item What information is available?
+    \item What are the side effects and costs?
+\end{enumerate}
+
+\subsection{Defining the Problem: PEAS}
+
+\begin{enumerate}
+    \item Performance measure
+    \item Environment
+    \item Actuators
+    \item Sensors
+\end{enumerate}
+
+\subsection{Characterizing the Environment}
+
+\begin{enumerate}
+    \item \keyword{Fully observable}{(vs. Partially) Agent's sensors can access complete state of env. all the time}
+    \item \keyword{Deterministic}{(vs. Stochastic) Next state of env. is determined by \textbf{current state} and \textbf{action executed by agent}}
+    \begin{itemize}
+        \item \keyword{Strategic}{If env. is deterministic except for actions of other agents}
+    \end{itemize}
+    \item \keyword{Episodic}{(vs. Sequential) Agent's experience is divided into atomic \textbf{episodes}, where each episode includes perceiving and an action, and \textbf{action depends on episode} itself}
+    \item \keyword{Static}{(vs. Dynamic) Env. is unchanged while agent is deciding}
+    \begin{itemize}
+        \item \keyword{Semi}{Time does not affect env., but affects performance score}
+    \end{itemize}
+    \item \keyword{Discrete}{(vs. Continuous) Discrete num. of percepts and actions}
+    \item \keyword{Single Agent}{(vs. Multi-agent) Agent operating by itself in an env.}
+\end{enumerate}
+
+\subsection{Implementing Agents (in ascending complexity)}
+
+\begin{enumerate}
+    \item \keyword{Simple Reflex Agents}{Fixed conditional rules}
+    \item \keyword{Model-based Reflex Agents}{Stores percept history to make decisions about internal model of world with conditional rules. Eg. Roomba}
+    \item \keyword{Goal-based Agents}{Keep in mind a goal and action aims to achieve it}
+    \item \keyword{Utility-based Agents}{Find best way to achieve goal}
+    \item \keyword{Learning Agents}{Learn from previous experiences}
+\end{enumerate}
+
+\subsection{Exploitation vs. Exploration}
+
+\begin{itemize}
+    \item \keyword{Explotation}{Maximize expected utility using current knowledge of world}
+    \item \keyword{Exploration}{Learn more about the world to improve future gains. May not always maximize performance measure.}
+\end{itemize}
+
+\end{multicols*}
+\end{document}
