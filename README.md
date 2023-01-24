@@ -8,6 +8,7 @@
   - [ST2334 Probability and Statistics](ST2334/st2334-cheatsheet.pdf)
 - AY22/23 Semester 2
   - [CS2109S Introduction to AI and Machine Learning](CS2109S/cs2109s-cheatsheet.pdf)
+  - [CS2105 Introduction to Computer Networks](CS2105/cs2105-cheatsheet.pdf)
 
 ## Acknowledgements
 
