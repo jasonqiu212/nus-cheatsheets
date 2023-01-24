@@ -115,10 +115,93 @@
 
 \begin{itemize}
     \item \keyword{Store and Forward}{Entire packet must arrive at router before being transmitted to next link}
-    \item \keyword{Queueing and Loss}{If Arrival Rate $>$ Transmission Rate, packets will queue and can be dropped if queue fills up}
-    \item \keyword{Routing}{Determines}
 \end{itemize}
 
+\subsubsection{Key Functions of Network Core}
+
+\begin{itemize}
+    \item \keyword{Routing}{Determines source-destination routes taken by packets (How we get the hashtable)}
+    \item \keyword{Forwarding}{Move packets from router's input to correct router output}
+\end{itemize}
+
+\subsubsection{Circuit Switching}
+
+\begin{itemize}
+    \item Resources reserved for call between source and destination
+    \item Pros: Betrer performance
+    \item Cons: More resources
+\end{itemize}
+
+\subsubsection{Internet Structure}
+\includegraphics[scale=0.15]{internet}
+
+\begin{itemize}
+    \item End systems connect to Internet via \textbf{Access Internet Service Providers (ISPs)}
+    \item ISPs connect to larger global ISPs (usually competitors)
+    \item Large ISPs connect via \textbf{peering links} or \textbf{internet exchange points (IXP)}
+    \item \keyword{IXP}{Physical place with routers from different ISPs}
+    \item \keyword{Regional Networks}{Smallers ISPs}
+    \item \keyword{Content Provider Networks}{Provide content close to end users}
+\end{itemize}
+
+\subsection{Loss, Delay, and Throughput}
+
+\subsubsection{Packet Loss}
+
+\begin{itemize}
+    \item If Arrival Rate $>$ Transmission Rate, packets will queue and can be dropped if queue fills up
+    \item Solutions: Lost packets can be retransmitted
+\end{itemize}
+
+\subsubsection{Packet Delay}
+
+\[d_{\text{nodal}} = d_{\text{proc}} + d_{\text{queue}} + d_{\text{trans}} + d_{\text{prop}}\]
+
+\begin{itemize}
+    \item \keyword{Nodal Processing}{($d_{\text{proc}}$) Check for bit errors and determine output link}
+    \item \keyword{Queueing Delay}{($d_{\text{queue}}$) Time at queue waiting for transmission}
+    \item \keyword{Transmission Delay}{($d_{\text{trans}}$) Time to load packet onto link}
+    \begin{itemize}
+        \item $d_{\text{trans}} = \frac{L}{R}$ where $L$ is packet length and $R$ is link bandwidth
+    \end{itemize}
+    \item \keyword{Propagation Delay}{($d_{\text{prop}}$) Time for 1 bit to reach end of link}
+    \begin{itemize}
+        \item $d_{\text{prop}} = \frac{d}{s}$ where $d$ is length of link and $s$ is propagation speed
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Throughput}
+
+\begin{itemize}
+    \item Rate at which bits transferred between hosts
+    \begin{itemize}
+        \item Different from transmission rate (Theoretical upper bound)
+    \end{itemize}
+    \item Average: Rate over long period of time
+    \item Instantaneous: Rate at given point in time
+\end{itemize}
+
+\subsection{Protocol Layers and Service Models}
+
+\begin{itemize}
+    \item \keyword{Protocol}{Defines format, order of messages sent and received, and actions taken on message transmission}
+    \item Networks are complex with many components. How can we organize its structure?
+    \item \keyword{Layering}{Each layer implements a service by doing something within layer and relying on services provided by layer below it}
+    \begin{itemize}
+        \item Explicit structure allows us to make sense of complex components
+        \item Easy maintenance (Like OOP, change in 1 layer should not affect others)
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Internet Protocol Stack}
+
+\begin{enumerate}
+    \item Application
+    \item Transport
+    \item Network
+    \item Link
+    \item Physical
+\end{enumerate}
 
 \end{multicols*}
 \end{document}
