@@ -161,5 +161,105 @@
     \item \keyword{Exploration}{Learn more about the world to improve future gains. May not always maximize performance measure.}
 \end{itemize}
 
+\section{02. Searching}
+
+\begin{itemize}
+    \item Deterministic, fully observable
+    \item \keyword{Tree Search}{Can revisit nodes}
+    \item \keyword{Graph Search}{Tracks visited (Tree Search + Memoization)}
+    \item \keyword{Uninformed Search}{Uses only information available in problem definition}
+\end{itemize}
+
+\subsection{Formulating the Problem}
+
+\begin{enumerate}
+    \item How to represent state in problem?
+    \item Initial state
+    \item Actions: Successor function
+    \item Goal test
+    \item Path cost
+\end{enumerate}
+
+\begin{itemize}
+    \item \keyword{Abstraction Function}{Maps abstracted representation to real world state}
+    \item \keyword{Representation Invariant}{$I(c) = \textbf{True} \rightarrow \exists a \textbf{ s.t. } AF(c) = a$}
+\end{itemize}
+
+\subsection{Breadth-first Search}
+
+\begin{itemize}
+    \item Idea: Expand shallowest unexpanded node using \textbf{queue}
+    \item Given: $b$: Branching factor and $d$: Depth of optimal solution
+    \item Complete: Yes (if tree is finite)
+    \item Time: $O(b^{d+1})$
+    \item Space: $O(b^d)$
+    \item Optimal: Yes (if cost = 1)
+    \item BFS is Uniform-cost Search with same cost
+\end{itemize}
+
+\subsection{Uniform-cost Search}
+
+\begin{itemize}
+    \item Idea: Expand least-cost unexpanded node using \textbf{priority queue} (Dijkstra's)
+    \item Given: $C^*$: Cost of optimal solution
+    \item Complete: Yes (if step cost $\geq \epsilon$ where $\epsilon \geq 0$)
+    \item Time: $O(b^{(C^* / \epsilon)})$ ($C^* / \epsilon$ is approx. number of layers)
+    \item Space: $O(b^{(C^* / \epsilon)})$
+    \item Optimal: Yes
+\end{itemize}
+
+\subsection{Depth-first Search}
+
+\begin{itemize}
+    \item Idea: Expand deepest unexpanded node using \textbf{stack}
+    \item Given: $m$: Maximum depth of tree
+    \item Complete: No (fails with infinite depth or loops)
+    \item Time: $O(b^m)$
+    \item Space: $O(bm)$ (better than BFS)
+    \item Optimal: No
+\end{itemize}
+
+\subsection{Depth-limited Search}
+
+\begin{itemize}
+    \item DFS with depth limit $I$ where nodes at depth $I$ have no children
+    \item Time: $b^0 + b^1 + ... + b^{(d - 1)} + b^d = O(b^d)$
+\end{itemize}
+
+\subsection{Iterative Deepening Search}
+
+\begin{itemize}
+    \item Idea: Try different depths for depth-limited search
+    \item Complete: Yes
+    \item Time: $(d + 1)b^0 + db^1 + ... + b^d = O(b^d)$ (More overhead than DLS)
+    \item Space: $O(bd)$
+\end{itemize}
+
+\subsection{Summary}
+
+\begin{tabular}{ |c|c|c|c|c|c| }
+    \hline
+    & \textbf{BFS} & \textbf{Uniform Cost} & \textbf{DFS} & \textbf{DLS} & \textbf{IDS} \\
+    \hline
+    \textbf{Complete} & Yes & Yes & No & No & Yes \\
+    \hline
+    \textbf{Time} & $O(b^d)$ & $O(b^{C^* / \epsilon})$ & $O(b^m)$ & $O(b^l)$ & $O(b^d)$ \\
+    \hline
+    \textbf{Space} & $O(b^d)$ & $O(b^{C^* / \epsilon})$ & $O(bm)$ & $O(bl)$ & $O(bd)$ \\
+    \hline
+    \textbf{Optimal} & Yes & Yes & No & No & No \\
+    \hline
+\end{tabular}
+
+\subsection{Bidirectional Search}
+
+\begin{itemize}
+    \item Idea: Search both forwards from initial state and backwards from goal state. Stop when searches meet.
+    \item Time: $O(2 b^{d/2})$
+    \item Operators must be reversible
+    \item Can have many goal states
+    \item How to check if node intersects with other half?
+\end{itemize}
+
 \end{multicols*}
 \end{document}
