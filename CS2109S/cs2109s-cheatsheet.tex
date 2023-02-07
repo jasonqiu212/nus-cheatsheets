@@ -261,5 +261,95 @@
     \item How to check if node intersects with other half?
 \end{itemize}
 
+\section{03. Informed Search}
+
+\section{04. Introduction to Machine Learning}
+
+\begin{itemize}
+    \item A machine learns if it improves performance P on task T based on experience E. Where T must be fixed, P must be measurable, E must exist
+\end{itemize}
+
+\subsubsection{Types of Feedback}
+
+\begin{itemize}
+    \item \keyword{Supervised}{Correct answer given for each example}
+    \begin{itemize}
+        \item \keyword{Regression}{Predict results within continuous output}
+        \item \keyword{Classification}{Predict results in discrete output}
+    \end{itemize}
+    \item \keyword{Unsupervised}{No answers given}
+    \item \keyword{Weakly supervised}{Answer given, but not precise}
+    \item \keyword{Reinforcement}{Occasional rewards given}
+\end{itemize}
+
+\subsection{Decision Trees}
+
+\begin{itemize}
+    \item DT can express any function of input attributes, if data is consistent
+    \item Goal: Make DT \textbf{compact}. How?
+\end{itemize}
+
+\subsubsection{Information Theory}
+
+\begin{itemize}
+    \item Idea: Choose attribute that splits examples into subsets that are ideally 'all positive' or 'all negative'
+    \item \keyword{Entropy}{Measure of randomness in set of data}
+\end{itemize}
+
+\[I(P(v_1), ..., P(v_n)) = - \sum^{n}_{i = 1} P(v_i) \log_{2} P(v_i)\]
+
+\begin{itemize}
+    \item For data with $p$ positive examples and $n$ negative examples:
+\end{itemize}
+
+\[I(\frac{p}{p + n}, \frac{n}{p + n}) = - \frac{p}{p + n} \log_{2} \frac{p}{p + n} - \frac{n}{p + n} \log_{2} \frac{n}{p + n}\]
+
+\includegraphics[scale=0.2]{entropy}
+
+\begin{itemize}
+    \item \keyword{Information Gain}{(IG) Reduction in entropy from attribute test} 
+    \item Goal: Choose attribute with largest information gain
+    \item Intuition: IG = Entropy of this node - Entropy of children nodes
+    \item Given chosen attribute $A$ with $v$ distinct values:
+\end{itemize}
+
+\[\text{remainder}(A) = \sum_{i = 1}^{v} \frac{p_i + n_i}{p + n} I(\frac{p_i}{p_i + n_i}, \frac{n_i}{p_i + n_i})\]
+\[IG(A) = I(\frac{p}{p + n}, \frac{n}{p + n}) - \text{remainder}(A)\]
+
+\begin{itemize}
+    \item \keyword{Decision Tree Learning}{Recursively choose attributes with highest IG}
+    \item IG is not the only way. Can use whatever objective function that achieves the criteria we want.
+\end{itemize}
+
+\subsection{Performance Measurement}
+
+\begin{itemize}
+    \item \keyword{Correctness}{Correct if $\hat{y} = y$}
+    \item \keyword{Accuracy}{$\frac{1}{m} \sum_{j = 1}^{m} (\hat{y_{j}} = y_{j})$}
+    \item Confusion Matrix:
+\end{itemize}
+
+\includegraphics[scale=0.2]{confusion-matrix}
+
+\begin{itemize}
+    \item Accuracy = $\frac{TP + TN}{TP + FN + FP + TN}$
+    \item \keyword{Precision}{$\frac{TP}{TP + FP}$} \keyword{Recall}{$\frac{TP}{TP + FN}$}
+    \item Type I Error: FP Type II Error: FN
+    \item FP Rate = $\frac{FP}{FP + TN}$ TP Rate = $\frac{TP}{TP + FN}$
+\end{itemize}
+
+\subsection{Pruning}
+
+\begin{itemize}
+    \item Motivation: DT overfits to training set, but performs poorly on test set
+    \item Occam's Razor: Simple hypothesis preferred
+    \item \keyword{Pruning}{Prevent node from being split when split does not split cleanly}
+    \begin{itemize}
+        \item E.g. Min-sample, Max-depth
+    \end{itemize}
+\end{itemize}
+
+\section{05. Linear Regression}
+
 \end{multicols*}
 \end{document}
