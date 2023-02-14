@@ -203,5 +203,172 @@
     \item Physical
 \end{enumerate}
 
+\section{02. Application Layer}
+
+\begin{itemize}
+    \item Programs that run on end systems, and not on network-core devices
+\end{itemize}
+
+\subsection{Client-server Architecture}
+
+\begin{itemize}
+    \item Server: Always-on host, Permanent IP address
+    \item Clients: Communicates with server, Intermittently connected, Dynamic IP addresses, Do not communicate with each other directly
+\end{itemize}
+
+\subsection{P2P Architecture}
+
+\begin{itemize}
+    \item Peers request service from other peers and provide service in return
+    \item No always-on server, Intermittently connected, Dynamic IP addresses
+    \item \keyword{Self Scalability}{New peers offer new services and demands}
+\end{itemize}
+
+\subsection{Process}
+
+\begin{itemize}
+    \item \keyword{Process}{Program running in host}
+    \item \keyword{Inter-process Communication}{How 2 processes in 1 host communicate}
+    \item \keyword{Messages}{Processes in different hosts communicate by exchanging this}
+    \item \keyword{Client Process}{Process that initiates communication}
+    \item \keyword{Server Process}{Process that waits to be contacted}
+    \item \keyword{Socker}{Process sends/receives messages to/from its socket (like a door)}
+    \begin{itemize}
+        \item Outside of socket, transport layer delivers message
+    \end{itemize}
+\end{itemize}
+
+\subsection{Addressing Processes}
+
+\begin{itemize}
+    \item Motivation: IP address is not enough to address process, since many processes can be running on same host
+    \begin{itemize}
+        \item \keyword{Identifier}{IP address and port number}
+        \item \keyword{Port Number:}{Associated with process on host}
+    \end{itemize}
+\end{itemize}
+
+\subsection{Transport Protocol Services}
+
+\begin{enumerate}
+    \item \keyword{TCP}{Transmission Control Protocol}
+    \begin{itemize}
+        \item Reliable transport
+        \item Flow control: Sender does not overwhelm receiver
+        \item Congestion control
+        \item Connection-oriented: Setup required between client and server
+    \end{itemize}
+    \item \keyword{UDP}{User Datagram Protocol}
+    \begin{itemize}
+        \item Unreliable data transfer
+        \item Fast
+    \end{itemize}
+\end{enumerate}
+
+\subsection{App-layer Protocol}
+
+\begin{itemize}
+    \item Types of messages exchanged (e.g. Request or response)
+    \item Message syntax: How fields are delineated
+    \item Messages semantics: Meaning of information in fields
+\end{itemize}
+
+\subsection{HTTP}
+
+\begin{itemize}
+    \item \keyword{Hypertext Transfer Protocol}{Web's application layer protocol}
+    \item Motivation: Web page consists of objects (HTML, images). Need method to request/send web objects.
+    \item Follows client/server model
+    \item Uses TCP
+    \item \keyword{Stateless}{Server maintains no information about past requests}
+\end{itemize}
+
+\subsubsection{Non-persistent HTTP}
+
+\begin{itemize}
+    \item At most 1 object sent over TCP connection
+    \item Downloading multiple objects requires multiple TCP connections
+\end{itemize}
+
+\includegraphics[scale=0.15]{non-persistent-http}
+
+\begin{itemize}
+    \item Server closes TCP connection after sending file
+    \item \keyword{Return Trip Time}{(RTT) Time for small packet to travel from client to server and back}
+    \item Response Time: 2 RTT + File transmission time
+\end{itemize}
+
+\subsubsection{Persistent HTTP}
+
+\begin{itemize}
+    \item Multiple objects can be sent over single TCP connection
+    \item Server leaves TCP connection open after sending response
+    \item As little as one RTT for all referenced objects
+\end{itemize}
+
+\subsubsection{HTTP Request Message}
+
+\includegraphics[scale=0.12]{http-request}
+
+\begin{itemize}
+    \item To upload form input: \keyword{POST method}{Input uploaded via entity body} and \keyword{URL method}{Input uploaded in URL field of GET method}
+    \item \keyword{HTTP/1.0}{GET, POST, HEAD (Ask server to leave request object out of response)}
+    \item \keyword{HTTP/1.1}{GET, POST, HEAD, PUT, DELETE}
+\end{itemize}
+
+\subsubsection{HTTP Response Message}
+
+\includegraphics[scale=0.15]{http-response}
+
+\subsubsection{Cookies}
+
+\begin{itemize}
+    \item Maintains state on client side
+    \item Components: Cookie header for HTTP response, Cookie header for HTTP, request, Cookie file on user's host (Key-value pair), Database on server
+\end{itemize}
+
+\includegraphics[scale=0.12]{cookies}
+
+\subsubsection{Web Cache (Proxy Server)}
+
+\begin{itemize}
+    \item Goal: Fulfill request without involving origin server via caching
+    \item Browser sends all HTTP requests to cache
+    \item Pros: Faster, Reduces traffic to origin server
+    \item Cons: What if origin server updates?
+    \begin{itemize}
+        \item \keyword{Conditional GET}{Origin server doesn't send object if cache has updated version}
+        \item Cache: Specifies date of cached copy in HTTP request to origin
+        \item Origin Server: Response contains no object if cached object is updated
+    \end{itemize}
+\end{itemize}
+
+\subsection{Domain Name System}
+
+\begin{itemize}
+    \item Maps between IP address and name (e.g. yahoo.com)
+    \item Implemented using distributed and hierarchical databases
+    \item Application-layer protocol
+    \item \keyword{Local DNS Name Server}{Local cache of name-to-address mapping. Forwards query into hierarchy.}
+    \begin{itemize}
+        \item \keyword{Time to Live}{(TTL) Cached mappings disappear after some time}
+    \end{itemize}
+    \item \keyword{Root Name Server}{Contacted by local name server that cannot resolve name. Provides IP address of TLD servers.}
+    \item \keyword{Top-level Domain Server}{(TLD) Provides IP address of authoritative server}
+    \item \keyword{Authoritative DNS Server}{Organization's own DNS server. Provides mappings for organization's named hosts.}
+    \item Iterated query: "Not sure, ask this server"
+\end{itemize}
+
+\includegraphics[scale=0.1]{dns-iterative-query}
+
+\begin{itemize}
+    \item Recursive query: "Okay, let me find for you"
+    \begin{itemize}
+        \item Heavy load on upper levels of hierarchy
+    \end{itemize}
+\end{itemize}
+
+\includegraphics[scale=0.1]{dns-recursive-query}
+
 \end{multicols*}
 \end{document}
