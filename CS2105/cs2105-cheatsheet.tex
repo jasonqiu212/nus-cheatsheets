@@ -349,6 +349,7 @@
     \item Maps between IP address and name (e.g. yahoo.com)
     \item Implemented using distributed and hierarchical databases
     \item Application-layer protocol
+    \item Uses UDP
     \item \keyword{Local DNS Name Server}{Local cache of name-to-address mapping. Forwards query into hierarchy.}
     \begin{itemize}
         \item \keyword{Time to Live}{(TTL) Cached mappings disappear after some time}
@@ -369,6 +370,35 @@
 \end{itemize}
 
 \includegraphics[scale=0.1]{dns-recursive-query}
+
+\subsection{Socket Programming with UDP and TCP}
+
+\subsubsection{UDP Socket}
+
+\includegraphics[scale=0.14]{udp-socket}
+\includegraphics[scale=0.14]{udp}
+
+\begin{itemize}
+    \item No connection beforehand. Just send it.
+    \item Server has 1 socket to serve all clients
+    \item Sender attaches destination IP address and port number (\textbf{Stateless})
+    \item Unreliable datagram: Data may be lost or out-of-order
+    \begin{itemize}
+        \item \keyword{Datagram}{Group of bytes}
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{TCP Socket}
+
+\includegraphics[scale=0.14]{tcp-socket}
+\includegraphics[scale=0.14]{tcp}
+
+\begin{itemize}
+    \item Client establishes connection to server via welcome socket
+    \item Server makes new socket for each client
+    \item Server identifies client via connection (\textbf{Stateful})
+    \item Reliable stream pipe: Data always in order
+\end{itemize}
 
 \end{multicols*}
 \end{document}
