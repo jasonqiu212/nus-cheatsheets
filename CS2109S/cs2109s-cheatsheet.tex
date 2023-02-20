@@ -161,7 +161,7 @@
     \item \keyword{Exploration}{Learn more about the world to improve future gains. May not always maximize performance measure.}
 \end{itemize}
 
-\section{02. Searching}
+\section{02. Uninformed Search}
 
 \begin{itemize}
     \item Deterministic, fully observable
@@ -262,8 +262,26 @@
 \end{itemize}
 
 \section{03. Informed Search}
+\section{04. Adversial Search}
 
-\section{04. Introduction to Machine Learning}
+\begin{itemize}
+    \item Assumption: Opponents reacts rationally
+    \item Needs:
+    \begin{itemize}
+        \item Initial state
+        \item Successor function
+        \item Terminal test
+        \item Utility function: Measures how good the move is for a player
+    \end{itemize}
+\end{itemize}
+
+\subsection{Minimax}
+
+\begin{itemize}
+    \item Idea: Choose move that yields highest minimax value
+\end{itemize}
+
+\section{05. Introduction to Machine Learning}
 
 \begin{itemize}
     \item A machine learns if it improves performance P on task T based on experience E. Where T must be fixed, P must be measurable, E must exist
@@ -304,7 +322,7 @@
 
 \[I(\frac{p}{p + n}, \frac{n}{p + n}) = - \frac{p}{p + n} \log_{2} \frac{p}{p + n} - \frac{n}{p + n} \log_{2} \frac{n}{p + n}\]
 
-\includegraphics[scale=0.2]{entropy}
+\includegraphics[scale=0.15]{entropy}
 
 \begin{itemize}
     \item \keyword{Information Gain}{(IG) Reduction in entropy from attribute test} 
@@ -343,13 +361,111 @@
 \begin{itemize}
     \item Motivation: DT overfits to training set, but performs poorly on test set
     \item Occam's Razor: Simple hypothesis preferred
-    \item \keyword{Pruning}{Prevent node from being split when split does not split cleanly}
+    \item \keyword{Pruning}{Ignores outliers, which reduces overfitting}
     \begin{itemize}
         \item E.g. Min-sample, Max-depth
     \end{itemize}
 \end{itemize}
 
-\section{05. Linear Regression}
+\section{06. Linear Regression}
+
+\subsubsection{Notation}
+
+\begin{itemize}
+    \item $m$ = Number of training examples
+    \item $n$ = Number of features
+    \item $x_j ^{(i)}$ = Input feature $j$ of $i$th training example
+    \item $y$ = Output variables
+\end{itemize}
+
+\subsubsection{Hypothesis}
+
+\[h_w (x): w_0 + w_1 x\]
+
+\subsubsection{Cost Function (Square Error Function)}
+
+\[J(w_0, w_1) = \frac{1}{2m} \sum_{i = 1}^{m} (h_w(x^{(i)}) - y^{(i)})^2\]
+
+\begin{itemize}
+    \item Goal: Minimize cost function. Thus, hypothesis is close to training samples
+    \item Why squared error? Convenience, since we need to differentiate later
+\end{itemize}
+
+\subsection{Gradient Descent}
+
+\begin{itemize}
+    \item Start at some $(w_0, w_1)$. Pick nearby point that reduces $J(w_0, w_1)$.
+    \item Algorithm: Repeat until convergence:
+\end{itemize}
+
+\[w_j := w_j - \alpha \frac{dJ(w_0, w_1, ...)}{dw_j}\]
+
+\begin{itemize}
+    \item All updates done at end
+    \item How to do $\frac{dJ(w_0, w_1)}{dw_j}$? Partial derivative: Hold everything else constant
+    \begin{itemize}
+        \item $\frac{dJ(w_0, w_1)}{dw_j} = \frac{d}{dw_j} (\frac{1}{2m} \sum_{i = 1}^{m} (w_0 + w_1 x^{(i)} - y^{(i)})^2)$
+        \item $\frac{dJ(w_0, w_1)}{dw_0} = \frac{1}{m} \sum_{i = 1}^{m} (w_0 + w_1 x^{(i)} - y^{(i)})$ (Note: Chain rule)
+        \item $\frac{dJ(w_0, w_1)}{dw_1} = \frac{1}{m} \sum_{i = 1}^{m} (w_0 + w_1 x^{(i)} - y^{(i)}) x^{(i)}$
+    \end{itemize}
+    \item Time complexity: $O(kmn)$ where $k$ is number of iterations
+\end{itemize}
+
+\subsubsection{Learning Rate}
+
+\begin{itemize}
+    \item If $\alpha$ too small, then descent is too slow. If $\alpha$ too big, then might overshoot.
+    \item Given constant $\alpha$, descent will grow smaller as we approach minimum
+\end{itemize}
+
+\subsubsection{Variants of Gradient Descent}
+
+\begin{itemize}
+    \item Batch gradient descent: Consider all training examples when updating
+    \item Stoichastic gradient descent: Consider 1 random data point at a time (Cheaper and more randomness)
+    \item Mini-batch gradient descent
+\end{itemize}
+
+\subsubsection{Using Matrices}
+
+\begin{itemize}
+    \item Given: $w = 
+    \begin{pmatrix}
+        w_0\\
+        \vdots\\
+        w_n
+    \end{pmatrix}$ and $x =
+    \begin{pmatrix}
+        x_0\\
+        \vdots\\
+        x_n
+    \end{pmatrix} = 
+    \begin{pmatrix}
+        1\\
+        \vdots\\
+        x_n
+    \end{pmatrix}$
+    \item $h_w(x): w^T x$
+\end{itemize}
+
+\subsubsection{Feature Scaling}
+
+\begin{itemize}
+    \item Motivation: Gradient descent does not work well if features have different scales
+    \item \keyword{Mean Normalization}{$x_i \leftarrow \frac{x_i - \mu_i}{\sigma_i}$}
+\end{itemize}
+
+\subsection{Normal Equation}
+
+\[w = (X^T X)^{-1} X^T Y\]
+
+\begin{itemize}
+    \item No need to choose $\alpha$ and feature scaling
+    \item $X^T X$ needs to be invertible
+    \item Time complexity: $O(n^3)$. Slow if $n$ is big
+\end{itemize}
+
+\section{07. Logistic Regression}
 
 \end{multicols*}
 \end{document}
