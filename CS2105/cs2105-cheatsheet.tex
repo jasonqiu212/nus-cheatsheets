@@ -232,7 +232,7 @@
     \item \keyword{Messages}{Processes in different hosts communicate by exchanging this}
     \item \keyword{Client Process}{Process that initiates communication}
     \item \keyword{Server Process}{Process that waits to be contacted}
-    \item \keyword{Socker}{Process sends/receives messages to/from its socket (like a door)}
+    \item \keyword{Socket}{Process sends/receives messages to/from its socket (like a door)}
     \begin{itemize}
         \item Outside of socket, transport layer delivers message
     \end{itemize}
@@ -371,7 +371,7 @@
 
 \includegraphics[scale=0.1]{dns-recursive-query}
 
-\subsection{Socket Programming with UDP and TCP}
+\section{03. Socket Programming with UDP and TCP}
 
 \subsubsection{UDP Socket}
 
@@ -398,6 +398,170 @@
     \item Server makes new socket for each client
     \item Server identifies client via connection (\textbf{Stateful})
     \item Reliable stream pipe: Data always in order
+\end{itemize}
+
+\section{04. UDP and Reliable Protocol}
+
+\subsection{Transport Layer Services}
+
+\begin{itemize}
+    \item Transport layer: Logical communication between \textbf{processes}
+    \item Network layer: Logical communication between \textbf{hosts} (Unreliable)
+\end{itemize}
+
+\subsection{UDP}
+
+\begin{itemize}
+    \item On top of network layer, UDP adds:
+    \begin{enumerate}
+        \item Connectionless multiplexing/de-multiplexing
+        \begin{itemize}
+            \item UDP segments contain both source and destination ports
+            \item Multiplexing: Sent to target processes
+        \end{itemize}
+        \item Checksum
+    \end{enumerate}
+\end{itemize}
+
+\subsubsection{UDP Segment Header}
+
+\includegraphics[scale=0.2]{udp-segment-header}
+
+\subsubsection{Checksum}
+
+\begin{itemize}
+    \item Goal: Detect errors in received segment
+\end{itemize}
+
+\begin{enumerate}
+    \item Treat UDP segment as sequence of 16-bit integers
+    \item Add every 16-bit integer (Carry added back to result)
+    \item Invert to get UDP checksum (1's complement)
+    \item When receiving, sum segment again. All 1s if correct.
+\end{enumerate}
+
+\subsection{Reliable Data Transfer (rdt)}
+
+\begin{itemize}
+    \item Characteristics of unreliable channel will determine services provided by rdt
+\end{itemize}
+
+\includegraphics[scale=0.2]{rdt-interfaces}
+
+\subsubsection{rdt 2.0}
+
+\begin{itemize}
+    \item New problem: \textbf{Bit error}
+    \item Solution:
+    \begin{itemize}
+        \item Perform checksum to detect bit errors
+        \item \keyword{ACK}{Receiver tells sender that packet received is ok}
+        \item \keyword{NAK}{Receiver tells sender that packet received has errors}
+        \item After receiving NAK, sender retransmits packet 
+    \end{itemize}
+\end{itemize}
+
+\includegraphics[scale=0.2]{rdt-2.0}
+
+\includegraphics[scale=0.2]{rdt-2.0-fsm}
+
+\subsubsection{rdt 2.1}
+
+\begin{itemize}
+    \item New problem: ACK/NAK may be corrupted
+    \item Solution: Sender retransmits packet after receiving corrupted ACK/NAK
+    \item New problem: If ACK is corrupted, sender will send a \textbf{duplicate} packet
+    \item Solution: Sender adds \textbf{sequence number} to each packet and receiver discards duplicate packet (Only 0 and 1 needed)
+\end{itemize}
+
+\includegraphics[scale=0.2]{rdt-2.1}
+
+\includegraphics[scale=0.2]{rdt-2.1-sender-fsm}
+
+\includegraphics[scale=0.2]{rdt-2.1-receiver-fsm}
+
+\subsubsection{rdt 2.2}
+
+\begin{itemize}
+    \item New problem: Use ACKs only. No NAK.
+    \item Solution: Receiver sends ACK for last packet received. \textbf{ACK must include seq number of packet}.
+\end{itemize}
+
+\subsubsection{rdt 3.0}
+
+\begin{itemize}
+    \item New problem: Lost packets
+    \item Solution: Sender waits for some time for ACK and retransmits packet
+    \begin{itemize}
+        \item What if duplicate packet? Sequence number handles this.
+        \item What if duplicate ACK? Do nothing.
+    \end{itemize}
+\end{itemize}
+
+\includegraphics[scale=0.2]{rdt-3.0-1}
+
+\includegraphics[scale=0.2]{rdt-3.0-2}
+
+\includegraphics[scale=0.2]{rdt-3.0-fsm}
+
+\subsubsection{Performance of rdt 3.0}
+
+\begin{itemize}
+    \item \keyword{Stop-and-wait protocol}{Sender sends 1 packet at a time, then waits for receiver response}
+    \item Performance is bad. Stop-and-wait protocol limits use of resources
+    \item \keyword{Utilization}{Fraction of time sender is busy sending}
+    \begin{itemize}
+        \item Given: 1 Gbps link, 15 ms prop. delay, 8000 bit packet
+        \item $D_{trans} = \frac{L}{R} = \frac{8000 bits}{10^9 bits / sec} = 8 microsecs$
+        \item $U_{sender} = \frac{D_{trans}}{RTT + D_{trans}} = \frac{0.008}{30.008} = 0.027\%$
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Pipelined Protocols}
+
+\begin{itemize}
+    \item \keyword{Pipelining}{Sender allows multiple not-yet-ACKed packets}
+    \begin{itemize}
+        \item Need more sequence numbers
+        \item Buffering at sender and receiver
+    \end{itemize}
+\end{itemize}
+
+\subsection{Go-Back-N}
+
+\includegraphics[scale=0.2]{go-back-n}
+
+\begin{itemize}
+    \item Intuition: Sliding window
+    \item Sender:
+    \begin{itemize}
+        \item Timer for oldest in-flight packet
+        \item If timeout($n$), retransmit packet $n$ and other pkts in window
+    \end{itemize}
+    \item Receiver:
+    \begin{itemize}
+        \item \keyword{Cumulative ACK}{ACK for correct pkt with highest in-order sequence}
+        \item Discard out-of-order packets
+    \end{itemize}
+    \item Not efficient, since future packets discarded if out-of-order
+\end{itemize}
+
+\subsection{Selective Repeat}
+
+\includegraphics[scale=0.2]{selective-repeat}
+
+\begin{itemize}
+    \item Receiver individually ACKs correct pkts (Not accumulative) and sender maintains timer for each unACKed pkt
+    \item Sender:
+    \begin{itemize}
+        \item If timeout($n$), retransmit packet $n$ only
+        \item If ACK($n$) and $n$ is smallest unACKed pkt, slide window
+    \end{itemize}
+    \item Receiver:
+    \begin{itemize}
+        \item Once receive pkt $n$ in window, send ACK($n$). If out-of-order, buffer. If in-order, deliver and slide window
+        \item Once receive pkt $n$ outside of window, still send ACK($n$)
+    \end{itemize}
 \end{itemize}
 
 \end{multicols*}
