@@ -222,14 +222,19 @@
 \subsection{Depth-limited Search}
 
 \begin{itemize}
-    \item DFS with depth limit $I$ where nodes at depth $I$ have no children
+    \item Motivation: How to handle infinite depth for DFS?
+    \item Idea: DFS with depth limit $I$ where nodes at depth $I$ have no children
     \item Time: $b^0 + b^1 + ... + b^{(d - 1)} + b^d = O(b^d)$
 \end{itemize}
 
 \subsection{Iterative Deepening Search}
 
 \begin{itemize}
+    \item Motivation: How to determine depth limit? We don't.
     \item Idea: Try different depths for depth-limited search
+    \begin{itemize}
+        \item BFS pretending to be DFS to save space
+    \end{itemize}
     \item Complete: Yes
     \item Time: $(d + 1)b^0 + db^1 + ... + b^d = O(b^d)$ (More overhead than DLS)
     \item Space: $O(bd)$
@@ -312,6 +317,25 @@
     \item Complete: Yes, unless non-increasing, since cost is factored in
     \item Time and space: Same as BFS
     \item Yes, depending on the heuristic
+\end{itemize}
+
+\subsection{Iterative Deepening A* Search (IDA*)}
+
+\begin{itemize}
+    \item Motivation: How can we save space?
+    \item Idea: Have a cutoff for $f$ and remember the best $f$ that exceeds cutoff
+    \begin{itemize}
+        \item Similar to IDS. Linear space complexity.
+    \end{itemize}
+    \item Optimal and complete
+\end{itemize}
+
+\subsection{Simplified Memory A* Search (SMA*)}
+
+\begin{itemize}
+    \item Motivation: How can we save space?
+    \item Idea: Do normal A*. If memory is full, drop node with worst $f$.
+    \item Lose completeness
 \end{itemize}
 
 \section{04. Adversial Search}
