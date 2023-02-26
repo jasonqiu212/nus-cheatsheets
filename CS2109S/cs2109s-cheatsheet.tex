@@ -307,7 +307,7 @@
     \item Evaluation Function: $f(n) = g(n) + h(n)$ where $g(n)$ is cost to reach $n$ 
     \item Complete: Yes, unless non-increasing, since cost is factored in
     \item Time and space: Same as BFS
-    \item Yes, depending on the heuristic
+    \item Optimal: Yes, depending on the heuristic
 \end{itemize}
 
 \subsection{Iterative Deepening A* Search (IDA*)}
@@ -362,7 +362,7 @@
     \end{itemize}
 \end{itemize}
 
-\section{04. Adversial Search}
+\section{04. Adversarial Search}
 
 \begin{itemize}
     \item Assumption: Opponents reacts rationally
@@ -405,7 +405,7 @@
 \subsection{Resource Limits}
 
 \begin{itemize}
-    \item In reality, search space for games can be very large. $/alpha$-$/beta$ pruning also not fast enough.
+    \item In reality, search space for games can be very large. $\alpha$-$\beta$ pruning also not fast enough.
     \item Solution: Limit depth (Only see a finite moves ahead) and determine best move using evaluation function to estimate desirability of position (Heuristic)
     \item Other hacks:
     \begin{itemize}
@@ -455,7 +455,7 @@
 
 \[I(\frac{p}{p + n}, \frac{n}{p + n}) = - \frac{p}{p + n} \log_{2} \frac{p}{p + n} - \frac{n}{p + n} \log_{2} \frac{n}{p + n}\]
 
-\includegraphics[scale=0.15]{entropy}
+\includegraphics[scale=0.1]{entropy}
 
 \begin{itemize}
     \item \keyword{Information Gain}{(IG) Reduction in entropy from attribute test} 
@@ -555,7 +555,7 @@
 
 \begin{itemize}
     \item Batch gradient descent: Consider all training examples when updating
-    \item Stoichastic gradient descent: Consider 1 random data point at a time (Cheaper and more randomness)
+    \item Stochastic gradient descent: Consider 1 random data point at a time (Cheaper and more randomness)
     \item Mini-batch gradient descent
 \end{itemize}
 
