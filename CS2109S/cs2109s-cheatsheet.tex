@@ -107,16 +107,7 @@
 
 \begin{itemize}
     \item Motivation: For an agent to do the right thing, need a measure of goodness
-    \item Performance vs. Cost
 \end{itemize}
-
-
-\begin{enumerate}
-    \item Best for whom?
-    \item What are we optimizing?
-    \item What information is available?
-    \item What are the side effects and costs?
-\end{enumerate}
 
 \subsection{Defining the Problem: PEAS}
 
@@ -375,7 +366,7 @@
 
 \begin{itemize}
     \item Assumption: Opponents reacts rationally
-    \item Needs:
+    \item Formulating the problem:
     \begin{itemize}
         \item Initial state
         \item Successor function
@@ -386,8 +377,41 @@
 
 \subsection{Minimax}
 
+\includegraphics[scale=0.15]{minimax}
+
 \begin{itemize}
-    \item Idea: Choose move that yields highest minimax value
+    \item Idea: Choose move that yields highest minimax value using DFS
+    \item Complete: Yes (if tree is finite)
+    \item Time: $O(b^m)$
+    \item Space: $O(bm)$
+    \item Optimal: Yes (against an optimal opponent)
+\end{itemize}
+
+\subsection{Alpha-Beta Pruning}
+
+\begin{itemize}
+    \item Motivation: How to save time for Minimax?
+    \item Idea: By tracking max. and min. values so far, can prune some paths that we would never choose
+    \begin{enumerate}
+        \item $\alpha$ contains max. and $\beta$ contains min.
+        \item Initially, $\alpha = -\infty$ and $\beta = \infty$
+        \item When going down, copy $\alpha$ and $\beta$
+        \item Prune if $\alpha \geq \beta$
+        \item When going up, depending on MIN/MAX level, update $\alpha$ or $\beta$
+    \end{enumerate}
+    \item With perfect ordering, time complexity: $O(b^{m/2})$. Doubles search depth.
+\end{itemize}
+
+\subsection{Resource Limits}
+
+\begin{itemize}
+    \item In reality, search space for games can be very large. $/alpha$-$/beta$ pruning also not fast enough.
+    \item Solution: Limit depth (Only see a finite moves ahead) and determine best move using evaluation function to estimate desirability of position (Heuristic)
+    \item Other hacks:
+    \begin{itemize}
+        \item \keyword{Transpoisitions}{Memoize equivalent states}
+        \item Pre-computation of opening/closing moves
+    \end{itemize}
 \end{itemize}
 
 \section{05. Introduction to Machine Learning}
