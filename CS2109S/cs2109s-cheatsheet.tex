@@ -484,8 +484,10 @@
 
 \begin{itemize}
     \item Accuracy = $\frac{TP + TN}{TP + FN + FP + TN}$
-    \item \keyword{Precision}{$\frac{TP}{TP + FP}$} \keyword{Recall}{$\frac{TP}{TP + FN}$}
-    \item Type I Error: FP Type II Error: FN
+    \item \keyword{Precision}{$\frac{TP}{TP + FP}$} How precise are positive predictions? 
+    \item \keyword{Recall}{$\frac{TP}{TP + FN}$} How many actual positives are predicted?
+    \item \keyword{F1 Score}{$\frac{2}{1 / P + 1 / R}$} Harmonic mean of precision and recall
+    \item Type I Error: FP, Type II Error: FN
     \item FP Rate = $\frac{FP}{FP + TN}$ TP Rate = $\frac{TP}{TP + FN}$
 \end{itemize}
 
