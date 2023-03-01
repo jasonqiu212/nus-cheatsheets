@@ -1,6 +1,7 @@
 # NUS Cheatsheets
 
-## Contents
+Some condensed notes for computer science and statistics courses I took at NUS. Hope it helps you :)
+## Courses
 
 - AY21/22 Semester 2
   - [ST1131 Introduction to Statistics and Statistical Computing](ST1131/st1131-cheatsheet.pdf)
