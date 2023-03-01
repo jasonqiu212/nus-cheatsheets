@@ -303,7 +303,7 @@
 \begin{itemize}
     \item Multiple objects can be sent over single TCP connection
     \item Server leaves TCP connection open after sending response
-    \item As little as one RTT for all referenced objects
+    \item Subsequent objects can use same TCP connection and be sent using 1 RTT + File transmission time
 \end{itemize}
 
 \subsubsection{HTTP Request Message}
@@ -324,7 +324,7 @@
 
 \begin{itemize}
     \item Maintains state on client side
-    \item Components: Cookie header for HTTP response, Cookie header for HTTP, request, Cookie file on user's host (Key-value pair), Database on server
+    \item Components: Cookie header for HTTP response, Cookie header for HTTP request, Cookie file on user's host (Key-value pair), Database on server
 \end{itemize}
 
 \includegraphics[scale=0.12]{cookies}
@@ -451,10 +451,10 @@
 \subsubsection{rdt 2.0}
 
 \begin{itemize}
-    \item New problem: \textbf{Bit error}
+    \item New problem: \textbf{Bit error in data}
     \item Solution:
     \begin{itemize}
-        \item Perform checksum to detect bit errors
+        \item Recipient perform checksum to detect bit errors
         \item \keyword{ACK}{Receiver tells sender that packet received is ok}
         \item \keyword{NAK}{Receiver tells sender that packet received has errors}
         \item After receiving NAK, sender retransmits packet 
@@ -469,7 +469,7 @@
 
 \begin{itemize}
     \item New problem: ACK/NAK may be corrupted
-    \item Solution: Sender retransmits packet after receiving corrupted ACK/NAK
+    \item Solution: Sender does checksum and retransmits packet if ACK/NAK is corrupted
     \item New problem: If ACK is corrupted, sender will send a \textbf{duplicate} packet
     \item Solution: Sender adds \textbf{sequence number} to each packet and receiver discards duplicate packet (Only 0 and 1 needed)
 \end{itemize}
@@ -494,7 +494,7 @@
     \item Solution: Sender waits for some time for ACK and retransmits packet
     \begin{itemize}
         \item What if duplicate packet? Sequence number handles this.
-        \item What if duplicate ACK? Do nothing.
+        \item What if duplicate ACK? Do nothing. Only retransmit after timeout.
         \item What if packet out of order? Have more sequence numbers.
     \end{itemize}
 \end{itemize}
@@ -513,15 +513,15 @@
     \item \keyword{Utilization}{Fraction of time sender is busy sending}
     \begin{itemize}
         \item Given: 1 Gbps link, 15 ms prop. delay, 8000 bit packet
-        \item $D_{trans} = \frac{L}{R} = \frac{8000 bits}{10^9 bits / sec} = 8 microsecs$
-        \item $U_{sender} = \frac{D_{trans}}{RTT + D_{trans}} = \frac{0.008}{30.008} = 0.027\%$
+        \item $D_{trans} = \frac{L}{R} = \frac{8000 \text{ bits}}{10^9 \text{ bits/sec}} = 0.008 \text{ ms}$
+        \item $U_{sender} = \frac{D_{\text{trans}}}{RTT + D_{\text{trans}}} = \frac{0.008}{30.008} = 0.027\%$
     \end{itemize}
 \end{itemize}
 
 \subsubsection{Pipelined Protocols}
 
 \begin{itemize}
-    \item \keyword{Pipelining}{Sender allows multiple not-yet-ACKed packets}
+    \item \keyword{Pipelining}{Sender allows sending of multiple not-yet-ACKed packets}
     \begin{itemize}
         \item Need more sequence numbers
         \item Buffering at sender and receiver
@@ -541,7 +541,8 @@
         \item Sends when sliding window reaches packet
         \item 1 timer to receive ACK for packet at \lstinline{send_base}
         \item If timeout($n$), retransmit packet $n$ and other pkts in window
-        \item If receive ACK n, check if can shift sliding window
+        \item If receive ACK $n$, check if can shift sliding window. Previous un-ACKed packets guaranteed to be received.
+        \item If duplicate ACK, ignore like in rdt 3.0. Retransmit only on timeout.
     \end{itemize}
     \item Receiver:
     \begin{itemize}
@@ -583,7 +584,7 @@
     \hline
     \textbf{2.2} & Remove NAK & Receiver: Sequence number \\
     \hline
-    \textbf{3.0} & Packet loss in data and feedback & Timeout, re-transmission \\
+    \textbf{3.0} & Packet loss in data and feedback & Timeout, Re-transmission \\
     \hline
 \end{tabular}
 
@@ -620,7 +621,7 @@
     \item \keyword{Acknowledgement Number}{Sequence number of \textbf{next byte expected} from other side (Diff. from UDP)}
 \end{itemize}
 
-\includegraphics[scale=0.15]{tcp-sequence-and-ack-num}
+\includegraphics[scale=0.2]{tcp-sequence-and-ack-num}
 
 \begin{itemize}
     \item \keyword{Receive Window}{For flow control. Receiver controls sender, so sender won't overflow receiver's buffer. Constrains sliding window.}
@@ -645,6 +646,8 @@
         \item Cumulative ACKs
         \item Single retransmission timer
     \end{itemize}
+    \item Out-of-order packets not specified in TCP. Up to implementer.
+    \item Retransmits on timeout or 4 duplicate ACKs
 \end{itemize}
 
 \subsubsection{Sender Events}
@@ -653,17 +656,16 @@
     \item If data received from application:
     \begin{itemize}
         \item Create segment with sequence number
-        \item Start timer, if not running
-        \item Timer for \textbf{oldest un-ACKed segment}
+        \item Start timer for \textbf{oldest un-ACKed segment}
     \end{itemize}
     \item If timeout:
     \begin{itemize}
-        \item Retransmit segment cuasing timeout (Similar to selective repeat)
+        \item Retransmit segment causing timeout (Similar to selective repeat)
         \item Restart timer
     \end{itemize}
     \item If ACK received:
     \begin{itemize}
-        \item If ACK acknowledges previously un-ACKed segments, update window and start timer
+        \item If ACK acknowledges previously un-ACKed segments, update window and start timer. 
     \end{itemize}
 \end{itemize}
 
@@ -674,6 +676,18 @@
 \subsubsection{Receiver Events}
 
 \includegraphics[scale=0.22]{tcp-receiver-event}
+
+\begin{itemize}
+    \item Delayed ACK for in-order segment
+    \begin{itemize}
+        \item If no next segment received in time, send ACK
+        \item If next segment received in time, send ACK for 2nd segment (Saves 1 ACK. Works due to cumulative ACK.)
+    \end{itemize}
+    \item Immediate ACK for out-of-order segment (No matter if it creates or fills gap)
+    \begin{itemize}
+        \item Why immediate ACK? Might have packet loss, so can trigger fast retransmit earlier.
+    \end{itemize}
+\end{itemize}
 
 \subsubsection{Timeout}
 
@@ -690,7 +704,7 @@
     \end{itemize}
 \end{itemize}
 
-\[EstimatedRTT = (1 - \alpha) * EstimatedRTT + \alpha * SampleRTT\]
+\[\text{Estimated RTT} = (1 - \alpha) * \text{Estimated RTT} + \alpha * \text{Sample RTT}\]
 
 \begin{itemize}
     \item \keyword{Timeout Interval}{Estimated RTT + "Safety margin" (Deviation of estimate)}
@@ -699,9 +713,9 @@
     \end{itemize}
 \end{itemize}
 
-\[DevRTT = (1 - \beta) * DevRTT + \beta * | SampleRTT - EstimatedRTT | \]
+\[\text{Dev RTT} = (1 - \beta) * \text{Dev RTT} + \beta * | \text{Sample RTT} - \text{Estimated RTT} | \]
 
-\[TimeoutInterval = EstimatedRTT + 4 * DevRTT\]
+\[\text{Timeout Interval}  = \text{Estimated RTT} + 4 * \text{Dev RTT} \]
 
 \subsubsection{Fast Retransmit}
 
@@ -710,7 +724,7 @@
     \item \keyword{Fast Retransmit}{If sender receives 4 ACKs for same data, resend un-ACKed segment with smallest sequence number}
 \end{itemize}
 
-\includegraphics[scale=0.2]{tcp-fast-retransmit}
+\includegraphics[scale=0.3]{tcp-fast-retransmit}
 
 \end{multicols*}
 \end{document}
