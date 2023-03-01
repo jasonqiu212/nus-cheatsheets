@@ -128,7 +128,7 @@
 
 \begin{itemize}
     \item Resources reserved for call between source and destination
-    \item Pros: Betrer performance
+    \item Pros: Better performance
     \item Cons: More resources
 \end{itemize}
 
@@ -175,7 +175,7 @@
 \begin{itemize}
     \item Rate at which bits transferred between hosts
     \begin{itemize}
-        \item Different from transmission rate (Theoretical upper bound)
+        \item Different from transmission rate, which is the theoretical upper bound
     \end{itemize}
     \item Average: Rate over long period of time
     \item Instantaneous: Rate at given point in time
@@ -495,6 +495,7 @@
     \begin{itemize}
         \item What if duplicate packet? Sequence number handles this.
         \item What if duplicate ACK? Do nothing.
+        \item What if packet out of order? Have more sequence numbers.
     \end{itemize}
 \end{itemize}
 
@@ -531,19 +532,23 @@
 
 \includegraphics[scale=0.2]{go-back-n}
 
+\includegraphics[scale=0.3]{go-back-n-sender}
+
 \begin{itemize}
     \item Intuition: Sliding window
     \item Sender:
     \begin{itemize}
-        \item Timer for oldest in-flight packet
+        \item Sends when sliding window reaches packet
+        \item 1 timer to receive ACK for packet at \lstinline{send_base}
         \item If timeout($n$), retransmit packet $n$ and other pkts in window
+        \item If receive ACK n, check if can shift sliding window
     \end{itemize}
     \item Receiver:
     \begin{itemize}
         \item \keyword{Cumulative ACK}{ACK for correct pkt with highest in-order sequence}
         \item Discard out-of-order packets
     \end{itemize}
-    \item Not efficient, since future packets discarded if out-of-order
+    \item Not efficient, since future packets discarded if pkt lost and out-of-order
 \end{itemize}
 
 \subsection{Selective Repeat}
@@ -563,6 +568,149 @@
         \item Once receive pkt $n$ outside of window, still send ACK($n$)
     \end{itemize}
 \end{itemize}
+
+\subsection{Summary}
+
+\begin{tabular}{ |p{15pt}|p{105pt}|p{105pt}| }
+    \hline
+    \textbf{rdt} & \textbf{New problems} & \textbf{New features} \\
+    \hline
+    \textbf{1.0} & n/a & n/a \\
+    \hline
+    \textbf{2.0} & Bit error in data & Sender: Checksum, Receiver: ACK/NAK \\
+    \hline
+    \textbf{2.1} & Bit error in feedback, Duplicate packets & Receiver: Checksum, Sender: Sequence number \\
+    \hline
+    \textbf{2.2} & Remove NAK & Receiver: Sequence number \\
+    \hline
+    \textbf{3.0} & Packet loss in data and feedback & Timeout, re-transmission \\
+    \hline
+\end{tabular}
+
+\section{05. TCP}
+
+\begin{itemize}
+    \item Point-to-point: 1 sender and 1 receiver
+    \item Connection-oriented
+    \item Full duplex data: Data and feedback can be sent together both ways
+    \begin{itemize}
+        \item Before in UDP: Data only goes 1 way
+    \end{itemize}
+    \item Reliable, in-order \textbf{byte stream} (segment)
+    \begin{itemize}
+        \item Before in UDP: Send packet by packet
+    \end{itemize}
+    \item Pipelined: \textbf{Dynamic window size} set by flow control
+\end{itemize}
+
+\subsection{Buffers and Segments}
+
+\begin{itemize}
+    \item Sender and receiver both have 2 buffers to send and receive data
+    \item \keyword{Maximum Segment Size}{(MSS) Usually 1460 bytes. Limited by max. transmission unit (MTU)}
+\end{itemize}
+
+\subsection{Segment Structure}
+
+\includegraphics[scale=0.1]{tcp-segment-structure}
+
+\begin{itemize}
+    \item Source/Dest. Port Number: Same as UDP, except ports can be demultiplexed to different sockets
+    \item \keyword{Sequence Number}{Byte number of first byte of data in segment}
+    \item \keyword{Acknowledgement Number}{Sequence number of \textbf{next byte expected} from other side (Diff. from UDP)}
+\end{itemize}
+
+\includegraphics[scale=0.15]{tcp-sequence-and-ack-num}
+
+\begin{itemize}
+    \item \keyword{Receive Window}{For flow control. Receiver controls sender, so sender won't overflow receiver's buffer. Constrains sliding window.}
+\end{itemize}
+
+\subsection{Connection Management}
+
+\subsubsection{3 Way Handshake}
+
+\includegraphics[scale=0.2]{tcp-3-way-handshake}
+
+\subsubsection{Closing a Connection}
+
+\includegraphics[scale=0.2]{tcp-close-connection}
+
+\subsection{Reliable Data Transfer}
+
+\begin{itemize}
+    \item On top of UDT service, TCP adds:
+    \begin{itemize}
+        \item Pipelined segments
+        \item Cumulative ACKs
+        \item Single retransmission timer
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Sender Events}
+
+\begin{itemize}
+    \item If data received from application:
+    \begin{itemize}
+        \item Create segment with sequence number
+        \item Start timer, if not running
+        \item Timer for \textbf{oldest un-ACKed segment}
+    \end{itemize}
+    \item If timeout:
+    \begin{itemize}
+        \item Retransmit segment cuasing timeout (Similar to selective repeat)
+        \item Restart timer
+    \end{itemize}
+    \item If ACK received:
+    \begin{itemize}
+        \item If ACK acknowledges previously un-ACKed segments, update window and start timer
+    \end{itemize}
+\end{itemize}
+
+\includegraphics[scale=0.2]{tcp-retransmission-1}
+
+\includegraphics[scale=0.2]{tcp-retransmission-2}
+
+\subsubsection{Receiver Events}
+
+\includegraphics[scale=0.22]{tcp-receiver-event}
+
+\subsubsection{Timeout}
+
+\begin{itemize}
+    \item Motivation: What should timeout value be? Too short results in premature timeout. Too long results to slow reaction.
+    \item \keyword{Sample RTT}{Measured time from segment transmission until ACK receipt. If retransmission, forget it.}
+    \begin{itemize}
+        \item Sample RTT varies a lot, so not accurate. How to get better estimate?
+    \end{itemize}
+    \item \keyword{Estimated RTT}{Average of recent measurements}
+    \begin{itemize}
+        \item Uses previous Estimated RTT
+        \item Usually, $\alpha = 1/8$
+    \end{itemize}
+\end{itemize}
+
+\[EstimatedRTT = (1 - \alpha) * EstimatedRTT + \alpha * SampleRTT\]
+
+\begin{itemize}
+    \item \keyword{Timeout Interval}{Estimated RTT + "Safety margin" (Deviation of estimate)}
+    \begin{itemize}
+        \item Usually, $\beta = 1/4$
+    \end{itemize}
+\end{itemize}
+
+\[DevRTT = (1 - \beta) * DevRTT + \beta * | SampleRTT - EstimatedRTT | \]
+
+\[TimeoutInterval = EstimatedRTT + 4 * DevRTT\]
+
+\subsubsection{Fast Retransmit}
+
+\begin{itemize}
+    \item Motivation: Timeout period often quite long. Long delay before resending lost pkt.
+    \item \keyword{Fast Retransmit}{If sender receives 4 ACKs for same data, resend un-ACKed segment with smallest sequence number}
+\end{itemize}
+
+\includegraphics[scale=0.2]{tcp-fast-retransmit}
 
 \end{multicols*}
 \end{document}
