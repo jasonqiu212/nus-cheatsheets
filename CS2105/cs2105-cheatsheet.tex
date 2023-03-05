@@ -417,7 +417,8 @@
         \item Connectionless multiplexing/de-multiplexing
         \begin{itemize}
             \item UDP segments contain both source and destination ports
-            \item Multiplexing: Sent to target processes
+            \item Multiplexing: Sender gathers data from processes and sends to receiver as a whole
+            \item De-multiplexing: Receiver delivers received segments to correct processes
         \end{itemize}
         \item Checksum
     \end{enumerate}
@@ -616,7 +617,7 @@
 \includegraphics[scale=0.1]{tcp-segment-structure}
 
 \begin{itemize}
-    \item Source/Dest. Port Number: Same as UDP, except ports can be demultiplexed to different sockets
+    \item Source/Dest. Port Number: Same as UDP, except ports can be de-multiplexed to different sockets
     \item \keyword{Sequence Number}{Byte number of first byte of data in segment}
     \item \keyword{Acknowledgement Number}{Sequence number of \textbf{next byte expected} from other side (Diff. from UDP)}
 \end{itemize}
@@ -732,7 +733,7 @@
 
 \begin{itemize}
     \item Transports segments from sending to receiving \textbf{hosts}
-    \item Network layer protocls in every host and router
+    \item Network layer protocols in every host and router
     \item Key network functions:
     \begin{enumerate}
         \item \keyword{Forwarding}{Move packets from router's input to some router output}
@@ -812,7 +813,7 @@
 
 \begin{itemize}
     \item Allows efficient advertisement of routing information, rather than having mapping for $2^{32}$ addresses
-    \item \keyword{Longest Prefix Matching}{How router decides address to deliver to}
+    \item \keyword{Longest Prefix Matching}{How router decides which IP address to forward to}
 \end{itemize}
 
 \includegraphics[scale=0.2]{longest-prefix-matching-1}
@@ -823,10 +824,10 @@
 
 \begin{enumerate}
     \item Wired: Hard-coded by system admin
-    \item Wireless: Dynamic Host Configuration Protocl (DHCP) dynamically gets address
+    \item Wireless: Dynamic Host Configuration Protocol (DHCP) dynamically gets address
 \end{enumerate}
 
-\subsubsection{Dynamic Host Configuration Protocl (DHCP)}
+\subsubsection{Dynamic Host Configuration Protocol (DHCP)}
 
 \begin{itemize}
     \item Goal: Allow host to dynamically get its IP address from network server upon joining
