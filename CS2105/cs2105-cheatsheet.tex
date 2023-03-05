@@ -726,5 +726,123 @@
 
 \includegraphics[scale=0.3]{tcp-fast-retransmit}
 
+\section{06. IP Addressing}
+
+\subsection{Network Layer}
+
+\begin{itemize}
+    \item Transports segments from sending to receiving \textbf{hosts}
+    \item Network layer protocls in every host and router
+    \item Key network functions:
+    \begin{enumerate}
+        \item \keyword{Forwarding}{Move packets from router's input to some router output}
+        \item \keyword{Routing}{Determine route taken by packets from source to destination}
+    \end{enumerate}
+    \item \keyword{Data Plane}{Handles forwarding function}
+    \begin{itemize}
+        \item Local, per-router function
+    \end{itemize}
+    \item \keyword{Control Plane}{Handles routing function}
+    \begin{itemize}
+        \item Network-wide logic (since requires talking with other routers)
+        \item 2 approaches: Traditional routing algorithms implemented in routers and software-defined networking implemented in servers
+    \end{itemize}
+\end{itemize}
+
+\includegraphics[scale=0.2]{network-layer}
+
+\subsection{IP Protocol}
+
+\begin{itemize}
+    \item \keyword{IP Address}{32-bit identifier for host and router interface}
+    \item \keyword{Interface}{Connection between host/router and physical link}
+    \begin{itemize}
+        \item Routers usually have many interfaces
+        \item Hosts usually have 1-2 interfaces
+        \item IP addresses associated with each interface
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Subnet}
+
+\includegraphics[scale=0.2]{subnets}
+
+\begin{itemize}
+    \item \keyword{Subnet}{Network formed by group of "directly" interconnected hosts (i.e. Can reach each other without router)}
+    \begin{itemize}
+        \item To find out how many: Remove routers and count number of isolated networks (Single links count)
+        \item Hosts in same subnet have same network prefix of IP address
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Classless InterDomain Routing (CIDR)}
+
+\includegraphics[scale=0.2]{cidr}
+
+\begin{itemize}
+    \item Some length for subnet portion
+    \item Address format: $a.b.c.d/x$ where $x$ is number of bits in subnet portion
+    \item \keyword{Subnet Mask}{Set all network prefix bits to $1$ and host ID bits to $0$}
+    \begin{itemize}
+        \item Used to determine which network an IP belongs to using bitwise AND
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{IP Address Allocation}
+
+\begin{itemize}
+    \item How do ISPs get blocks of addresses? Internet Corporation for Assigned Names and Numbers (ICANN), NPO that allocates addresses
+\end{itemize}
+
+\includegraphics[scale=0.2]{special-ip-addresses}
+
+\begin{itemize}
+    \item How do organizations get block of address? Buy from registry or rent from ISP's address space
+    \item Example of renting: 
+    \begin{itemize}
+        \item ISP's block: 200.23.16.0/20 (ISP can allocate to $2^{12}$ addresses)
+        \item Use next 3 bits to differentiate $2^3 = 8$ organizations
+        \item E.g. Org 0 takes 200.23.16.0/23, Org 1 takes 200.23.18.0/23
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Hierarchical Addressing}
+
+\includegraphics[scale=0.2]{hierarchical-addressing}
+
+\begin{itemize}
+    \item Allows efficient advertisement of routing information, rather than having mapping for $2^{32}$ addresses
+    \item \keyword{Longest Prefix Matching}{How router decides address to deliver to}
+\end{itemize}
+
+\includegraphics[scale=0.2]{longest-prefix-matching-1}
+
+\includegraphics[scale=0.2]{longest-prefix-matching-2}
+
+\subsubsection{How does a host get IP address?}
+
+\begin{enumerate}
+    \item Wired: Hard-coded by system admin
+    \item Wireless: Dynamic Host Configuration Protocl (DHCP) dynamically gets address
+\end{enumerate}
+
+\subsubsection{Dynamic Host Configuration Protocl (DHCP)}
+
+\begin{itemize}
+    \item Goal: Allow host to dynamically get its IP address from network server upon joining
+    \item Can also return address of first-hop router for client, name/IP address of DNS server, and network mask
+    \item Runs over UDP (Server port: 67, Client port: 68)
+    \item Subnets without DHCP server can rely on routers to relay from another subnet
+    \item Process:
+    \begin{enumerate}
+        \item Optional: If host unsure what IP addresses are available, then host broadcasts "DHCP discover"
+        \item Optional: Server responds with "DHCP offer"
+        \item If host knows what IP address it wants, then host requests IP address (DHCP request)
+        \item Server sends address (DHCP ack)
+    \end{enumerate}
+\end{itemize}
+
+\includegraphics[scale=0.2]{dhcp}
+
 \end{multicols*}
 \end{document}
