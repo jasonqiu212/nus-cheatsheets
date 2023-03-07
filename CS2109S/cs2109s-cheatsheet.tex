@@ -453,9 +453,15 @@
     \item For data with $p$ positive examples and $n$ negative examples:
 \end{itemize}
 
-\[I(\frac{p}{p + n}, \frac{n}{p + n}) = - \frac{p}{p + n} \log_{2} \frac{p}{p + n} - \frac{n}{p + n} \log_{2} \frac{n}{p + n}\]
+\begin{multicols*}{2}
+    
+    \includegraphics[scale=0.12]{entropy}
 
-\includegraphics[scale=0.1]{entropy}
+    \[I(\frac{p}{p + n}, \frac{n}{p + n}) = \]
+    \[- \frac{p}{p + n} \log_{2} \frac{p}{p + n} \]
+    \[- \frac{n}{p + n} \log_{2} \frac{n}{p + n}\]
+
+\end{multicols*}
 
 \begin{itemize}
     \item \keyword{Information Gain}{(IG) Reduction in entropy from attribute test} 
@@ -477,16 +483,26 @@
 \begin{itemize}
     \item \keyword{Correctness}{Correct if $\hat{y} = y$}
     \item \keyword{Accuracy}{$\frac{1}{m} \sum_{j = 1}^{m} (\hat{y_{j}} = y_{j})$}
-    \item Confusion Matrix:
 \end{itemize}
 
-\includegraphics[scale=0.2]{confusion-matrix}
+\begin{multicols*}{2}
+
+    \begin{itemize}
+        \item Confusion Matrix:
+    \end{itemize}
+        
+    \includegraphics[scale=0.2]{confusion-matrix}
+
+    \begin{itemize}
+        \item Accuracy = $\frac{TP + TN}{TP + FN + FP + TN}$
+        \item \keyword{Precision}{$\frac{TP}{TP + FP}$} How precise are positive predictions? 
+        \item \keyword{Recall}{$\frac{TP}{TP + FN}$} How many actual positives are predicted?
+        \item \keyword{F1 Score}{$\frac{2}{1 / P + 1 / R}$} Harmonic mean of precision and recall
+    \end{itemize}
+
+\end{multicols*}
 
 \begin{itemize}
-    \item Accuracy = $\frac{TP + TN}{TP + FN + FP + TN}$
-    \item \keyword{Precision}{$\frac{TP}{TP + FP}$} How precise are positive predictions? 
-    \item \keyword{Recall}{$\frac{TP}{TP + FN}$} How many actual positives are predicted?
-    \item \keyword{F1 Score}{$\frac{2}{1 / P + 1 / R}$} Harmonic mean of precision and recall
     \item Type I Error: FP, Type II Error: FN
     \item FP Rate = $\frac{FP}{FP + TN}$ TP Rate = $\frac{TP}{TP + FN}$
 \end{itemize}
@@ -602,6 +618,88 @@
 \end{itemize}
 
 \section{07. Logistic Regression}
+
+\begin{itemize}
+    \item Motivation: Classification with continuous input values. 
+    \item Idea: Come up with a decision boundary to seperate data points. $h_w (x_1, x_2) = 1$, if $w_0 + w_1 x_1 + w_2 x_2 > 0$, or $0$, otherwise
+\end{itemize}
+
+\subsection{Sigmoid Function}
+
+\begin{itemize}
+    \item Motivation: Step function is discontinuous and not differentiable
+\end{itemize}
+
+\begin{multicols*}{2}
+    
+    \includegraphics[scale=0.16]{sigmoid-function}
+
+    \[h_w (x) = g(w^T x)\]
+
+    \[g(z) = \frac{1}{1 + e^{-z}}\]
+
+\end{multicols*}
+
+\subsubsection{Hypothesis}
+
+\[h_w (x): \frac{1}{1 + e^{-w^T x}}\]
+
+\begin{itemize}
+    \item Interpretation: Estimated probability that $y = 1$ given input $x$
+\end{itemize}
+
+\subsubsection{Cost Function}
+
+\begin{itemize}
+    \item Problem: Least square error gives non-convex cost function, which is bad for G.D.
+    \item Solution: Use $log$
+\end{itemize}
+
+\begin{multicols*}{2}
+
+    \includegraphics[scale=0.13]{logistic-regression-cost-1}
+
+    \begin{itemize}
+        \item If $y = 1$, let cost be $-log(h_w (x))$
+        \begin{itemize}
+            \item $h_w (x) \rightarrow 0, J(w) \rightarrow \infty$
+            \item $h_w (x) \rightarrow 1, J(w) \rightarrow 0$
+        \end{itemize}
+    \end{itemize}
+
+\end{multicols*}
+
+\begin{multicols*}{2}
+
+    \includegraphics[scale=0.13]{logistic-regression-cost-2}
+
+    \begin{itemize}
+        \item If $y = 0$, let cost be $-log(1 - h_w (x))$
+        \begin{itemize}
+            \item $h_w (x) \rightarrow 0, J(w) \rightarrow 0$
+            \item $h_w (x) \rightarrow 1, J(w) \rightarrow \infty$
+        \end{itemize}
+    \end{itemize}
+
+\end{multicols*}
+
+\[J(w) = - \frac{1}{m} \sum_{i=1}^{m} y^{(i)} log h_w (x^{(i)}) + (1 - y^{(i)}) log (1 - h_w (x^{(i)}))\]
+
+\subsubsection{Gradient Descent}
+
+\begin{itemize}
+    \item Same algorithm as linear regression
+    \item $\frac{d J(w)}{d w_j} = \frac{1}{m} \sum_{i=1}^{m} (h_w (x^{(i)}) - y^{(i)}) x_{n}^{(i)}$ (Same as linear regression)
+\end{itemize}
+
+\subsection{Multi-class Classification}
+
+\includegraphics[scale=0.15]{multi-class-classification}
+
+\begin{enumerate}
+    \item Train binary classifier $h_{w}^{(i)}(x)$ for each class $i$ to predict $y = i$
+    \item For each input $x$, pick class $i$ is greatest (i.e. $\max_i h_{w}^{(i)} (x)$)
+\end{enumerate}
 
 \end{multicols*}
 \end{document}
