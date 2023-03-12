@@ -701,5 +701,97 @@
     \item For each input $x$, pick class $i$ is greatest (i.e. $\max_i h_{w}^{(i)} (x)$)
 \end{enumerate}
 
+\section{08. Regularization}
+
+\section{09. Support Vector Machine}
+
+\begin{itemize}
+    \item Idea: Maximize margin between positive and negative samples
+\end{itemize}
+
+\subsubsection{Decision Rule}
+
+\[w \cdot x \geq c \rightarrow \text{Positive}; w \cdot x < c \rightarrow \text{Negative}\]
+
+\begin{itemize}
+    \item Dot product: $u \cdot v = u^T v = p ||v||$ (By law of cosine)
+    \item Intuition: Decision boundary $\perp$ Weight vector. $w \cdot x = p ||w||$. Sample $a$ is on decision boundary if $w \cdot a = c$
+    \item Constraints: $\text{Let } b = -c$
+    \begin{itemize}
+        \item $w \cdot x + b \geq 1 \text{ if } y = 1$
+        \item $w \cdot x + b < -1 \text{ if } y = 0$
+        \item Combined: Let $\hat{y}^{(i)} = 1 \text{ or } -1$ for pos. and neg. samples respectively. $\hat{y}^{(i)} (w \cdot x^{(i)} + b) \geq 1$
+        \item If $x$ is inside margin, then $w \cdot x + b = 1 \text{ or } -1$ respectively
+        \item Why add these constraints? Mathematical convenience for hinge loss
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Margin}
+
+\[\text{Margin width} = \frac{2}{||w||}\]
+
+\begin{itemize}
+    \item Let $x^+$ and $x^-$ be closest positive and negative samples
+    \item Margin width = $(x^+ - x^-) \cdot \frac{w}{||w||}$ (i.e. Length of projection of $x^+ - x^-$ on weight vector) $= \frac{1 - b + 1 + b}{||w||}$ (since $x^+$ and $x^-$ are inside margin) $= \frac{2}{||w||}$ 
+\end{itemize}
+
+\subsubsection{Objective Function for Hard-Margin}
+
+\[\min \frac{1}{2} ||w||^2 \text{ s.t. } \hat{y}^{(i)} (w \cdot x + b \geq 1)\]
+
+\begin{enumerate}
+    \item Maximize margin: $\max \frac{2}{||w||} = \min ||w|| = \min \frac{1}{2} ||w||^2$
+    \item Classify correctly
+\end{enumerate}
+
+\begin{itemize}
+    \item \keyword{Hard-Margin}{No samples inside margin}
+    \item Before, we assume hard margin. What if there exists outliers that causes SVM to overfit?
+\end{itemize}
+
+\subsubsection{Objective Function for Soft-Margin}
+
+\[
+    h_w (x) = 
+    \begin{cases}
+        1 & \text{if } w^T x \geq 0 \\
+        0 & \text{otherwise} 
+    \end{cases}
+\]
+
+\begin{itemize}
+    \item \keyword{Slack Variable}{($\xi$) Loss of misclassified point}
+    \item Goal: Maximize margin and allow misclassification by tweaking $C$
+    \begin{itemize}
+        \item i.e. $\min (\frac{1}{2} ||w||^2 + C \sum_i \xi^{(i)}) \text{ s.t. } \forall i, \xi^{(i)} \geq 0 \text{ and } \hat{y}^{(i)}(w \cdot x^+ b) \geq 1 - \xi^{(i)} \rightarrow J(w) = C \sum_i \max(0, 1 - \hat{y}^{(i)} (w^T x^{(i)})) + \frac{1}{2} \sum_{i=1}^{n} w_{i}^{2}$
+        \item Hard-margin: Must follow constraint. Soft-margin: Constraint is flexible with slack variable, so can define cost function to minimize.
+    \end{itemize}
+\end{itemize}
+
+\[J(w) = C \sum_{i}^{m} y^{(i)} \text{cost}_1 (w^T x^{(i)}) + (1 - y^{(i)}) \text{cost}_0 (w^T x^{(i)}) + \frac{1}{2} \sum_{i=1}^{n} w_{i}^{2}\]
+
+\begin{multicols*}{2}
+
+    \includegraphics[scale=0.15]{hinge-loss}
+    
+    \begin{itemize}
+        \item \ilkeyword{Hinge Loss}
+        \begin{itemize}
+            \item $\text{cost}_1 (z) = \max(0, 1 - z)$
+            \item $\text{cost}_0 (z) = \max(0, 1 + z)$
+        \end{itemize}
+    \end{itemize}
+
+\end{multicols*}
+
+\subsection{Kernel}
+
+\begin{itemize}
+    \item Motivation: What if data is not linearly separable?
+    \item Idea: Map features to higher dimensions
+    \item Similarity function using gaussian can help construct hypothesis for non-linear
+    \item Think of x1, x2, x3 as f1, f2, f3, where fi is some feature mapping
+\end{itemize}
+
 \end{multicols*}
 \end{document}
