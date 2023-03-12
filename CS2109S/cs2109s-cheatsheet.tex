@@ -701,9 +701,91 @@
     \item For each input $x$, pick class $i$ is greatest (i.e. $\max_i h_{w}^{(i)} (x)$)
 \end{enumerate}
 
-\section{08. Regularization}
+\section{08. Model Evaluation and Selection}
 
-\section{09. Support Vector Machine}
+\subsubsection{Linear Regression}
+
+\[J_{\text{test}}(w) = \frac{1}{2m_{\text{test}}} \sum_{i=1}^{m_{\text{test}}} (h_w (x_{\text{test}}^{(i)}) - y_{\text{test}}^{(i)})^2\]
+
+\subsubsection{Logistic Regression}
+
+\[
+    \text{error} (h_w(x), y) = 
+    \begin{cases}
+        1 & \text{if misclassification} \\
+        0 & \text{otherwise}
+    \end{cases}
+\]
+
+\[\text{Test Error} = \frac{1}{m_{\text{test}}} \sum_{i=1}^{m_{\text{test}}} \text{error}(h_w (x_{\text{test}}^{(i)}), y_{\text{test}}^{(i)})\]
+
+\subsubsection{Model Selection}
+
+\begin{itemize}
+    \item How to choose model? (i.e. $x^2$, $x^3$, etc. for hypothesis)
+    \begin{enumerate}
+        \item Split data into 3 sets: Training set, validation set, and test set
+        \item Train each model using training set
+        \item Compute $J_{cv}(w)$ for each model and pick model with lowest $J_{cv}(w)$
+        \item Use $J_{\text{test}}(w)$ to estimate performance on unseen samples
+    \end{enumerate}
+\end{itemize}
+
+\subsubsection{Bias and Variance}
+
+\begin{itemize}
+    \item \keyword{High bias}{Underfit}, \keyword{High variance}{Overfit}
+    \item As degree of polynomial increases:
+\end{itemize}
+
+\begin{multicols*}{2}
+    \includegraphics[scale=0.1]{bias-and-variance}
+
+    \includegraphics[scale=0.1]{high-bias} 
+
+    \includegraphics[scale=0.09]{high-variance} 
+
+    \begin{itemize}
+        \item Observation: If overfit, more training samples does not help
+        \item How do we address overfitting?
+        \begin{itemize}
+            \item Reduce number of features
+            \item \keyword{Regularization}{Keep all features, but reduce corresponding weights}
+        \end{itemize}
+    \end{itemize}
+\end{multicols*}
+
+\section{09. Regularization}
+
+\begin{itemize}
+    \item Idea: Include $w$ inside $J(w)$ to minimize weights and get simpler hypothesis
+    \item What if $\lambda$ is too large? Weights tend to 0, resulting in straight line
+    \item How to choose $\lambda$? Use validation set
+    \begin{itemize}
+        \item Small $\lambda$: $J_{\text{train}}(w)$ low and $J_{cv}(w)$ high (Overfit)
+        \item Large $\lambda$: $J_{\text{train}}(w)$ high and $J_{cv}(w)$ high (Underfit)
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Linear Regression with Regularization}
+
+\[J(w) = \frac{1}{2m} (\sum_{i = 1}^{m} (h_w(x^{(i)}) - y^{(i)})^2 + \lambda \sum_{i=1}^{n} w_i^2)\]
+
+\[w_n := w_n - \frac{\alpha}{m} \sum_{i=1}^{m} ((h_w(x^{(i)}) - y^{(i)})x_n^{(i)}) - \frac{\alpha \lambda}{m} w_n\]
+
+\subsubsection{Logistic Regression with Regularization}
+
+\[J(w) = - \frac{1}{m} \sum_{i = 1}^{m} y^{(i)} log(h_w(x^{(i)})) + (1 - y^{(i)})log(1 - h_w(x^{(i)})) + \frac{\lambda}{2m} \sum_{i=1}^{n} w_i^2\]
+
+\[w_n := w_n - \frac{\alpha}{m} \sum_{i=1}^{m} ((h_w(x^{(i)}) - y^{(i)})x_n^{(i)}) - \frac{\alpha \lambda}{m} w_n\]
+
+\[w = (X^T X + \lambda I)^{-1} X^T Y \text{ where $I$'s first column is 0}\]
+
+\begin{itemize}
+    \item $X^T X$ can be non-invertible
+\end{itemize}
+
+\section{10. Support Vector Machine}
 
 \begin{itemize}
     \item Idea: Maximize margin between positive and negative samples
