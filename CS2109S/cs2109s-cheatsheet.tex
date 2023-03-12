@@ -870,9 +870,36 @@
 
 \begin{itemize}
     \item Motivation: What if data is not linearly separable?
-    \item Idea: Map features to higher dimensions
-    \item Similarity function using gaussian can help construct hypothesis for non-linear
-    \item Think of x1, x2, x3 as f1, f2, f3, where fi is some feature mapping
+    \item Idea: Map features to higher dimensions (i.e. $\phi (x)$). High dim. is slow.
+    \item \keyword{Kernel Function}{Dot product between two points in transformed dim.}
+\end{itemize}
+
+\[K(u, v) = \phi(u) \cdot \phi(v)\]
+
+\begin{itemize}
+    \item Property: Getting $K(u, v)$ does not need $\phi(u)$ and $\phi(v)$
+    \item \keyword{Linear Kernel}{$K(u, v) = u \cdot v$}
+    \item \keyword{Polynomial Kernel}{$K(u, v) = (u \cdot v)^d$}
+    \item \keyword{Gaussian Kernel}{$K(u, v) = e^{- ||u - v||^2 / 2 \sigma ^2}$} (Note: $\phi(u)$ can map to infinite dimensions)
+\end{itemize}
+
+\subsubsection{Kernel Trick}
+
+\begin{itemize}
+    \item By manipulating SVM objective func. and decision rule, $x^{(i)} \cdot x^{(j)}$ emerges
+    \item If we map features (i.e. $\phi(x)$), can replace above term with kernel ($K(u, v)$)
+    \item Trick: No need to compute transformed features explicitly
+\end{itemize}
+
+\subsubsection{Similarity Features}
+
+\begin{itemize}
+    \item Idea: Compute new features based on proximity to landmarks
+    \item Given example $x$. $f_i = sim (x, l^{(i)}) = K(x, l^{(i)})$ where $K$ is gaussian kernel
+    \item Transformed x: $f = [f_0, f_1, \dots, f_m]^T$. Plug into obj. function.
+    \item Do feature scaling, else similarity value may be dominated by some features
+    \item Small $\sigma$ leads to overfitting. Large $\sigma$ leads to underfitting.
+    \item Not all similarity functions get valid kernels. Need to satisfy Mercer's Thm.
 \end{itemize}
 
 \end{multicols*}
