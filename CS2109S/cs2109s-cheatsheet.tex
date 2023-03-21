@@ -545,10 +545,10 @@
 
 \subsection{Gradient Descent}
 
-\begin{itemize}
+\begin{enumerate}
     \item Start at some $(w_0, w_1)$. Pick nearby point that reduces $J(w_0, w_1)$.
-    \item Algorithm: Repeat until convergence:
-\end{itemize}
+    \item Repeat until convergence:
+\end{enumerate}
 
 \[w_j := w_j - \alpha \frac{dJ(w_0, w_1, ...)}{dw_j}\]
 
@@ -845,6 +845,7 @@
     \item \keyword{Slack Variable}{($\xi$) Loss of misclassified point}
     \item Goal: Maximize margin and allow misclassification by tweaking $C$
     \begin{itemize}
+        \item Large $C$ overfits (Basically hard-margin). Small $C$ underfits.
         \item i.e. $\min (\frac{1}{2} ||w||^2 + C \sum_i \xi^{(i)}) \text{ s.t. } \forall i, \xi^{(i)} \geq 0 \text{ and } \hat{y}^{(i)}(w \cdot x^+ b) \geq 1 - \xi^{(i)} \rightarrow J(w) = C \sum_i \max(0, 1 - \hat{y}^{(i)} (w^T x^{(i)})) + \frac{1}{2} \sum_{i=1}^{n} w_{i}^{2}$
         \item Hard-margin: Must follow constraint. Soft-margin: Constraint is flexible with slack variable, so can define cost function to minimize.
     \end{itemize}
@@ -898,9 +899,73 @@
     \item Given example $x$. $f_i = sim (x, l^{(i)}) = K(x, l^{(i)})$ where $K$ is gaussian kernel
     \item Transformed x: $f = [f_0, f_1, \dots, f_m]^T$. Plug into obj. function.
     \item Do feature scaling, else similarity value may be dominated by some features
-    \item Small $\sigma$ leads to overfitting. Large $\sigma$ leads to underfitting.
+    \item Large $\sigma$ underfits (Smoother features). Small $\sigma$ overfits.
     \item Not all similarity functions get valid kernels. Need to satisfy Mercer's Thm.
 \end{itemize}
+
+\section{11. Neural Networks}
+
+\begin{itemize}
+    \item Idea: Models after human brain (Perceptron)
+\end{itemize}
+
+\begin{multicols*}{2}
+    
+    \includegraphics[scale=0.1]{perceptron}
+
+    \[\hat{y} = g(\sum_{i = 0}^{n} w_i x_i) \text{ where } x_0 = 1\]
+
+    \begin{itemize}
+        \item \keyword{Activation Function}{($g$) Non-linear function (e.g. Step func. $sgn(x)$, $\sigma(x)$, $tanh(x)$, $max(0, x)$)}
+    \end{itemize}
+
+\end{multicols*}
+
+\begin{itemize}
+    \item Supports both classification and regression. Depends on activation func.
+    \begin{itemize}
+        \item If activation function is linear, then regression
+    \end{itemize}
+\end{itemize}
+
+\subsection{Perceptron Learning Algorithm (PLA)}
+
+\begin{enumerate}
+    \item Initialize weights $w$
+    \item Select misclassified sample and update $w$. Repeat until convergence.
+\end{enumerate}
+
+\[w \leftarrow w + \eta (y - \hat{y})x\]
+
+\begin{itemize}
+    \item Why this works? Each update gets closer to correct classification
+    \item Different from GD!
+    \item Ends when no more misclassification. Thus, can select any linear model
+    \item Cannot converge on non-linear data
+\end{itemize}
+
+\subsection{How to actually use NN for non-linear data?}
+
+\begin{itemize}
+    \item How to apply on non-linear data? Have many layers
+    \begin{itemize}
+        \item 1 layer NN: Basically logistic regression
+        \item Multi-layer: 1 layer computes more complex features as next layer's input
+    \end{itemize}
+    \item How to determine weights? Gradient descent
+    \begin{itemize}
+        \item Many ways to calculate error. e.g. Can use MSE ($J(w) = \frac{1}{2} (\hat{y} - y)^2$).
+        \item Given $\hat{y} = g(f(x)); f(x) = w^T x$, $\frac{dJ(w)}{d w_i} = \frac{d J}{\hat{d y}} \frac{d\hat{y}}{df} \frac{df}{d w_i} = (\hat{y} - y)g'(f)x_i$
+    \end{itemize}
+\end{itemize}
+
+\[w_i := w_i - \eta (\hat{y} - y) g'(f) x_i\]
+
+\begin{itemize}
+    \item If activation function $g = \sigma(x)$, then $g'(x) = \sigma'(x) = \sigma(x)(1 - \sigma(x))$
+\end{itemize}
+
+\[w_i := w_i - \eta (\hat{y} - y) \hat{y} (1 - \hat{y}) x_i\]
 
 \end{multicols*}
 \end{document}
