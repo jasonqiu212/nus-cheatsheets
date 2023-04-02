@@ -746,11 +746,11 @@
     \includegraphics[scale=0.09]{high-variance} 
 
     \begin{itemize}
-        \item Observation: If overfit, more training samples does not help
+        \item Observation: If high bias, $J_{cv}$ and $J_{train}$ are equally bad (Small gap). If high variance, more samples does not help close the gap.
         \item How do we address overfitting?
         \begin{itemize}
             \item Reduce number of features
-            \item \keyword{Regularization}{Keep all features, but reduce corresponding weights}
+            \item \keyword{Regularization}{Keep features, but reduce respective weights}
         \end{itemize}
     \end{itemize}
 \end{multicols*}
