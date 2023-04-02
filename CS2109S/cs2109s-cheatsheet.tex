@@ -944,17 +944,13 @@
     \item Cannot converge on non-linear data
 \end{itemize}
 
-\subsection{How to actually use NN for non-linear data?}
+\subsection{Single-Layer Neural Network}
 
 \begin{itemize}
-    \item How to apply on non-linear data? Have many layers
-    \begin{itemize}
-        \item 1 layer NN: Basically logistic regression
-        \item Multi-layer: 1 layer computes more complex features as next layer's input
-    \end{itemize}
+    \item Basically logistic regression, if activation function is $\sigma(x)$
     \item How to determine weights? Gradient descent
     \begin{itemize}
-        \item Many ways to calculate error. e.g. Can use MSE ($J(w) = \frac{1}{2} (\hat{y} - y)^2$).
+        \item Many ways to calculate error. e.g. MSE ($J(w) = \frac{1}{2} (\hat{y} - y)^2$).
         \item Given $\hat{y} = g(f(x)); f(x) = w^T x$, $\frac{dJ(w)}{d w_i} = \frac{d J}{\hat{d y}} \frac{d\hat{y}}{df} \frac{df}{d w_i} = (\hat{y} - y)g'(f)x_i$
     \end{itemize}
 \end{itemize}
@@ -966,6 +962,35 @@
 \end{itemize}
 
 \[w_i := w_i - \eta (\hat{y} - y) \hat{y} (1 - \hat{y}) x_i\]
+
+\subsection{Forward Propagation}
+
+\begin{itemize}
+    \item How to fit non-linear data? Have many layers. 1 layer computes more complex features as next layer's input
+    \item Given layer $l$:
+    \begin{itemize}
+        \item Vector: Bolded, lower case. Matrix: Bolded, upper case
+    \end{itemize}
+\end{itemize}
+
+\[\mathbf{a}^{[l]} = \mathbf{g}^{[l]} (\mathbf{f}^{[l]})\]
+
+\[\mathbf{f}^{[l]} = (\mathbf{W}^{[l]})^T \mathbf{a}^{[l - 1]}\]
+
+\subsection{Backpropagation}
+
+\begin{itemize}
+    \item Big idea: Gradient descent with lots of chain rules
+    \item Goal: How to get $\frac{d \epsilon}{d \mathbf{w}}$?
+    \item E.g. $\frac{d \epsilon}{d w_2} = \frac{d \epsilon}{d \hat{y}} \frac{d \hat{y}}{d w_2}$ and $\frac{d \epsilon}{d w_1} = \frac{d \epsilon}{d \hat{y}} \frac{d \hat{y}}{d a_1} \frac{d a_1}{d w_1}$
+    \item But, very costly to do this for many layers. Can we vectorize it?
+\end{itemize}
+
+\[\hat{y}' (\mathbf{W}^{[l]}) = \frac{d \mathbf{f}^{[l]}}{d \mathbf{W}^{[l]}} (\delta^{[l]})^T = \mathbf{a}^{[l - 1]} (\delta^{[l]})^T\]
+
+\[\delta^{[l]} = \frac{d g^{[l]}}{d \mathbf{f}^{[l]}} \frac{d \mathbf{f}^{[l + 1]}}{d g^{[l]}} \delta^{[l + 1]} = g'^{[l]} (\mathbf{f}^{[l]}) \mathbf{W}^{[l + 1]} \delta^{[l + 1]}\]
+
+\section{12. Deep Learning}
 
 \end{multicols*}
 \end{document}
