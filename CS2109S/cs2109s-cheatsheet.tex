@@ -992,5 +992,77 @@
 
 \section{12. Deep Learning}
 
+\subsection{Convolutional Neural Network}
+
+\begin{itemize}
+    \item Idea: Exploit \textbf{spatial structure}. Map pixels using kernel to capture pixels as a group.
+    \item Kernel: Like a filter
+\end{itemize}
+
+\includegraphics[scale=0.1]{cnn-kernel}
+
+\begin{itemize}
+    \item \keyword{Padding}{Add blank pixels at the side to avoid losing edge pixels}
+    \item \keyword{Stride}{Skip some pixels by some number of steps for faster computation}
+    \item Let $\mathbf{W}^{[l]}$ be kernels, which is a 3D matrix since we apply lots of kernels
+\end{itemize}
+
+\[\mathbf{A}^{[l]} = g^{[l]} (\mathbf{W}^{[l]} * \mathbf{A}^{[l - 1]})\]
+
+\begin{itemize}
+    \item Each layer has many kernels (3D matrix)
+    \item Kernel input: 3D matrix of features maps (Each depth is from diff. kernel)
+    \item Kernel output: 2D matrix feature map
+    \item \keyword{Pooling}{Reduces dimensionality of feature maps to avoid number of layers exploding (E.g. Max-Pool, Average-Pool, Sum-Pool)}
+    \item \keyword{Softmax}{Gets distribution of probabilities to make final classification by taking max. (Similar to multi-class classification)}
+\end{itemize}
+
+\[P(y = j) = \frac{e^{x_j}}{\sum_{i = 0}^{k} e^{x_i}}\]
+
+\subsection{Recurrent Neural Network}
+
+\begin{itemize}
+    \item Idea: Exploit \textbf{temporal structure} by tracking past values
+    \item Not limited to time. As long as there exists a recurring relationship.
+    \item Try 1: Have many perceptrons running in parallel for each moment
+\end{itemize}
+
+\includegraphics[scale=0.1]{parallel-rnn}
+
+\begin{itemize}
+    \item Try 2: Use past perceptron in new one
+\end{itemize}
+
+\begin{multicols*}{2}
+    \includegraphics[scale=0.1]{rnn}
+
+    \[\mathbf{y}_t = g^{[y]}((\mathbf{W}^{[hy]})^T \mathbf{h}_t)\]
+    \[\mathbf{h}_t = g^{[h]}((\mathbf{W}^{[xh]})^T \mathbf{x}_t +\]
+    \[(\mathbf{W}^{[hh]})^T \mathbf{h}_{t-1})\]
+\end{multicols*}
+
+\subsection{Problems with Deep Learning}
+
+\subsubsection{1. Overfitting}
+
+\begin{itemize}
+    \item \keyword{Drop out}{Randomly set some activations to 0}
+    \item \keyword{Early stopping}{Stop training when $J_{test}$ and $J_{train}$ diverge}
+\end{itemize}
+
+\subsubsection{2. Vanishing/Exploding Gradient}
+
+\begin{itemize}
+    \item \keyword{Vanishing Gradient}{If many gradients $\approx 0$ in backpropagation, then weights won't change}
+    \item \keyword{Exploding Gradient}{Gradients keep getting larger, causing GD to diverge}
+    \item Solutions:
+    \begin{itemize}
+        \item Proper weight initialization
+        \item Use other activation functions (E.g. ReLU)
+        \item Batch normalization (Feature scaling)
+        \item Gradient clipping
+    \end{itemize}
+\end{itemize}
+
 \end{multicols*}
 \end{document}
