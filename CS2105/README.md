@@ -9,7 +9,7 @@ _Taken in AY22/23 Semester 2_
 </p>
 <p align="center"><em>Part 1 - Covers application layer, transport layer, and some of network layer</em></p>
 
-<p>
+<p align="center">
     <a href="cs2105-cheatsheet-part2.pdf" target="_blank">
         <img src="../docs/cs2105-img2.png" width="60%" alt="CS2105 Cheatsheet Part 2"/>
     </a>
