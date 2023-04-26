@@ -349,7 +349,7 @@
     \item Maps between IP address and name (e.g. yahoo.com)
     \item Implemented using distributed and hierarchical databases
     \item Application-layer protocol
-    \item Uses UDP
+    \item Uses UDP with port 53
     \item \keyword{Local DNS Name Server}{Local cache of name-to-address mapping. Forwards query into hierarchy.}
     \begin{itemize}
         \item \keyword{Time to Live}{(TTL) Cached mappings disappear after some time}
@@ -609,7 +609,7 @@
 
 \begin{itemize}
     \item Sender and receiver both have 2 buffers to send and receive data
-    \item \keyword{Maximum Segment Size}{(MSS) Usually 1460 bytes. Limited by max. transmission unit (MTU)}
+    \item \keyword{Maximum Segment Size}{(MSS) Limit imposed on data. Usually 1460 bytes. Limited by max. transmission unit (MTU)}
 \end{itemize}
 
 \subsection{Segment Structure}
@@ -647,7 +647,7 @@
         \item Cumulative ACKs
         \item Single retransmission timer
     \end{itemize}
-    \item Out-of-order packets not specified in TCP. Up to implementer.
+    \item Out-of-order packet buffering not specified in TCP. Up to implementer.
     \item Retransmits on timeout or 4 duplicate ACKs
 \end{itemize}
 
@@ -832,6 +832,7 @@
 \begin{itemize}
     \item Goal: Allow host to dynamically get its IP address from network server upon joining
     \item Can also return address of first-hop router for client, name/IP address of DNS server, and network mask
+    \item Application layer protocol
     \item Runs over UDP (Server port: 67, Client port: 68)
     \item Subnets without DHCP server can rely on routers to relay from another subnet
     \item Process:
