@@ -17,7 +17,7 @@ Condensed notes for some computer science and statistics courses I took at the N
 
 ## Can I customize the notes?
 
-**Yes!** Everyone has their unique way of learning and interpretation of academic concepts. Thus, please feel free to re-use the source code I provided.
+**Yes!** Everyone has their unique way of learning and interpretation of academic concepts. Thus, please feel free to modify the source code I provided.
 
 I use 2 methods to take notes:
 
@@ -36,3 +36,7 @@ I use 2 methods to take notes:
 2. Download [Obsidian](https://obsidian.md/).
 3. Copy the above files into your vault.
 4. Use Obsidian to edit and export the cheatsheet into a PDF file.
+
+## I found a mistake! Can I report it?
+
+**Yes please!** If you found a mistake (e.g. typo), please feel free to submit an issue on this GitHub repository. I will fix it asap!
