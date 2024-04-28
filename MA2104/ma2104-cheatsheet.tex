@@ -164,6 +164,41 @@
 
 \section{02. Functions of 2 Variables}
 
+\begin{itemize}
+    \item \keyword{Surface}{$z = f(x,y)$}
+    \item \keyword{Horizontal Trace}{(Level curve) Intersects with horizontal plane (i.e. $f(x,y) = k$)}
+    \item \keyword{Level Surface}{$f(x,y,z) = k$}
+    \item \keyword{Vertical Trace}{Intersections with vertical plane}
+    \item \keyword{Contour Plot}{$f(x,y) = k$ with lots of $k$'s}
+    \item \keyword{Quadric Surfaces}{$Ax^2+By^2+Cz^2+J = 0$ or $Ax^2+By^2+Iz=0$}
+    \begin{itemize}
+        \item \keyword{Cylinder}{There exists plane such that all planes parallel to plane intersect surface in some curve}
+    \end{itemize}
+\end{itemize}
+\includegraphics[scale=0.097]{quadric-surfaces.jpg}
+
+\begin{itemize}
+    \item \keyword{Limit}{$\lim_{(x,y) \rightarrow (a,b))} f(x,y) = L$}
+    \begin{itemize}
+        \item To show limit DNE: Show 2 paths with different limits
+        \item To show limit exists:
+        \begin{itemize}
+            \item Deduce from properties of limits or continuity
+            \begin{itemize}
+                \item $\lim_{}(\ldots \pm \ldots) = \lim_{} \ldots \pm \lim_{} \ldots$
+                \item $\lim_{}(\ldots)(\ldots) = \lim_{} (\ldots) \lim_{} (\ldots)$
+                \item $\lim_{}\frac{(\ldots)}{(\ldots)} = \frac{\lim_{} (\ldots)}{\lim_{} (\ldots)}$ where denom. $\neq 0$
+            \end{itemize}
+            \item \keyword{Squeeze Theorem}{$|f(x,y)-L| \leq g(x,y)$ and $\lim_{(x,y)\rightarrow(a,b)} g(x,y) = 0 \rightarrow \lim_{(x,y) \rightarrow (a,b) f(x,y) = L}$}
+        \end{itemize}
+    \end{itemize}
+    \item \keyword{Continuity}{$\lim_{(x,y) \rightarrow (a,b)} f(x,y) = f(a,b)$}
+    \begin{itemize}
+        \item If $f$ and $g$ are continuous, then $f \pm g$, $fg$, $\frac{f}{g}$, $f \circ g$ are all continuous
+        \item Polynomial, trigonometry, exponential, rational functions are all continuous, but not necessarily defined
+    \end{itemize}
+\end{itemize}
+
 \section{03. Derivative}
 
 \section{04. Gradient Vector}
