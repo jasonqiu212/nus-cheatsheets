@@ -88,7 +88,7 @@
         \parbox{0.8\linewidth}{
             \centering \textcolor{black}{
                 {\Large\textbf{MA2104}} \\
-                \normalsize{AY22/23 Sem 1}} \\
+                \normalsize{AY23/24 Sem 2}} \\
                 {\footnotesize \textcolor{gray}{github.com/jasonqiu212}}
         }
     }
@@ -253,9 +253,30 @@
 
 \begin{itemize}
     \item \keyword{Directional Derivative}{$D_u f(x,y) = \langle f_x,f_y \rangle \cdot u$ where $u$ is a unit vector}
+    \begin{itemize}
+        \item Which direction yields min/max. directional derivative? Max: $\nabla f$, Min: $-\nabla f$
+    \end{itemize}
 \end{itemize}
 
 \section{04. Gradient Vector}
+
+\begin{itemize}
+    \item \keyword{Gradient Vector}{$\nabla f(x,y) = \langle f_x, f_y \rangle$}
+    \begin{itemize}
+        \item $\nabla f(x_0,y_0)$ is normal to level curve $f(x,y)=k$ at $(x_0,y_0)$
+        \item $\nabla f(x_0,y_0,z_0)$ is normal to level surface $f(x,y,z)=k$ at $(x_0,y_0,z_0)$
+        \item Tangent plane to level surface: $\nabla f(x_0,y_0,z_0) \cdot \langle x-x_0,y-y_0,z-z_0 \rangle = 0$
+    \end{itemize}
+    \item \keyword{Extrema}{Point larger/smaller than surrounding points}
+    \begin{itemize}
+        \item $f$ has local min/max. at $(a,b)$ and $f_x (a,b)$, $f_y (a,b)$ exist $\rightarrow$ $f_x (a,b) = f_y (a,b) = 0$
+        \begin{itemize}
+            \item Converse: Not necessarily true (Saddle point)
+        \end{itemize}
+    \end{itemize}
+    \item \keyword{Critical Point}{$(a,b)$ where $f_x (a,b) = f_y (a,b) = 0$}
+    \item \keyword{Extreme Value Theorem}{$f(x,y)$ is continuous on closed and bounded set $D \subseteq \mathbb{R}^2 \rightarrow$ There exists absolute min/max.}
+\end{itemize}
 
 \end{multicols*}
 \end{document}
