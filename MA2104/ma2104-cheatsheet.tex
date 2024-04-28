@@ -201,6 +201,60 @@
 
 \section{03. Derivative}
 
+\begin{itemize}
+    \item \keyword{Partial Derivative}{Treat other variables as constants}
+    \begin{itemize}
+        \item $f_x = \frac{\partial f}{\partial x}$ $\quad$ $f_{xy} = \frac{\partial^2 f}{\partial y \partial x}$
+        \item Intuition: Slope in direction of x, y, ...
+        \item Clairaut's Theorem: $f_{xy} = f_{yx}$
+    \end{itemize}
+    \item \keyword{Tangent Plane}{Given surface $z=f(x,y)$:}
+    \begin{itemize}
+        \item $n = \langle 0,1,f_y \rangle \times \langle 1,0,f_x \rangle = \langle f_x (a,b), f_y (a,b), -1 \rangle$
+    \end{itemize}
+\end{itemize}
+\[
+    z = f(a,b) + f_x (a,b) (x-a) + f_y (a,b) (y-b)
+\]
+
+\begin{itemize}
+    \item \keyword{Differentiability}{$f_x$ and $f_y$ are continuous $\rightarrow$ $f$ is differentiable}
+    \begin{itemize}
+        \item $f$ is differentiable $\rightarrow$ $f_x$ and $f_y$ exists
+        \item $f$ is differentiable $\rightarrow$ $f$ is continuous
+        \item \ilkeyword{Increment} of $z=f(x,y)$ at $(a,b)$ - $\triangle{z} = f(a+\triangle{x},b+\triangle{y})-f(a,b)$
+        \item Formal definition: Can write $\triangle{z} = f_x(a,b)\triangle{x} + f_y(a,b)\triangle{y} + \epsilon_1 \triangle{x} + \epsilon_2 \triangle{y}$ where $\epsilon_1$  and $\epsilon_2$ are functions of $\triangle{x}$ and $\triangle{y}$ respectively that both approach 0 as $(\triangle{x}, \triangle{y}) \rightarrow (0,0)$
+        \begin{itemize}
+            \item $f_x\triangle{x} + f_y\triangle{y}$: Change in tangent plane
+        \end{itemize}
+    \end{itemize}
+    \item \keyword{Linear Approximation}{Given $z=f(x,y)$ is differentiable at $(a,b)$:}
+    \begin{itemize}
+        \item Let $\triangle{x}$, $\triangle{y}$ be small increments in $x,y$ from $(a,b)$
+        \item $\triangle{z} \approx f_x (a,b) \triangle{x} + f_y (a,b) \triangle{y}$
+    \end{itemize}
+\end{itemize}
+\[
+    f(a+\triangle{x},b+\triangle{y}) \approx f(a,b) + f_x (a,b) \triangle{x} + f_y (a,b) \triangle{y}
+\]
+
+\begin{itemize}
+    \item \keyword{Chain Rule}{$\frac{\partial z}{t_i} = \sum_{j=1}^{n} \frac{\partial z}{\partial x_j} \frac{\partial x_j}{\partial t_i}$}
+\end{itemize}
+
+\includegraphics[scale=0.05]{chain-rule.jpg}
+
+\begin{itemize}
+    \item \keyword{Implicit Differentiation}{Given $F(x,y,z) = 0$, $z$ is implicitly defined by $x$ and $y$}
+\end{itemize}
+\[
+    z_x = -\frac{F_x}{F_z} \quad z_y = -\frac{F_y}{F_z}
+\]
+
+\begin{itemize}
+    \item \keyword{Directional Derivative}{$D_u f(x,y) = \langle f_x,f_y \rangle \cdot u$ where $u$ is a unit vector}
+\end{itemize}
+
 \section{04. Gradient Vector}
 
 \end{multicols*}
