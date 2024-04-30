@@ -55,8 +55,11 @@
 
 % Custom command for keywords
 \definecolor{highlight}{RGB}{251,243,218}
-\newcommand{\keyword}[2][]{\sethlcolor{highlight}\hl{\textbf{#2}} #1 - }
+\newcommand{\keyword}[2]{\sethlcolor{highlight}\hl{\textbf{#1}} - #2}
 \newcommand{\ilkeyword}[1]{\sethlcolor{highlight}\hl{\textbf{#1}}}
+
+% Custom command for partial derivatives
+\newcommand{\partialderivative}[2][]{\frac{\partial #1}{\partial #2}}
 
 % Define colors and style for code
 \definecolor{codegreen}{rgb}{0,0.6,0}
@@ -204,7 +207,7 @@
 \begin{itemize}
     \item \keyword{Partial Derivative}{Treat other variables as constants}
     \begin{itemize}
-        \item $f_x = \frac{\partial f}{\partial x}$ $\quad$ $f_{xy} = \frac{\partial^2 f}{\partial y \partial x}$
+        \item $f_x = \partialderivative[f]{x}$ $\quad$ $f_{xy} = \frac{\partial^2 f}{\partial y \partial x}$
         \item Intuition: Slope in direction of x, y, ...
         \item Clairaut's Theorem: $f_{xy} = f_{yx}$
     \end{itemize}
@@ -239,7 +242,7 @@
 \]
 
 \begin{itemize}
-    \item \keyword{Chain Rule}{$\frac{\partial z}{t_i} = \sum_{j=1}^{n} \frac{\partial z}{\partial x_j} \frac{\partial x_j}{\partial t_i}$}
+    \item \keyword{Chain Rule}{$\partialderivative[z]{t_i} = \sum_{j=1}^{n} \partialderivative[z]{x_j} \partialderivative[x_j]{t_i}$}
 \end{itemize}
 
 \includegraphics[scale=0.05]{chain-rule.jpg}
@@ -289,6 +292,38 @@
 \section{09. Surface Integral}
 
 \section{10. Divergence and Curl}
+
+\begin{itemize}
+    \item \keyword{Divergence}{Scalar measure of net outflow of vector field}
+    \begin{itemize}
+        \item $\nabla = \langle \partialderivative[]{x},\partialderivative[]{y},\partialderivative[]{z} \rangle$
+        \item 3D: $\text{div} F = \partialderivative[P]{x} + \partialderivative[Q]{y} + \partialderivative[R]{z} = \nabla \cdot F$
+        \item 2D: $\text{div} F = \partialderivative[P]{x} + \partialderivative[Q]{y}$
+    \end{itemize}
+    \item \keyword{Gauss' Theorem}{Let $E$ be solid region where boundary surface $S$ is piecewise smooth with \textbf{positive} orientation. Let $F(x,y,z)$ be vector field whose component functions have \textbf{continuous partial derivatives} on an \textbf{open region} with $E$:}
+\end{itemize}
+\[
+    \iint_{S} \mathbf{F} \cdot d\mathbf{S} = \iiint_E \text{div} \mathbf{F} dV
+\]
+
+\begin{itemize}
+    \item \keyword{Curl}{Vector field measuring curling effect/circulation of underlying vector field}
+    \begin{itemize}
+        \item $\text{curl} F = \langle \partialderivative[R]{y} - \partialderivative[Q]{z},\partialderivative[P]{z} - \partialderivative[R]{x},\partialderivative[Q]{x} - \partialderivative[P]{y} \rangle = \nabla \times F$
+    \end{itemize}
+    \item \keyword{Stokes' Theorem}{Let $C$ be simple closed boundary curve of surface $S$ with unit normals $n$. Suppose that $C$ is \textbf{positively oriented with respect to $\mathbf{n}$}. Let $F$ be vector field whose components have continuous partial derivatives on open region that contains $S$:}
+\end{itemize}
+\[
+    \int_C \mathbf{F} \cdot d \mathbf{r} = \iint_S \text{curl} \mathbf{F} \cdot d \mathbf{S}
+\]
+
+\begin{itemize}
+    \item Positively oriented with respect to $\mathbf{n}$: Right hand rule (Thumb follows $\mathbf{n}$)
+    \item Stokes' Theorem is 3D version of Green's Theorem. Suppose $S$ is flat and lies in $xy$-plane with upward orientation $\mathbf{k}$:
+    \begin{itemize}
+        \item $\int_C \mathbf{F} \cdot d \mathbf{r} = \iint_S \text{curl} \mathbf{F} \cdot \mathbf{k} dA = \iint_S \partialderivative[Q]{x} - \partialderivative[P]{y} dA$
+    \end{itemize}
+\end{itemize}
 
 \section{11. Others}
 
