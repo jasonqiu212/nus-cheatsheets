@@ -322,6 +322,7 @@
         \item $\rho \geq 0$ $\quad$ $0 \leq \theta \leq 2\pi$ $\quad$ $0 \leq \phi \leq \pi$
         \item $\rho^2 = x^2 + y^2 + z^2$ $\quad$ $x = \rho \sin \phi \cos \theta$
         \item $y = \rho \sin \phi \sin \theta$ $\quad$ $z = \rho \cos \phi$
+        \item Good for spheres and cones
     \end{itemize}
 \end{itemize}
 \[
@@ -335,7 +336,121 @@
 
 \section{08. Line Integral}
 
+\begin{itemize}
+    \item \keyword{Scalar Field}{Scalar function $f(x,y)$ or $f(x,y,z)$}
+    \item \keyword{Vector Field}{Vector function $\mathbf{F}(x,y)$ or $\mathbf{F}(x,y,z)$}
+    \begin{itemize}
+        \item $\mathbf{F}(x,y,z) = \langle P(x,y,z),Q(x,y,z),R(x,y,z) \rangle$
+    \end{itemize}
+    \item\keyword{Line Integral over Scalar Field}{Suppose $C$ is parameterized by $\mathbf{r}(t) = \langle x(t),y(t) \rangle$ where $a \leq t \leq b$:}
+    \[
+        \int_{C} f(x,y) ds = \int_{a}^{b} f(x(t),y(t)) ||\mathbf{r}'(t)|| dt
+    \]
+    \begin{itemize}
+        \item Intuition: Area of curtain above $C$ and under $f(x,y)$
+        \item Independent of orientation
+        \item Parameterization of line segment from $\mathbf{r}_0$ to $\mathbf{r}_1$: $\mathbf{r}(t) = \mathbf{r}_0 + (\mathbf{r}_1 - \mathbf{r}_0)t$ where $0 \leq t \leq 1$
+        \item $\int_{C} f ds = \int_{C_1} fds + \cdots + \int_{C_n} fds$
+        \item 3D: If $C$ is parameterized by $\mathbf{r}(t) = \langle x(t),y(t),z(t) \rangle$ where $a \leq t \leq b$, then $\int_C f(x,y,z)ds = \int_{a}^{b} f(x(t),y(t),z(t)) ||\mathbf{r}'(t)||dt$
+    \end{itemize}
+    \item \keyword{Line Integral of Vector Field}{Let $\mathbf{F}$ be continuous vector field defined on smooth curve $C$ parameterized by $\mathbf{r}(t) = \langle x(t),y(t),z(t) \rangle$ where $a \leq t \leq b$:}
+    \[
+        \int_C \mathbf{F} \cdot d\mathbf{r} = \int_C \mathbf{F} \cdot \mathbf{T} ds = \int_{a}^{b} \mathbf{F}(x(t),y(t),z(t)) \cdot \mathbf{r}'(t)dt
+    \]
+    \begin{itemize}
+        \item Depends on orientation: $\int_{-C} \mathbf{F} \cdot d\mathbf{r} = -\int_{C} \mathbf{F} \cdot d\mathbf{r}$
+        \item Check if parameterization has same orientation!
+        \item Notation: $\int_{C} \mathbf{F} \cdot d\mathbf{r} = \int_{a}^{b} Px'(t)dt + \int_{a}^{b} Qy'(t)dt + \int_{a}^{b} Rz'(t)dt = \int_{a}^{b} Pdx + \int_{a}^{b} Qdy + \int_{a}^{b} Rdz$
+    \end{itemize}
+    \item \keyword{Conservative Vector Field}{Vector field $\mathbf{F}$ that can be written as $\mathbf{F} = \nabla f$ for some scalar function $f$}
+    \begin{itemize}
+        \item \keyword{Potential Function of $\mathbf{F}$}{$f$}
+        \item Test for Conservative Field in 2D Plane: Suppose $\mathbf{F}(x,y)=\langle P,Q \rangle$ is a vector field in an \textbf{open and simply-connected} (i.e. No holes) region $D$ and both $P$ and $Q$ have continuous partial derivatives on $D$:
+        \[
+            \partialderivative[Q]{x} = \partialderivative[P]{y} \leftrightarrow \mathbf{F} \text{ is conservative on } D
+        \]
+        \item Test for Conservative Field in 3D Space: Suppose $\mathbf{F}(x,y,z)=\langle P,Q,R \rangle$ is a vector field in an \textbf{open and simply-connected} region $D$ and both $P$, $Q$, and $R$ have continuous partial derivatives on $D$:
+        \[
+            \partialderivative[Q]{x} = \partialderivative[P]{y}, \partialderivative[R]{x} = \partialderivative[P]{z}, \partialderivative[R]{y} = \partialderivative[Q]{z} 
+        \]
+        \[
+            \leftrightarrow \mathbf{F} \text{ is conservative on } D
+        \]
+        \item If assumptions not met, cannot use these tests
+    \end{itemize}
+    \item \keyword{Fundamental Theorem for Line Integral}{Suppose $\mathbf{F}$ is a conservative vector field with potential function $f$ and $C$ is smooth curve from point $A$ to $B$:}
+    \[
+        \int_{C} \mathbf{F} \cdot d\mathbf{r} = \int_{C} \nabla f \cdot d\mathbf{r}= f(B) - f(A)
+    \]
+    \begin{itemize}
+        \item $\exists$ 2 paths with same initial and terminal points with diff. line integrals $\rightarrow$ Vector field is not conservative
+    \end{itemize}
+    \item \keyword{Green's Theorem}{Let $C$ be \textbf{positively oriented}, piecewise-smooth, \textbf{simple closed} (i.e. No intersection with itself, except at start and end) and let $D$ be region bounded by $C$. Let $\mathbf{F}(x,y) = \langle P,Q \rangle$. If $P$ and $Q$ have continuous partial derivatives on open region with $D$:}
+    \[
+        \int_{C} \mathbf{F} \cdot d\mathbf{r} = \int_{C} Pdx + Qdy = \iint_{D} (\partialderivative[Q]{x} - \partialderivative[P]{y})dA
+    \]
+    \begin{itemize}
+        \item Positive orientation: Counterclockwise
+        \item $\partial D$: Positively oriented boundary of region $D$
+        \item Area of Plane Region: Let $C$ be positively oriented, piecewise-smooth, simple closed curve in the plane and let $D$ be region bounded by $C$:
+        \[
+            A = \int_{C} xdy = -\int_{C} ydx = \frac{1}{2}(\int_{C} cdy - ydx)
+        \]
+    \end{itemize}
+\end{itemize}
+
 \section{09. Surface Integral}
+
+\begin{itemize}
+    \item \keyword{Parametric Surface}{Vector function $\mathbf{r}(u,v)=\langle x(u,v),y(u,v),z(u,v) \rangle$ parametrizes surface $S$ in $xyz$-space}
+    \begin{itemize}
+        \item How? $z = f(x,y)$, Cylindrical, Spherical Coord.
+    \end{itemize}
+    \item \keyword{Surface Integral of Scalar Field}{Let $S$ be parameterized by $\mathbf{r}(u,v) = \langle x(u,v),y(u,v),z(u,v) \rangle,(u,v) \in D$:}
+    \[
+        \iint_{S} f(x,y,z)dS 
+    \]
+    \[
+        = \iint_{D} f(x(u,v),y(u,v),z(u,v))||\mathbf{r}_u \times \mathbf{r}_v||dA
+    \]
+    \begin{itemize}
+        \item Tangent Plane of Surface: $\mathbf{r}_u (a,b) \times \mathbf{r}_v (a,b) \perp S$ at point $(x(a,b),y(a,b),z(a,b))$
+        \item Special case: If $S$ is surface $z=g(x,y)$, then $\mathbf{r}_x \times \mathbf{r}_y=\langle -g_x, -g_y, 1 \rangle$ and:
+        \[
+            \iint_{S} f(x,y,z) dS 
+        \]
+        \[
+            = \iint_{D} f(x,y,g(x,y)) (\sqrt{g_x^2 + g_y^2 + 1})dA
+        \]
+        \item Surface Area: $A(S) = \iint_{S} 1 dS = \iint_{D} ||\mathbf{r}_u \times \mathbf{r}_v|| dA$
+    \end{itemize}
+    \item \keyword{Oriented Surface}{Possible to define unit normal vector $\mathbf{n}$ at each point $(x,y,z)$ not on boundary such that $\mathbf{n}$ is continuous function of $(x,y,z)$}
+    \begin{itemize}
+        \item All orientable surfaces have 2 orientations
+        \item \ilkeyword{Open Surface}
+        \item \keyword{Closed Surface}{No boundary (e.g. Sphere, Donut)}
+        \begin{itemize}
+            \item Pos. orientation: Outward, Neg. orien.: Inward
+        \end{itemize}
+        \item $\mathbf{n} = \frac{\mathbf{r}_u \times \mathbf{r}_v}{||\mathbf{r}_u \times \mathbf{r}_v||}$ Opposite orientation: $-\mathbf{n}$
+    \end{itemize}
+    \item \keyword{Surface Integral of Vector Field}{(aka \ilkeyword{Flux} of $\mathbf{F}$ across $S$) Given 3D vector field $\mathbf{F}(x,y,z) = \langle P,Q,R \rangle$ and surface $S$ with given orientation $\mathbf{n}$:}
+    \[
+        \iint_{S} \mathbf{F} \cdot d\mathbf{S} = \iint_{S} \mathbf{F} \cdot \mathbf{n} dS = \iint_{D} \mathbf{F} \cdot (\mathbf{r}_u \times \mathbf{r}_v) dA
+    \]
+    \begin{itemize}
+        \item Check orientation $\mathbf{n}$ of $S$ in qn. is given by $\frac{\mathbf{r}_u \times \mathbf{r}_v}{||\mathbf{r}_u \times \mathbf{r}_v||}$
+        \item Special case: If $S$ is surface $z=g(x,y)$, then flux across $S$ in upward orientation:
+        \[
+            \iint_{S} \mathbf{F} \cdot d\mathbf{S} = \iint_{D} (-P g_x - Q g_y + R)dA
+        \]
+        \item Special case: Downward orientation
+        \[
+            \iint_{S} \mathbf{F} \cdot d\mathbf{S} = \iint_{D} (P g_x + Q g_y - R)dA
+        \]
+        \item Tips: Flat surfaces have constant $\mathbf{n}$, Not all components of $\mathbf{n}$ need to be computed, Plug in constraints when parameterizing $\mathbf{F}$ to simplify problem
+    \end{itemize}
+\end{itemize}
 
 \section{10. Divergence and Curl}
 
