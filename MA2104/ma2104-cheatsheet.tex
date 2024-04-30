@@ -209,7 +209,7 @@
     \begin{itemize}
         \item $f_x = \partialderivative[f]{x}$ $\quad$ $f_{xy} = \frac{\partial^2 f}{\partial y \partial x}$
         \item Intuition: Slope in direction of x, y, ...
-        \item Clairaut's Theorem: $f_{xy} = f_{yx}$
+        \item \keyword{Clairaut's Theorem}{$f_{xy} = f_{yx}$}
     \end{itemize}
     \item \keyword{Tangent Plane}{Given surface $z=f(x,y)$:}
     \begin{itemize}
@@ -257,7 +257,7 @@
 \begin{itemize}
     \item \keyword{Directional Derivative}{$D_u f(x,y) = \langle f_x,f_y \rangle \cdot u$ where $u$ is a unit vector}
     \begin{itemize}
-        \item Which direction yields min/max. directional derivative? Max: $\nabla f$, Min: $-\nabla f$
+        \item Which direction yields min/max. directional derivative? Min: $-\nabla f$, Max: $\nabla f$
     \end{itemize}
 \end{itemize}
 
@@ -283,7 +283,53 @@
 
 \section{05. Double Integral}
 
+\begin{itemize}
+    \item \keyword{Fubini's Theorem}{$\int_{a}^{b} \int_{c}^{d} f dy dx = \int_{c}^{d} \int_{a}^{b} f dx dy$}
+    \item Type I: If $D = \{(x,y):a \leq x \leq b, g_1(x) \leq y \leq g_2(x)\}$, then $\iint_D f dA = \int_{a}^{b} \int_{g_1(x)}^{g_2(x)} f dy dx$
+    \item Type II: If $D = \{(x,y):c \leq y \leq d, h_1(y) \leq x \leq h_2(y)\}$, then $\iint_D f dA = \int_{c}^{d} \int_{h_1(y)}^{h_2(y)} f dx dy$
+    \item Draw vertical/hor. arrows. Bounded area cannot split.
+    \item $\iint_D f dA = \iint_{D_1} f dA + \cdots + \iint_{D_n} f dA$
+    \item Area of plane region: $A(D) = \iint_D 1 dA$
+    \item \keyword{Polar Coordinates}{$(r, \theta)$ where $r$ is distance from origin to point and $\theta$ is angle from positive $x$-axis}
+    \begin{itemize}
+        \item $x = r \cos \theta$ $\quad$ $y = r \sin \theta$ $\quad$ $r = \sqrt{x^2 + y^2}$
+        \item $\theta = \tan^{-1} \frac{y}{x}$
+    \end{itemize}
+\end{itemize}
+\[
+    \iint_R f(x,y) dA = \int_{\alpha}^{\beta} \int_{a}^{b} f(r \cos \theta, r \sin \theta) \textcolor{red}{(r)} dr d\theta
+\]
+
 \section{06. Triple Integral}
+
+\begin{itemize}
+    \item Type I: If $E = \{(x,y,z):(x,y \in D, u_1(x,y) \leq z \leq u_2(x,y))\}$ where $D$ is projection of $E$ onto $xy$-plane, then $\iint_E f dV = \iint_D (\int_{u_1(x,y)}^{u_2(x,y)} f dz)dA$
+    \item Type II: If $E = \{(x,y,z):(y,z \in D, u_1(y,z) \leq z \leq u_2(y,z))\}$ where $D$ is projection of $E$ onto $yz$-plane, then $\iint_E f dV = \iint_D (\int_{u_1(y,z)}^{u_2(y,z)} f dx)dA$
+    \item Type III: If $E = \{(x,y,z):(x,z \in D, u_1(x,z) \leq z \leq u_2(x,z))\}$ where $D$ is projection of $E$ onto $xz$-plane, then $\iint_E f dV = \iint_D (\int_{u_1(x,z)}^{u_2(x,z)} f dy)dA$
+    \item Volume of solid: $V = \iint_E 1 dV$
+    \item \keyword{Cylindrical Coordinates}{$(r,\theta,z)$ where $z$ is distance from $xy$-plane to $P$}
+\end{itemize}
+\[
+    \iiint_E f(x,y,z) dV =  \int_{\alpha}^{\beta} \int_{h_1(\theta)}^{h_2(\theta)} \int_{u_1(r \cos \theta, r \sin \theta)}^{u_2(r \cos \theta, r \sin \theta)} 
+\]
+\[
+    f(r \cos \theta, r\sin\theta,z)\textcolor{red}{(r)} dz dr d\theta
+\]
+
+\begin{itemize}
+    \item \keyword{Spherical Coordinates}{$(\rho, \theta, \phi)$ where $\rho$ is distance from origin to $P$ and $\phi$ is angle from positive $z$-axis}
+    \begin{itemize}
+        \item $\rho \geq 0$ $\quad$ $0 \leq \theta \leq 2\pi$ $\quad$ $0 \leq \phi \leq \pi$
+        \item $\rho^2 = x^2 + y^2 + z^2$ $\quad$ $x = \rho \sin \phi \cos \theta$
+        \item $y = \rho \sin \phi \sin \theta$ $\quad$ $z = \rho \cos \phi$
+    \end{itemize}
+\end{itemize}
+\[
+    \iiint_E f(x,y,z)dV = \int_{c}^{d} \int_{\alpha}^{\beta} \int_{a}^{b} 
+\]
+\[
+    f(\rho \sin \phi \cos \theta, \rho \sin \phi \sin \theta, \rho \cos \phi)\textcolor{red}{(\rho^2 \sin \phi)} d\rho d\theta d\phi
+\]
 
 \section{07. Change of Variables}
 
