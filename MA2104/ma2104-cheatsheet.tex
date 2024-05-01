@@ -279,6 +279,23 @@
     \end{itemize}
     \item \keyword{Critical Point}{$(a,b)$ where $f_x (a,b) = f_y (a,b) = 0$}
     \item \keyword{Extreme Value Theorem}{$f(x,y)$ is continuous on closed and bounded set $D \subseteq \mathbb{R}^2 \rightarrow$ There exists absolute min/max.}
+    \item To find absolute min/max.:
+    \begin{enumerate}
+        \item Find values of $f$ at critical points of $D$
+        \item Find extreme values of $f$ on boundary of $D$
+    \end{enumerate}
+    \item \keyword{Lagrange Multiplier}{Find extrema of $f$ with constraint $g(x,y) = k$}
+    \begin{itemize}
+        \item Suppose min/max. of $f$ with constraint $g(x,y)=k$ occurs at $(x_0,y_0)$:
+        \[
+            \nabla f(x_0,y_0)=\lambda \nabla g(x_0,y_0)
+        \]
+        \item Suppose min/max. of $f$ with constraint $g(x,y,z)=k$ occurs at $(x_0,y_0,z_0)$:
+        \[
+            \nabla f(x_0,y_0,z_0)=\lambda \nabla g(x_0,y_0,z_0)
+        \]
+        \item If there are 2 constraints $g(x,y,z)=c_1$ and $h(x,y,z)=c_2$ (i.e. Curve), then $\nabla f = \lambda \nabla g + \mu \nabla h$
+    \end{itemize}
 \end{itemize}
 
 \section{05. Double Integral}
@@ -333,6 +350,52 @@
 \]
 
 \section{07. Change of Variables}
+
+\begin{itemize}
+    \item \keyword{Plane Transformation}{$T: (u,v) \mapsto (x,y)$ given by $x=x(u,v)$ and $y=y(u,v)$}
+    \begin{itemize}
+        \item To get image $R$ under $T$, apply $T$ to boundary
+    \end{itemize}
+    \item \ilkeyword{Jacobian} of transformation $T$ given by $x=x(u,v)$ and $y=y(u,v)$:
+    \[
+        \partialderivative[(x,y)]{(u,v)} = \begin{vmatrix}
+            \partialderivative[x]{u} & \partialderivative[x]{v} \\ 
+            \partialderivative[y]{u} & \partialderivative[y]{v} \\ 
+        \end{vmatrix}
+        = \partialderivative[x]{u}\partialderivative[y]{v} - \partialderivative[x]{v}\partialderivative[y]{u}
+    \]
+    \item Change of Variable in Double Integral:
+    \[
+        \iint_{R} f(x,y) dA = \iint_{S} f(x(u,v),y(u,v)) |\partialderivative[(x,y)]{(u,v)}| dudv
+    \]
+    \begin{itemize}
+        \item $dA$ is image of rectangle $dudv$ under $T$
+    \end{itemize}
+    \item 3D:
+    \[
+        \partialderivative[(x,y,z)]{(u,v,w)} = \begin{vmatrix}
+            \partialderivative[x]{u} & \partialderivative[x]{v} & \partialderivative[x]{w} \\ 
+            \partialderivative[y]{u} & \partialderivative[y]{v} & \partialderivative[y]{w} \\ 
+            \partialderivative[w]{u} & \partialderivative[w]{v} & \partialderivative[z]{w} \\ 
+        \end{vmatrix}
+    \]
+    \[
+        \iiint_{R} f(x,y,z) dA = \iiint_{S} f(x(u,v,w),
+    \]
+    \[
+        y(u,v,w),z(u,v,w)) |\partialderivative[(x,y,z)]{(u,v,w)}| dudvdw
+    \]
+    \item Tips:
+    \begin{itemize}
+        \item Choice of $T$ important! See from graph or integral
+        \begin{itemize}
+            \item Circle: $x=r\cos \theta$ and $y = r\sin \theta$
+            \item Ellipse: $x=a r \cos \theta$ and $y = b r \sin \theta$
+        \end{itemize}
+        \item Find new bounds after $T$ and get Jacobian
+        \item When finding Jacobian, if expressing $x,y$ with $u,v$ is difficult, can use $\partialderivative[(x,y)]{(u,v)} \partialderivative[(u,v)]{(x,y)} = 1$
+    \end{itemize}
+\end{itemize}
 
 \section{08. Line Integral}
 
@@ -471,18 +534,24 @@
     \item \keyword{Curl}{Vector field measuring curling effect/circulation of underlying vector field}
     \begin{itemize}
         \item $\text{curl} F = \langle \partialderivative[R]{y} - \partialderivative[Q]{z},\partialderivative[P]{z} - \partialderivative[R]{x},\partialderivative[Q]{x} - \partialderivative[P]{y} \rangle = \nabla \times F$
+        \item $\mathbf{F}$ is conservative $\rightarrow$ $\text{curl} \mathbf{F} = \text{curl} \nabla f = 0$
+        \item $\text{div} (\text{curl} (\mathbf{F})) = 0$
     \end{itemize}
     \item \keyword{Stokes' Theorem}{Let $C$ be simple closed boundary curve of surface $S$ with unit normals $n$. Suppose that $C$ is \textbf{positively oriented with respect to $\mathbf{n}$}. Let $F$ be vector field whose components have continuous partial derivatives on open region that contains $S$:}
-\end{itemize}
-\[
-    \int_C \mathbf{F} \cdot d \mathbf{r} = \iint_S \text{curl} \mathbf{F} \cdot d \mathbf{S}
-\]
-
-\begin{itemize}
-    \item Positively oriented with respect to $\mathbf{n}$: Right hand rule (Thumb follows $\mathbf{n}$)
-    \item Stokes' Theorem is 3D version of Green's Theorem. Suppose $S$ is flat and lies in $xy$-plane with upward orientation $\mathbf{k}$:
+    \[
+        \int_C \mathbf{F} \cdot d \mathbf{r} = \iint_S \text{curl} \mathbf{F} \cdot d \mathbf{S}
+    \]
     \begin{itemize}
-        \item $\int_C \mathbf{F} \cdot d \mathbf{r} = \iint_S \text{curl} \mathbf{F} \cdot \mathbf{k} dA = \iint_S \partialderivative[Q]{x} - \partialderivative[P]{y} dA$
+        \item Positively oriented with respect to $\mathbf{n}$: Right hand rule (Thumb follows $\mathbf{n}$)
+        \item Stokes' Theorem is 3D version of Green's Theorem. Suppose $S$ is flat and lies in $xy$-plane with upward orientation $\mathbf{k}$:
+        \[
+            \int_C \mathbf{F} \cdot d \mathbf{r} = \iint_S \text{curl} \mathbf{F} \cdot \mathbf{k} dA = \iint_S \partialderivative[Q]{x} - \partialderivative[P]{y} dA
+        \]
+        \item If $S_1$ and $S_2$ are oriented surfaces with same oriented boundary curve $C$ and both satisfy assumptions of Stokes' Theorem: 
+        \[
+            \iint_{S_1} \text{curl} \mathbf{F} \cdot d\mathbf{S} = \int_{C} \mathbf{F} \cdot dr = \iint_{S_2} \text{curl} \mathbf{F} \cdot d\mathbf{S} 
+        \]
+        \item Flux of $\text{curl} \mathbf{F}$ over closed surface is 0
     \end{itemize}
 \end{itemize}
 
