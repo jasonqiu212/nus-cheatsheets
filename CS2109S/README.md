@@ -2,16 +2,18 @@
 
 _Taken in AY22/23 Semester 2_
 
+## Midterm Cheatsheet
+
 <p align="center">
     <a href="cs2109s-midterm-cheatsheet.pdf" target="_blank">
         <img src="../docs/cs2109s-img1.png" width="60%" alt="CS2109S Midterm Cheatsheet"/>
     </a>
 </p>
-<p align="center"><em>Midtern Cheatsheet</em></p>
+
+## Final Cheatsheet
 
 <p align="center">
     <a href="cs2109s-final-cheatsheet.pdf" target="_blank">
         <img src="../docs/cs2109s-img2.png" width="60%" alt="CS2109S Final Cheatsheet"/>
     </a>
 </p>
-<p align="center"><em>Final Cheatsheet</em></p>

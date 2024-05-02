@@ -2,19 +2,25 @@
 
 _Taken in AY22/23 Semester 2_
 
+## Part 1
+
+- Covers application layer, transport layer, and some of network layer
+
 <p align="center">
     <a href="cs2105-cheatsheet.pdf" target="_blank">
         <img src="../docs/cs2105-img1.png" width="60%" alt="CS2105 Cheatsheet Part 1"/>
     </a>
 </p>
-<p align="center"><em>Part 1 - Covers application layer, transport layer, and some of network layer</em></p>
+
+## Part 2
+
+- Covers rest of network layer, link layer, network security, and multimedia networking
 
 <p align="center">
     <a href="cs2105-cheatsheet-part2.pdf" target="_blank">
         <img src="../docs/cs2105-img2.png" width="60%" alt="CS2105 Cheatsheet Part 2"/>
     </a>
 </p>
-<p align="center"><em>Part 2 - Covers rest of network layer, link layer, network security, and multimedia networking</em></p>
 
 ## Summary of Internet Protocol Stack
 
