@@ -141,7 +141,7 @@
 \includegraphics[scale=0.05]{volume-of-parallelepiped.jpg}
 
 \begin{itemize}
-    \item \keyword{Line}{$\langle x, y, z \rangle = \langle x_0, y_0, z_0 \rangle> + \langle a, b, c \rangle t$}
+    \item \keyword{Line}{$\langle x, y, z \rangle = \langle x_0, y_0, z_0 \rangle + \langle a, b, c \rangle t$}
     \begin{itemize}
         \item 2D: Either parallel or intersecting
         \item 3D: Either parallel, intersecting, or skew
@@ -154,7 +154,7 @@
     r'(a) = \lim_{\triangle{t} \rightarrow 0} \frac{r(a + \triangle{t}) - r(a)}{\triangle{t}} = \langle f'(a),g'(a),h'(a) \rangle
 \]
 \begin{itemize}
-    \item $\frac{d}{dt}(r(t) + s(t)) = \frac{d}{dt} r(t) + \frac{d}{dt} s(t)$
+    \item $\frac{d}{dt}(r(t) + s(t)) = r'(t) + s'(t)$
     \item $\frac{d}{dt}(r(t)s(t)) = r'(t)s(t)+r(t)s'(t)$
     \item $\frac{d}{dt}(r(t) \cdot s(t)) = r'(t) \cdot s(t)+r(t) \cdot s'(t)$
     \item $\frac{d}{dt}(r(t) \times s(t)) = r'(t) \times s(t)+r(t) \times s'(t)$
@@ -170,7 +170,9 @@
 \begin{itemize}
     \item \keyword{Surface}{$z = f(x,y)$}
     \item \keyword{Horizontal Trace}{(Level curve) Intersects with horizontal plane (i.e. $f(x,y) = k$)}
-    \item \keyword{Level Surface}{$f(x,y,z) = k$}
+    \begin{itemize}
+        \item \keyword{Level Surface}{$f(x,y,z) = k$}
+    \end{itemize}
     \item \keyword{Vertical Trace}{Intersections with vertical plane}
     \item \keyword{Contour Plot}{$f(x,y) = k$ with lots of $k$'s}
     \item \keyword{Quadric Surfaces}{$Ax^2+By^2+Cz^2+J = 0$ or $Ax^2+By^2+Iz=0$}
@@ -192,7 +194,7 @@
                 \item $\lim_{}(\ldots)(\ldots) = \lim_{} (\ldots) \lim_{} (\ldots)$
                 \item $\lim_{}\frac{(\ldots)}{(\ldots)} = \frac{\lim_{} (\ldots)}{\lim_{} (\ldots)}$ where denom. $\neq 0$
             \end{itemize}
-            \item \keyword{Squeeze Theorem}{$|f(x,y)-L| \leq g(x,y)$ and $\lim_{(x,y)\rightarrow(a,b)} g(x,y) = 0 \rightarrow \lim_{(x,y) \rightarrow (a,b) f(x,y) = L}$}
+            \item \keyword{Squeeze Theorem}{$|f(x,y)-L| \leq g(x,y)$ and $\lim_{(x,y)\rightarrow(a,b)} g(x,y) = 0 \rightarrow \lim_{(x,y) \rightarrow (a,b)} f(x,y) = L$}
         \end{itemize}
     \end{itemize}
     \item \keyword{Continuity}{$\lim_{(x,y) \rightarrow (a,b)} f(x,y) = f(a,b)$}
@@ -212,17 +214,18 @@
         \item \keyword{Clairaut's Theorem}{$f_{xy} = f_{yx}$}
     \end{itemize}
     \item \keyword{Tangent Plane}{Given surface $z=f(x,y)$:}
-    \begin{itemize}
-        \item $n = \langle 0,1,f_y \rangle \times \langle 1,0,f_x \rangle = \langle f_x (a,b), f_y (a,b), -1 \rangle$
-    \end{itemize}
+    \[
+        \mathbf{n} = \langle 0,1,f_y \rangle \times \langle 1,0,f_x \rangle = \langle f_x (a,b), f_y (a,b), -1 \rangle
+    \]
+    \[
+        z = f(a,b) + f_x (a,b) (x-a) + f_y (a,b) (y-b)
+    \]
 \end{itemize}
-\[
-    z = f(a,b) + f_x (a,b) (x-a) + f_y (a,b) (y-b)
-\]
 
 \begin{itemize}
-    \item \keyword{Differentiability}{$f_x$ and $f_y$ are continuous $\rightarrow$ $f$ is differentiable}
+    \item \keyword{Differentiability}{$f$ can be approx. by a tangent plane}
     \begin{itemize}
+        \item $f_x$ and $f_y$ are continuous $\rightarrow$ $f$ is differentiable
         \item $f$ is differentiable $\rightarrow$ $f_x$ and $f_y$ exists
         \item $f$ is differentiable $\rightarrow$ $f$ is continuous
         \item \ilkeyword{Increment} of $z=f(x,y)$ at $(a,b)$ - $\triangle{z} = f(a+\triangle{x},b+\triangle{y})-f(a,b)$
@@ -321,9 +324,9 @@
 
 \begin{itemize}
     \item Type I: If $E = \{(x,y,z):(x,y \in D, u_1(x,y) \leq z \leq u_2(x,y))\}$ where $D$ is projection of $E$ onto $xy$-plane, then $\iint_E f dV = \iint_D (\int_{u_1(x,y)}^{u_2(x,y)} f dz)dA$
-    \item Type II: If $E = \{(x,y,z):(y,z \in D, u_1(y,z) \leq z \leq u_2(y,z))\}$ where $D$ is projection of $E$ onto $yz$-plane, then $\iint_E f dV = \iint_D (\int_{u_1(y,z)}^{u_2(y,z)} f dx)dA$
-    \item Type III: If $E = \{(x,y,z):(x,z \in D, u_1(x,z) \leq z \leq u_2(x,z))\}$ where $D$ is projection of $E$ onto $xz$-plane, then $\iint_E f dV = \iint_D (\int_{u_1(x,z)}^{u_2(x,z)} f dy)dA$
-    \item Volume of solid: $V = \iint_E 1 dV$
+    \item Type II: If $E = \{(x,y,z):(y,z \in D, u_1(y,z) \leq x \leq u_2(y,z))\}$ where $D$ is projection of $E$ onto $yz$-plane, then $\iint_E f dV = \iint_D (\int_{u_1(y,z)}^{u_2(y,z)} f dx)dA$
+    \item Type III: If $E = \{(x,y,z):(x,z \in D, u_1(x,z) \leq y \leq u_2(x,z))\}$ where $D$ is projection of $E$ onto $xz$-plane, then $\iint_E f dV = \iint_D (\int_{u_1(x,z)}^{u_2(x,z)} f dy)dA$
+    \item Volume of solid: $V = \iiint_E 1 dV$
     \item \keyword{Cylindrical Coordinates}{$(r,\theta,z)$ where $z$ is distance from $xy$-plane to $P$}
 \end{itemize}
 \[
@@ -366,7 +369,7 @@
     \]
     \item Change of Variable in Double Integral:
     \[
-        \iint_{R} f(x,y) dA = \iint_{S} f(x(u,v),y(u,v)) |\partialderivative[(x,y)]{(u,v)}| dudv
+        \iint_{R} f(x,y) dA = \iint_{S} f(x(u,v),y(u,v)) \begin{vmatrix}\partialderivative[(x,y)]{(u,v)}\end{vmatrix} dudv
     \]
     \begin{itemize}
         \item $dA$ is image of rectangle $dudv$ under $T$
@@ -383,7 +386,7 @@
         \iiint_{R} f(x,y,z) dA = \iiint_{S} f(x(u,v,w),
     \]
     \[
-        y(u,v,w),z(u,v,w)) |\partialderivative[(x,y,z)]{(u,v,w)}| dudvdw
+        y(u,v,w),z(u,v,w)) \begin{vmatrix}\partialderivative[(x,y,z)]{(u,v,w)}\end{vmatrix} dudvdw
     \]
     \item Tips:
     \begin{itemize}
@@ -457,7 +460,7 @@
         \item $\partial D$: Positively oriented boundary of region $D$
         \item Area of Plane Region: Let $C$ be positively oriented, piecewise-smooth, simple closed curve in the plane and let $D$ be region bounded by $C$:
         \[
-            A = \int_{C} xdy = -\int_{C} ydx = \frac{1}{2}(\int_{C} cdy - ydx)
+            A = \int_{C} xdy = -\int_{C} ydx = \frac{1}{2}(\int_{C} xdy - ydx)
         \]
     \end{itemize}
 \end{itemize}
@@ -495,7 +498,7 @@
         \begin{itemize}
             \item Pos. orientation: Outward, Neg. orien.: Inward
         \end{itemize}
-        \item $\mathbf{n} = \frac{\mathbf{r}_u \times \mathbf{r}_v}{||\mathbf{r}_u \times \mathbf{r}_v||}$ Opposite orientation: $-\mathbf{n}$
+        \item $\mathbf{n} = \frac{\mathbf{r}_u \times \mathbf{r}_v}{||\mathbf{r}_u \times \mathbf{r}_v||}$ (Unit vec.) Opposite orientation: $-\mathbf{n}$
     \end{itemize}
     \item \keyword{Surface Integral of Vector Field}{(aka \ilkeyword{Flux} of $\mathbf{F}$ across $S$) Given 3D vector field $\mathbf{F}(x,y,z) = \langle P,Q,R \rangle$ and surface $S$ with given orientation $\mathbf{n}$:}
     \[
@@ -512,6 +515,9 @@
             \iint_{S} \mathbf{F} \cdot d\mathbf{S} = \iint_{D} (P g_x + Q g_y - R)dA
         \]
         \item Tips: Flat surfaces have constant $\mathbf{n}$, Not all components of $\mathbf{n}$ need to be computed, Plug in constraints when parameterizing $\mathbf{F}$ to simplify problem
+        \begin{itemize}
+            \item If using spherical coordinates ($r(\theta, \phi)$) to parametrize sphere of radius $\phi$: $r_\phi \times r_\theta = \langle \phi^2 \sin^2 \phi \cos \theta, \phi^2 \sin^2 \phi \sin \theta, \phi^2 \sin \phi \cos \phi \rangle$ (Outwards)
+        \end{itemize}
     \end{itemize}
 \end{itemize}
 
@@ -557,8 +563,10 @@
 
 \section{11. Others}
 
-$\sin^2 \theta = \frac{1-\cos 2\theta}{2}$
-$\cos^2 \theta = \frac{1+\cos 2\theta}{2}$
+\begin{itemize}
+    \item $\sin^2 \theta = \frac{1-\cos 2\theta}{2}$ $\quad$ $\cos^2 \theta = \frac{1+\cos 2\theta}{2}$
+    \item $\int udv = uv - \int vdu$
+\end{itemize}
 
 \end{multicols*}
 \end{document}
