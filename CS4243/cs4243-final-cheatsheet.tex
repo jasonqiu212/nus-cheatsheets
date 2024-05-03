@@ -104,7 +104,7 @@
     \begin{enumerate}
         \item Given $K$, randomly initialize the cluster centers $c_1, \ldots, c_K$
         \item For each point $p_i$, find the closest $c_j$ and put $p_i$ into cluster $j$
-        \item Given points in each cluster, set $c_j$ to be mean of points in cluster $j$
+        \item Set $c_j$ to be mean of points in cluster $j$
         \item Repeat, if $c_j$ have changed up to some threshold
     \end{enumerate}
     \begin{itemize}
@@ -165,6 +165,41 @@
 \end{itemize}
 
 \section{06. Texture}
+
+\begin{itemize}
+    \item \keyword{Texture}{Pattern with repeating elements}
+    \item \keyword{Filter Bank}{Measures variety of structures in local neighborhood and generates multi-dimensional features}
+    \begin{itemize}
+        \item Goal: How to represent texture?
+        \item Idea: Apply filters with small windows to generate statistics that summarize local patterns. Dist. in feature space bet. windows $\rightarrow$ Pixel's texture similarity
+        \item $d$ filters $\rightarrow$ $d$-dimensional feature vector
+        \item Choosing window size: Try many sizes and look for one where statistic does not change much
+        \item Choose filters in different scales and orientations (to solve window size problem)
+        \item \keyword{Gabor Filter}{Represent filter banks mathematically by combining sinusoids with exp. (Gaussian) envelope}
+    \end{itemize}
+    \item \keyword{Texton}{Characterizes texture by replacing each pixel with integer representing \textbf{texture type}}
+    \begin{enumerate}
+        \item Apply filter bank to training image
+        \item Cluster in feature space and store cluster centers (Texton dictionary)
+        \item For test image, filter image with same filter bank to get feature vector for each pixel. Assign each pixel to nearest cluster. Cluster ID = Texton ID.
+        \item For a given region, compute \ilkeyword{texton histograms}
+    \end{enumerate}
+    \begin{itemize}
+        \item Classification: Given new img., compare hist. to other trng. samples and assign to label with most similarity
+        \item Segmentation: Use texton histograms as a feature
+    \end{itemize}
+    \item \keyword{Perceived Boundaries}{Segmentation by human}
+    \begin{itemize}
+        \item Idea: Texture gradients indicate boundaries well
+    \end{itemize}
+    \begin{enumerate}
+        \item For each pixel, consider a disk that is split into 2 halves with some orientation
+        \item Measure texture diff. bet. 2 halves via texton hist.
+        \item Try all possible orientations
+        \item Orientation with strong diff. suggests boundaries
+    \end{enumerate}
+\end{itemize}
+
 \section{07. Keypoints}
 \section{08. Descriptors}
 \section{09. Homography}
