@@ -199,7 +199,7 @@
     \end{itemize}
     \item \keyword{Continuity}{$\lim_{(x,y) \rightarrow (a,b)} f(x,y) = f(a,b)$}
     \begin{itemize}
-        \item If $f$ and $g$ are continuous, then $f \pm g$, $fg$, $\frac{f}{g}$, $f \circ g$ are all continuous
+        \item If $f$ and $g$ are cont., then $f \pm g$, $fg$, $\frac{f}{g}$, $f \circ g$ are cont.
         \item Polynomial, trigonometry, exponential, rational functions are all continuous, but not necessarily defined
     \end{itemize}
 \end{itemize}
@@ -209,8 +209,9 @@
 \begin{itemize}
     \item \keyword{Partial Derivative}{Treat other variables as constants}
     \begin{itemize}
+        \item $f_x(x,y) = \lim_{h \rightarrow 0} \frac{f(x+h,y)-f(x,y)}{h}$
         \item $f_x = \partialderivative[f]{x}$ $\quad$ $f_{xy} = \frac{\partial^2 f}{\partial y \partial x}$
-        \item Intuition: Slope in direction of x, y, ...
+        \item Intuition: Slope in direction of $x$, $y$, ...
         \item \keyword{Clairaut's Theorem}{$f_{xy} = f_{yx}$}
     \end{itemize}
     \item \keyword{Tangent Plane}{Given surface $z=f(x,y)$:}
@@ -565,7 +566,13 @@
 
 \begin{itemize}
     \item $\sin^2 \theta = \frac{1-\cos 2\theta}{2}$ $\quad$ $\cos^2 \theta = \frac{1+\cos 2\theta}{2}$
-    \item $\int udv = uv - \int vdu$
+    \item $(\sin x)' = \cos x$ $\quad$ $(\csc x)' = -\csc x \cot x$
+    \item $(\cos x)' = -\sin x$ $\quad$ $(\sec x)' = \sec x \tan x$
+    \item $(\tan x)' = \sec^2 x$ $\quad$ $(\cot x)' = -\csc^2 x$
+    \item $(e^x)' = e^x$ $\quad$ $(a^x)' = a^x \ln x$ $\quad$ $(\ln x)' = \frac{1}{x}$
+    \item $(\log_a x)' = \frac{1}{x \ln a}$ $\quad$ $(\frac{f}{g})' = \frac{f'g -fg'}{g^2}$ 
+    \item $(fg)' = f'g+fg'$ $\quad$ $\int udv = uv - \int vdu$
+    \item $|a \cdot b| \leq ||a||||b||$ $\quad$ $||a+b|| \leq ||a|| + ||b||$
 \end{itemize}
 
 \end{multicols*}
