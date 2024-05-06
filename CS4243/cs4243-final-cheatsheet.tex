@@ -207,7 +207,7 @@
     \begin{enumerate}
         \item Keypoints: Find locations
         \item Descriptors: Rep. surrounding regions with math
-        \item Homography: Do the matching
+        \item Do the matching
     \end{enumerate}
     \item Good keypoints are \textbf{repeatable} and \textbf{distinct}
     \item \ilkeyword{Harris Corner Detection}
@@ -266,10 +266,10 @@
             \item Window size important
             \item Adaptive: To prevent uneven distri. of keypoints in areas of higher contrast, pick corners which are both local max. and whose response is greater than all neighboring local max.
         \end{itemize}
-        \item In practice, $H = \sum_{(x,y) \in W} w_{x,y} \begin{vmatrix}
-            A & B \\
-            B & C \\
-            \end{vmatrix}$ (Gaussian)
+        \item In practice: $H = \sum_{(x,y) \in W} w_{x,y} \begin{vmatrix}
+            I_x^2 & I_x I_y \\
+            I_x I_y & I_y^2 \\
+            \end{vmatrix}$ (e.g. Convolve with Gaussian)
     \end{itemize}
     \item \ilkeyword{Harris Corner Invariances}
     \begin{itemize}
@@ -279,7 +279,7 @@
         \item Translation: Equivariant and invariant
         \item Rotation: Equivariant and invariant
         \item Photometric transformation (Assume $I' = aI + b$): Invariant to $b \neq 0$, but not invariant to $a \neq 1$
-        \item Scaling: Not equivariant (i.e. Img. scaled up)
+        \item Scaling: Not equivariant and invariant
         \begin{itemize}
             \item Scale of window can determine if location is keypoint $\rightarrow$ Need to scale up window by image scale
             \item \keyword{Auto. Scale Selection}{When looking for keypoints, try window sizes and find scale that gives local max.}
@@ -288,16 +288,71 @@
     \item \keyword{Laplacian of Gaussian}{Alternative keypoint detector which detects 'blobs' and is scale-sensitive}
     \begin{itemize}
         \item $\nabla^2 g = \frac{\partial^2 g}{\partial x^2} + \frac{\partial^2 g}{\partial y^2}$
+        \item Practice: Approx. by Difference of Gaussian for speed
         \item Idea: Convolution with LoG has highest response when signal has same scale as Gaussian. Built-in scale sensitivity by varying scale $\sigma$.
         \item Implementation: Fix window and kernel size; rescale img. with Gaussian blurring and downsampling
     \end{itemize}
 \end{itemize}
 
-
 \section{08. Descriptors}
 
 \begin{itemize}
-    \item Goal: Get feature vector surrounding each keypoint
+    \item Goal: Get feature vector surrounding each keypoint and measure similarity between feature vectors for matching
+    \item Desc. should be invariant/equivariant and unique. E.g.:
+    \begin{itemize}
+        \item Raw intensity: Good for exact template matching, but sensitive to lighting
+        \item Image gradient: Invariant to raw intensity (i.e. Lighting), but sensitive to transformations
+        \item Color histogram: Invariant to scale and rotation, but not sensitive to spatial layout
+        \item Spatial histogram: Compute color histograms over spatial cells. But not invariant to large rotations.
+        \begin{itemize}
+            \item Orientation normalization: Normalize orientation of patch based on dominant image gradient
+            \item Save orien. angle $\theta$ w/ keypoint (e.g. Mean, mode)
+        \end{itemize}
+        \item \keyword{GIST Descriptor}{Rough spatial distribution of image gradients that is rotation invariant}
+        \begin{enumerate}
+            \item Divide image into $4 \times 4$ grid
+            \item Apply Gabor filters (All dir. edge; $N$ filters)
+            \item Compute filter response averages for each cells
+            \item Size of descriptor: $4 \times 4 \times N$
+        \end{enumerate}
+    \end{itemize}
+    \item \keyword{SIFT}{Keypoint detector and descriptor}
+    \begin{itemize}
+        \item Detector: Uses multi-scale LoG to get scale invariance, orientation normalization for rotation invariance, and threshold for removing low-contrast and low-curvature keypoints
+    \end{itemize}
+    \item \ilkeyword{SIFT Descriptor}
+    \begin{enumerate}
+        \item Take $16 \times 16$-pixel window around keypoint. Partition window into $4 \times 4$ grid.
+        \item Compute \textbf{gradient orientations and magnitudes} for each pixel. Reweight magnitudes using Gaussian and discard pixels with low magnitude.
+        \item For each $4 \times 4$-pixel cell, make \textbf{histogram with 8 orientation bins}. Shift histogram binning by dominant orien. (i.e. Subtract by dom. orien.) for rotation invariance. Collapse into $1 \times 128$ vector.
+        \item Normalize vector to unit length
+    \end{enumerate}
+    \begin{itemize}
+        \item Invariant to scale, rotation, and lighting
+        \item Partially invariant to viewpoint (Up to $60^\circ$)
+        \item Quick and efficient
+    \end{itemize}
+    \item \keyword{Feature Matching}{Given feature in $I_1$, how to find best match in $I_2$?}
+    \begin{enumerate}
+        \item Define distance function that compares desc.
+        \begin{itemize}
+            \item Euclidean distance: $||f_1 - f_2||$ (Can give small distances for incorrect matches)
+            \item Ratio distance bet. best vs. next-best: $\frac{||f_1 - f_2}{||f_1 - f_2'||}$
+        \end{itemize}
+        \item Nested loop: Find vector with min. distance in $I_2$
+        \begin{itemize}
+            \item Or ratio of best vs. next-best $<$ threshold
+        \end{itemize}
+    \end{enumerate}
+    \begin{itemize}
+        \item Evaluation: \ilkeyword{ROC curve} by varying threshold
+        \begin{itemize}
+            \item Recall vs. 1 - Specificity
+            \item Area Under the Curve (AUC): 1 is the best
+            \item \keyword{Recall}{$\frac{TP}{TP + FN}$} $\quad$ \keyword{Specificity}{$\frac{TN}{TN + FP}$}
+            \item \keyword{Precision}{$\frac{TP}{TP + FP}$}
+        \end{itemize}
+    \end{itemize}
 \end{itemize}
 
 \section{09. Homography}
