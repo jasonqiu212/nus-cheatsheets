@@ -46,6 +46,10 @@
 \setlist[itemize,1]{leftmargin=2mm,labelindent=1mm,labelsep=1mm}
 \setlist[itemize,2]{leftmargin=2mm,labelindent=1mm,labelsep=1mm,label=$\bullet$}
 \setlist[itemize,3]{leftmargin=2mm,labelindent=1mm,labelsep=1mm,label=$\bullet$}
+\setlist[enumerate,1]{leftmargin=2mm,labelindent=1mm,labelsep=1mm}
+\setlist[enumerate,2]{leftmargin=2mm,labelindent=1mm,labelsep=1mm,label=(\arabic*)}
+
+\setlength{\arraycolsep}{2.5pt}
 
 % Font
 \renewcommand{\familydefault}{\sfdefault}
@@ -219,17 +223,17 @@
         \]
         \item Assuming only small shifts (for Taylor Series Exp.):
         \[
-            E(u,v) = Au^2 + 2Buv + Cv^2 = \begin{vmatrix}
+            E(u,v) = Au^2 + 2Buv + Cv^2 = \begin{bmatrix}
                 u & v \\
-            \end{vmatrix}
-            \begin{vmatrix}
+            \end{bmatrix}
+            \begin{bmatrix}
                 A & B \\
                 B & C \\
-            \end{vmatrix}
-            \begin{vmatrix}
+            \end{bmatrix}
+            \begin{bmatrix}
                 u \\
                 v \\
-            \end{vmatrix}
+            \end{bmatrix}
         \]
         \begin{itemize}
             \item $A = \sum_{(x,y) \in W} I_x^2$ $\quad$ $B = \sum_{(x,y) \in W} I_x I_y$
@@ -266,10 +270,10 @@
             \item Window size important
             \item Adaptive: To prevent uneven distri. of keypoints in areas of higher contrast, pick corners which are both local max. and whose response is greater than all neighboring local max.
         \end{itemize}
-        \item In practice: $H = \sum_{(x,y) \in W} w_{x,y} \begin{vmatrix}
+        \item In practice: $H = \sum_{(x,y) \in W} w_{x,y} \begin{bmatrix}
             I_x^2 & I_x I_y \\
             I_x I_y & I_y^2 \\
-            \end{vmatrix}$ (e.g. Convolve with Gaussian)
+            \end{bmatrix}$ (e.g. Convolve with Gaussian)
     \end{itemize}
     \item \ilkeyword{Harris Corner Invariances}
     \begin{itemize}
@@ -356,6 +360,87 @@
 \end{itemize}
 
 \section{09. Homography}
+
+\begin{itemize}
+    \item Goal: Stitch images from diff. viewpoints via projection
+    \item When to use: Scene is planar, approx. planar (i.e. Small depth variation), or only camera rotation
+    \item Problem: Given set of matched keypoints $\{ p_i, p_i' \}$, get transformation $p' = f(p;H)$ where $H$ are parameters
+    \item Given homography function: Convert to homogeneous coord., multiply by homo. matrix, and convert back
+    \[
+        p = \begin{bmatrix}
+            x \\
+            y \\
+        \end{bmatrix} P = \begin{bmatrix}
+            x \\
+            y \\
+            1 \\
+        \end{bmatrix};
+        P' = HP;
+        P' = \begin{bmatrix}
+            x' \\
+            y' \\
+            w' \\
+        \end{bmatrix} p' = \begin{bmatrix}
+            \frac{x'}{w'} \\
+            \frac{y'}{w'} \\
+        \end{bmatrix} 
+    \]
+    \item \keyword{Direct Linear Transform}{Find best estimate of $H$}
+    \begin{enumerate}
+        \item For each matching, create $2 \times 9$ matrix $A_i$
+        \begin{itemize}
+            \item $
+                A_i = \begin{bmatrix}
+                    -x & -y & -1 & 0 & 0 & 0 & xx' & yx' & x' \\
+                    0 & 0 & 0 & -x & -y & -1 & xy' & yy' & y' \\
+                \end{bmatrix}
+                $
+        \end{itemize}
+        \item Concatenate into $2n \times 9$ matrix $A$
+        \item Compute SVD of $A = U \sum V^T$
+        \item Store vector of smallest singular value $h = v_{\hat{i}}$
+        \item Reshape to get $H$
+    \end{enumerate}
+    \begin{itemize}
+        \item Assumptions: Projective model with linear transf.
+        \item Cons: Sensitive to scaling (i.e. $P$: High res.; $P'$: Low res.) $\rightarrow$ Normalize, Outliers $\rightarrow$ Poor est. of $H$
+    \end{itemize}
+    \item \keyword{RANSAC}{More robust method for est. homographies}
+    \begin{itemize}
+        \item Motivation: DLT easily corrupted by outliers
+    \end{itemize}
+    \begin{enumerate}
+        \item Loop $N$ times
+        \begin{enumerate}
+            \item Sample randomly num. of pts. required to fit model
+            \item Solve for model params. using samples
+            \item Score by fraction of inliers within preset threshold $\delta$ of model
+        \end{enumerate}
+        \item Fit model to samples with most inliers
+    \end{enumerate}
+    \begin{enumerate}
+        \item RANSAC loop
+        \begin{enumerate}
+            \item Sample 4 matches ($H$ has 8 deg. of freedom)
+            \item Compute $H$ using DLT
+            \item Inliers: Get $P''$ using $H$ and check distance to $P'$
+            \item Keep $H$ if largest number of inliers
+        \end{enumerate}
+        \item Using best $H$ with most inliers, recompute using all inliers
+    \end{enumerate}
+    \begin{itemize}
+        \item $\delta$: Impacts if inliers are kept (Trial and error)
+        \item $N = \frac{\log(1-p)}{\log(1- (1-e)^s)}$ where $p$ is prob. that $\geq 1$ set of samples does not contain outliers, $e$ is prob. that point is outlier, and $s$ is num. of samples per iter.
+        \item Can loop $N$ times or stop early when expected prob. of inliers reached, but both need prob. of outliers
+        \item Integrate RANSAC with feature matching: Compute matches as before, add RANSAC loop and eliminate some matches that do not fit $H$
+    \end{itemize}
+    \item \keyword{Warping}{Moves pixels of an image}
+    \begin{itemize}
+        \item Mapping: Transf. from source to destination via $f$
+        \item Resampling: \ilkeyword{Splat} if map to bet. pixels, avg. if receive $>1$ source
+    \end{itemize}
+\end{itemize}
+
 \section{10. Optical Flow}
 \section{11. Tracking}
 \section{12. Deep Learning}
