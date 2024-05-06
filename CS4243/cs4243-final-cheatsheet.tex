@@ -45,6 +45,7 @@
 \setlength{\leftmarginii}{0.5cm}
 \setlist[itemize,1]{leftmargin=2mm,labelindent=1mm,labelsep=1mm}
 \setlist[itemize,2]{leftmargin=2mm,labelindent=1mm,labelsep=1mm,label=$\bullet$}
+\setlist[itemize,3]{leftmargin=2mm,labelindent=1mm,labelsep=1mm,label=$\bullet$}
 
 % Font
 \renewcommand{\familydefault}{\sfdefault}
@@ -195,13 +196,110 @@
     \begin{enumerate}
         \item For each pixel, consider a disk that is split into 2 halves with some orientation
         \item Measure texture diff. bet. 2 halves via texton hist.
-        \item Try all possible orientations
-        \item Orientation with strong diff. suggests boundaries
+        \item Try all orientations. Orientation with high difference suggests boundaries.
     \end{enumerate}
 \end{itemize}
 
 \section{07. Keypoints}
+
+\begin{itemize}
+    \item Motivation: How to stitch 2 images (e.g. Panaroma)?
+    \begin{enumerate}
+        \item Keypoints: Find locations
+        \item Descriptors: Rep. surrounding regions with math
+        \item Homography: Do the matching
+    \end{enumerate}
+    \item Good keypoints are \textbf{repeatable} and \textbf{distinct}
+    \item \ilkeyword{Harris Corner Detection}
+    \begin{itemize}
+        \item Significance: Corners have big changes in all directions when shifting window
+        \item Given window $W$ shifted by offset $(u,v)$:
+        \[
+            E(U,v)=\sum_{(x,y) \in W} (I(x+u,y+v) - I(x,y))^2
+        \]
+        \item Assuming only small shifts (for Taylor Series Exp.):
+        \[
+            E(u,v) = Au^2 + 2Buv + Cv^2 = \begin{vmatrix}
+                u & v \\
+            \end{vmatrix}
+            \begin{vmatrix}
+                A & B \\
+                B & C \\
+            \end{vmatrix}
+            \begin{vmatrix}
+                u \\
+                v \\
+            \end{vmatrix}
+        \]
+        \begin{itemize}
+            \item $A = \sum_{(x,y) \in W} I_x^2$ $\quad$ $B = \sum_{(x,y) \in W} I_x I_y$
+            \item $C = \sum_{(x,y) \in W} I_y^2$
+            \item \keyword{2nd Moment Matrix (H)}{Middle matrix}
+        \end{itemize}
+        \includegraphics[scale=0.22]{corner-ssd-error.jpg}
+        \item $E = k$ visualized as ellipse, where $H$ controls shape
+            \begin{itemize}
+                \item Eigenvectors of $H$ $\rightarrow$ Axes orientation
+                \item Eigenvalues of $H$ $\rightarrow$ Axes length
+            \end{itemize}
+        \includegraphics[scale=0.18]{h-ellipse.jpg}
+        \item \ilkeyword{Eigenvectors} of $A$ are vectors $\mathbf{x}$ that: $A\mathbf{x} = \lambda \mathbf{x}$
+        \item \ilkeyword{Eigenvalue ($\lambda$)} corresponds to $\mathbf{x}$: $\det(A-\lambda I) = 0$
+        \item Since $A = H$ is $2 \times 2$: $\lambda_{\pm} = \frac{1}{2} ((h_{11} + h_{22}) \pm \sqrt{2h_{12}h_{21} + (h_{11} - h_{22})^2})$
+        \item After getting $\lambda$s, find $\mathbf{x}$: $(A - \lambda I) \mathbf{x} = 0$
+        \item Both $\lambda_{\text{max}}$ and $\lambda_{\text{min}}$ are large $\rightarrow$ Corner
+        \item 'Cornerness' Score: $R = \min(\lambda_1, \lambda_2)$ (But getting $\lambda$ is slow)
+        \item \ilkeyword{Harris Operator}: $R = \det (H) - \kappa (\text{trace}(H))^2$
+        \begin{itemize}
+            \item $\det (H) = AC - B^2 = \lambda_1 \lambda_2 $
+            \item $\text{trace} (H) = A + C = \lambda_1 + \lambda_2 $
+            \item $R > 0$ $\rightarrow$ Corner, $R<0$ $\rightarrow$ Edge, $R \approx 0$ $\rightarrow$ Flat
+        \end{itemize}
+        \begin{enumerate}
+            \item Compute gradient for each point in image
+            \item Compute $H$ matrix for each image window and get 'correctness' score
+            \item Find points with window where $R > $ threshold
+            \item Take points of local maxima
+        \end{enumerate}
+        \item \keyword{Non-Max. Suppression}{Iteratively search for max. values, then zero everything in surrounding window}
+        \begin{itemize}
+            \item Window size important
+            \item Adaptive: To prevent uneven distri. of keypoints in areas of higher contrast, pick corners which are both local max. and whose response is greater than all neighboring local max.
+        \end{itemize}
+        \item In practice, $H = \sum_{(x,y) \in W} w_{x,y} \begin{vmatrix}
+            A & B \\
+            B & C \\
+            \end{vmatrix}$ (Gaussian)
+    \end{itemize}
+    \item \ilkeyword{Harris Corner Invariances}
+    \begin{itemize}
+        \item Purpose: If img. transf., how repeatable is detection?
+        \item \keyword{Equivariance}{Image transformed, and detection location undergoes similar transformation}
+        \item \keyword{Invariance}{Image tranf., but no detection score change}
+        \item Translation: Equivariant and invariant
+        \item Rotation: Equivariant and invariant
+        \item Photometric transformation (Assume $I' = aI + b$): Invariant to $b \neq 0$, but not invariant to $a \neq 1$
+        \item Scaling: Not equivariant (i.e. Img. scaled up)
+        \begin{itemize}
+            \item Scale of window can determine if location is keypoint $\rightarrow$ Need to scale up window by image scale
+            \item \keyword{Auto. Scale Selection}{When looking for keypoints, try window sizes and find scale that gives local max.}
+        \end{itemize}
+    \end{itemize}
+    \item \keyword{Laplacian of Gaussian}{Alternative keypoint detector which detects 'blobs' and is scale-sensitive}
+    \begin{itemize}
+        \item $\nabla^2 g = \frac{\partial^2 g}{\partial x^2} + \frac{\partial^2 g}{\partial y^2}$
+        \item Idea: Convolution with LoG has highest response when signal has same scale as Gaussian. Built-in scale sensitivity by varying scale $\sigma$.
+        \item Implementation: Fix window and kernel size; rescale img. with Gaussian blurring and downsampling
+    \end{itemize}
+\end{itemize}
+
+
 \section{08. Descriptors}
+
+\begin{itemize}
+    \item Goal: Get feature vector surrounding each keypoint
+\end{itemize}
+
 \section{09. Homography}
 \section{10. Optical Flow}
 \section{11. Tracking}
