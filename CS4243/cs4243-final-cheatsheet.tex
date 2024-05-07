@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage[a4paper, margin=3mm, landscape]{geometry}
+\usepackage[a4paper, margin=1mm, landscape]{geometry}
 \usepackage{multicol}
 \usepackage{xcolor}
 \usepackage{enumitem}
@@ -48,7 +48,10 @@
 \setlist[itemize,3]{leftmargin=2mm,labelindent=1mm,labelsep=1mm,label=$\bullet$}
 \setlist[enumerate,1]{leftmargin=2mm,labelindent=1mm,labelsep=1mm}
 \setlist[enumerate,2]{leftmargin=2mm,labelindent=1mm,labelsep=1mm,label=(\arabic*)}
+\setlist[itemize]{nolistsep}
+\setlist[enumerate]{nolistsep}
 
+% Adjust column separator width in matrix
 \setlength{\arraycolsep}{2.5pt}
 
 % Font
@@ -107,14 +110,14 @@
     \item Challenges: What makes 2 points same/different? Choice of features (e.g. Color, Intensity, Position), Which clustering algorithm?
     \item \keyword{k-Means Clustering}{Iteratively re-assign points to nearest cluster center}
     \begin{enumerate}
-        \item Given $K$, randomly initialize the cluster centers $c_1, \ldots, c_K$
-        \item For each point $p_i$, find the closest $c_j$ and put $p_i$ into cluster $j$
+        \item Randomly initialize the cluster centers $c_1, \ldots, c_K$
+        \item For each point $p_i$, find the closest $c_j$ to put $p_i$ in
         \item Set $c_j$ to be mean of points in cluster $j$
         \item Repeat, if $c_j$ have changed up to some threshold
     \end{enumerate}
     \begin{itemize}
         \item Pros: Simple, Converges to local min.
-        \item Cons: Setting $K$, Sensitive to initial centers (Since k-means converges to local min.), Sensitive to outliers (Can add more clusters), Assumes spherical clusters (Fix with mean-shift)
+        \item Cons: Setting $K$, Sensitive to initial centers (Since k-means converges to local min.), Sensitive to outliers (Can add more clusters), Assumes spherical clusters
     \end{itemize}
     \item \ilkeyword{Simple Linear Iterative Clustering (SLIC) Superpixels}
     \begin{itemize}
@@ -123,7 +126,7 @@
             \item Application: Inputs to other CV algo. since more compact representation with perceptual meaning
         \end{itemize}
         \item Num. of pixels: $n_{tp}$; Target num. of superpixels: $n_{sp}$
-        \item Initial width of each superpixel: $s = \sqrt{\frac{n_{tp}}{n_{sp}}}$
+        \item Initial width of each superpixel: $s = \sqrt{n_{tp} / n_{sp}}$
         \item Features: $z = [r,g,b,x,y]$
         \item Color distance: $d_c = || \langle r_j,g_j,b_j \rangle - \langle r_i,g_i,b_i \rangle ||$
         \item Spatial distance: $d_s = || \langle x_j,y_j \rangle - \langle x_i,y_i \rangle ||$
@@ -164,7 +167,7 @@
         \item Optimizations:
         \begin{itemize}
             \item After each run of mean shift, assign all points within radius $r$ of end point to same cluster
-            \item Assign all points within radius $c < r$ of search path to mode $\rightarrow$ More aggressive, less confident
+            \item Assign points in radius $c < r$ of search path to mode
         \end{itemize}
     \end{itemize}
 \end{itemize}
@@ -240,7 +243,6 @@
             \item $C = \sum_{(x,y) \in W} I_y^2$
             \item \keyword{2nd Moment Matrix (H)}{Middle matrix}
         \end{itemize}
-        \includegraphics[scale=0.22]{corner-ssd-error.jpg}
         \item $E = k$ visualized as ellipse, where $H$ controls shape
             \begin{itemize}
                 \item Eigenvectors of $H$ $\rightarrow$ Axes orientation
@@ -442,6 +444,90 @@
 \end{itemize}
 
 \section{10. Optical Flow}
+
+\begin{itemize}
+    \item \keyword{Flow}{Displacement of pixels bet. frames (Vector field)}
+    \item Assumptions:
+    \begin{itemize}
+        \item Color constancy: $I(x,y,t) = C$
+        \item Small motion: $I(x+u\delta t,y+v \delta t, t+\delta t) = I(x,y,t)$
+        \[
+            I_x u + I_y v + I_t = 0
+        \]
+        \item $I_t = I(x,y,t+1) - I(x,y,t)$
+    \end{itemize}
+    \item Problem: 1 equation, 2 unknowns
+    \item \keyword{Lucas-Kanade}{Assumes constant flow in small region}
+    \begin{itemize}
+        \item Given $m \times n$ patch: $Ax = b; x = (A^T A)^{-1}A^T b$
+        \[
+            \begin{bmatrix}
+                I_x(p_1) & I_y(p_1) \\
+                \vdots & \vdots \\
+                I_x(p_{m \times n}) & I_y(p_{m \times n}) \\
+            \end{bmatrix}
+            \begin{bmatrix}
+                u \\
+                v \\
+            \end{bmatrix} = - \begin{bmatrix}
+                I_t(p_1) \\ 
+                \vdots \\
+                I_t(p_{m \times n})
+            \end{bmatrix}
+        \]
+        \[
+            \begin{bmatrix}
+                u \\
+                v \\
+            \end{bmatrix} = - \begin{bmatrix}
+                \sum_{p \in P} I_x I_x & \sum_{p \in P} I_x I_y \\
+                \sum_{p \in P} I_y I_x & \sum_{p \in P} I_y I_y \\
+            \end{bmatrix}^{-1}
+            \begin{bmatrix}
+                \sum_{p \in P} I_x I_t \\
+                \sum_{p \in P} I_y I_t \\
+            \end{bmatrix}
+        \]
+        \item Requirements: $A^T A$ is invertible $\rightarrow$ $\det (A^T A) = \lambda_1 \lambda_2$ should be big, $A^T A$ is well-conditioned $\rightarrow$ $\frac{\lambda_{\text{max}}}{\lambda_{\text{min}}}$ should be small
+        \begin{itemize}
+            \item Produces \textbf{sparse flow}: Only for some features
+            \item Similar to corner detector: Corners good for flow
+        \end{itemize}
+        \item Aperture Problem: Given small window over an edge, hard to tell which direction line is moving
+        \begin{itemize}
+            \item Solution: Get windows with diff. gradients (Corner)
+        \end{itemize}
+        \item Aliasing: Undersampling of frames $\rightarrow$ Nearest match based on intensity is incorrect
+        \begin{itemize}
+            \item Similar example: Image motion is large
+            \item Solution: Reduce res. to reduce apparent movement
+        \end{itemize}
+        \includegraphics[scale=0.09]{coarse-to-fine-flow-estimation.jpg} 
+    \end{itemize}
+    \item \keyword{Horn-Schunck}{Assumes smooth flow field}
+    \begin{itemize}
+        \item Minimization problem: Use gradient descent
+        \[
+            \min_{u,v} \sum_{i,j} (E_s(i,j) + \lambda E_d(i,j))
+        \]
+        \item $E_s(i,j) = \frac{1}{4} ((u_{ij} - u_{i+1,j})^2 + (u_{ij} - u_{i,j+1})^2 + (v_{ij} - v_{i+1,j})^2 + (v_{ij} - v_{v,j+1})^2)$
+        \item $E_d(i,j) = (I_x u_{ij} + I_y v_{ij} + I_t)^2$
+    \end{itemize}
+    \begin{enumerate}
+        \item Compute $I_x$, $I_y$, $I_t$ and initialize flow $u=v=\mathbf{0}$
+        \item Do until converge: $\hat{u}_{kl} = \bar{u}_{kl} - k I_x; \hat{v}_{kl} = \bar{v}_{kl} - k I_y$
+        \[
+            k = \frac{I_x \bar{u}_{kl} + I_y \bar{v}_{kl}+I_t}{\lambda^{-1} + I_x^2 + I_y^2} \text{ where } \bar{u}_{kl} \text{ is local avg.}
+        \]
+    \end{enumerate}
+    \begin{itemize}
+        \item Choice of $\lambda$: When small, maximize smoothness
+        \item Produces \textbf{dense flow}: Flow for all pixels
+        \item Good for when image motion is small
+    \end{itemize}
+    \item Evaluation: Euclidean distance, Cosine similarity
+\end{itemize}
+
 \section{11. Tracking}
 \section{12. Deep Learning}
 
