@@ -141,7 +141,6 @@
     \end{enumerate}
     \begin{itemize}
         \item Modification of k-Means: Not random initialization, Compute pixel's distance only to closest set of cluster centers
-        \item Can enforce connectivity and use other features too
     \end{itemize}
     \item \keyword{Mean-Shift Clustering}{Find local density maxima in feature space}
     \begin{itemize}
@@ -416,7 +415,7 @@
         \begin{enumerate}
             \item Sample randomly num. of pts. required to fit model
             \item Solve for model params. using samples
-            \item Score by fraction of inliers within preset threshold $\delta$ of model
+            \item Score by frac. of inliers in threshold $\delta$ of model
         \end{enumerate}
         \item Fit model to samples with most inliers
     \end{enumerate}
@@ -530,6 +529,118 @@
 
 \section{11. Tracking}
 
+\begin{itemize}
+    \item \keyword{Tracking}{Estimates parameters (location) of dynamic system (Feature points, target objects) over time}
+    \item Use optical flow for tracking? Flow only reliable for small motions, Occlusions and textureless regions (i.e. No corners) get bad est., LK gets sparse fields
+    \item How to match template:
+    \begin{itemize}
+        \item Template matching with normalized cross-correlation: Brute force, slow
+        \begin{itemize}
+            \item $x_{ij} = \frac{1}{||F||||w_{ij}||} \sum_{u=-k}^{k} \sum_{v=-k}^{k} f_{uv} \cdot p_{i+u,j+v}$
+        \end{itemize}
+        \item Multi-scale template matching: Start search with coarser res., Faster
+        \item Local refinement based on some initial guess (e.g. Previous frame): Fastest, but sensitive to guess
+    \end{itemize}
+    \item Notation:
+    \begin{itemize}
+        \item 2D image transformation: $W(\mathbf{x}; \mathbf{p})$ where $\mathbf{x} = \begin{bmatrix}
+                x & y \\
+            \end{bmatrix}$ and $\mathbf{p} = \{ p_1, \ldots, p_N \}$
+        \item Brightness constancy assump.: $I(x') = I(W(x; p))$
+        \item Translation: $W(\mathbf{x};\mathbf{p}) = \begin{bmatrix}
+                x + p_1 \\
+                y + p_2 \\
+            \end{bmatrix} = \begin{bmatrix}
+                1 & 0 & p_1 \\
+                0 & 1 & p_2 \\
+            \end{bmatrix} \begin{bmatrix}
+                x \\
+                y \\
+                1 \\
+            \end{bmatrix}$
+        \item Affine: $W = \begin{bmatrix}
+                p_1x + p_2y + p_3 \\
+                p_4x + p_5y + p_6 \\
+            \end{bmatrix} = \begin{bmatrix}
+                p_1 & p_2 & p_3 \\
+                p_4 & p_5 & p_6 \\
+            \end{bmatrix} \begin{bmatrix}
+                x \\
+                y \\
+                1 \\
+            \end{bmatrix}$
+    \end{itemize}
+    \item Image alignment problem: Given template $T(\mathbf{x})$ and source img. $I(\mathbf{x})$, solve for transformation parameters $\mathbf{p}$ that maps coordinates of img. to template such that: $\min_{\mathbf{p}} \sum_{\mathbf{x}} (I(W(\mathbf{x};\mathbf{p})) - T(\mathbf{x}))^2$
+    \item \ilkeyword{Lucas-Kanade Image Alignment}
+    \begin{itemize}
+        \item Assumption: Good initial guess of $\mathbf{p}$ and increment $\triangle{\mathbf{p}}$ from guess $\mathbf{p}$ is small $\rightarrow$ Linearize with Taylor Series and solve for $\triangle{\mathbf{p}}$
+    \end{itemize}
+    \begin{enumerate}
+        \item Warp image with initial $\mathbf{p}$: $I(W(\mathbf{x};\mathbf{p}))$
+        \item Get error image: $T(\mathbf{x}) - I(W(\mathbf{x};\mathbf{p}))$
+        \item Get gradient: $\nabla I(x')$ where $x'$: Warped img. coord.
+        \item Get Jacobian: $\frac{\partial \mathbf{W}}{\partial \mathbf{p}} = \frac{\partial (\mathbf{W}_1, \mathbf{W}_2)}{\partial (p_1, \ldots, p_N)}$
+        \item Get Hessian approx.: $H = \sum_{\mathbf{x}} (\nabla I \frac{\partial \mathbf{W}}{\partial \mathbf{p}})^T (\nabla I \frac{\partial \mathbf{W}}{\partial \mathbf{p}})$
+        \item $\triangle{\mathbf{p}} = H^{-1} \sum_{\mathbf{x}} (\nabla I \frac{\partial \mathbf{W}}{\partial \mathbf{p}})^T (T(\mathbf{x}) - I(W(\mathbf{x};\mathbf{p})))$
+        \item $\mathbf{p} = \mathbf{p} + \triangle{\mathbf{p}}$
+    \end{enumerate}
+    \item \keyword{KLT Tracker}{Use LK img. alginment to track \textbf{feature points}}
+    \begin{itemize}
+        \item Good features to track: Hessian is well-conditioned matrix $\rightarrow$ Corners!
+    \end{itemize}
+    \begin{enumerate}
+        \item Find corners where $\min(\lambda_1, \lambda_2) > \lambda$ for Hessian
+        \item Loop over corners:
+        \begin{enumerate}
+            \item Get displacement to next frame using LK alignment
+            \item Store disp. of each corner, update corner position
+            \item Optional: Add corners every $M$ frames via step 1
+        \end{enumerate}
+        \item Return long trajectories for each corner point
+    \end{enumerate}
+    \begin{itemize}
+        \item Challenges: Determining features to track, How to track efficiently, Changing appearance of tracked points, \keyword{Drift}{Accumulation of small errors as model updates}, Handle addition/removal of tracked points
+        \item Feature tracking vs. Optical flow: Duality
+    \end{itemize}
+    \item \keyword{Template-based Tracking}{General algorithm to track \textbf{target objects}}
+    \begin{enumerate}
+        \item Mark bounding box around target obj. in 1st frame
+        \item From target object template, get template descriptor: $\mathbf{q} = \{ q_1, \ldots, q_M \}$
+        \item In next frame, find similar descriptor in neighborhood
+        \begin{itemize}
+            \item Candidate descriptor: $\mathbf{p}(\mathbf{y})$ centered at location $\mathbf{y}$
+            \item Find peak similarity in region: $\max_{\mathbf{y}} \rho (\mathbf{p}(\mathbf{y}),\mathbf{q})$
+        \end{itemize}
+        \item Update target and descriptor $\mathbf{q}$ and repeat
+    \end{enumerate}
+    \begin{itemize}
+        \item What features to use? (Naive: Raw intensity; Better: Gradient, hist.)
+        \item Search for candidates (Naive: Brute force image; Better: Use prev. results)
+        \item Finding best candidate (Naive: Simple global max; Better: Use prev. locations)
+        \item Update target's template (Naive: Keep fixed; Better: Update)
+    \end{itemize}
+    \item Cross-correlation as Naive Tracker: Crop region of interest as template and apply norm. cross-correlation with template as filter
+    \begin{itemize}
+        \item Problem: False local max. when target differs a lot from template $\rightarrow$ Template need to dynamically adapt
+    \end{itemize}
+    \item \keyword{MOSSE Filter}{Given target $x$, get unknown filter $g$ to get response $y$ modelled as Gaussian with small $\sigma$}
+    \begin{itemize}
+        \item $g = \arg \min_g \frac{1}{N} \sum_{i=1}^{N} (g \otimes x_i - y_i)^2 + \lambda||g||^2$
+        \item $g = (X^T X + \lambda I)^{-1}X^Ty$
+        \item $N$: Total number of target samples
+        \item $X$: $N \times n_g$
+
+        \includegraphics[scale=0.09]{mosse-filter.jpg}
+        \item Incr. update kernel: Discrete Fourier Transform
+        \begin{itemize}
+            \item Use multiplication, instead of X-corr. $\rightarrow$ Faster
+            \item Kernel remains additive across targets $\rightarrow$ Recently detected target gets higher weight to update kernel
+        \end{itemize}
+        \item Issues: Init., Occlusions, Exit frame, Clutter, Drift
+        \item Accuracy: How well does tracker bounding box overlap with ground truth box? $\frac{\text{Area} (B_{gt} \cap B_p)}{\text{Area} (B_{gt} \cup B_p)}$
+        \item Robustness: How many times does tracker fail?
+    \end{itemize}
+\end{itemize}
 
 \section{12. Deep Learning}
 
@@ -541,17 +652,17 @@
     \end{itemize}
     \item \keyword{Convolution}{Apply multiple filters/kernels to image}
     \begin{itemize}
-        \item Single filter $\rightarrow$ 1 2D-Feature map/Channel
-        \item \keyword{Pooling}{Reduce large distortions $\rightarrow$ More invariance (e.g. Max pooling)}
+        \item Single filter $\rightarrow$ 1 2D-Feature map/channel
+        \item \keyword{Pooling}{Reduce large distortions $\rightarrow$ More invariance}
         \begin{itemize}
             \item Interleaving conv. with pooling causes later conv. to capture more of the image with same kernel size
             \item \keyword{Receptive Field}{Set of img. pixels that intermediate output pixel depends on}
             \item Convolutions after pooling increase receptive field
         \end{itemize}
         \item \keyword{Activation Func.}{Introduces non-linearities}
-        \[
-            \text{ReLU}(x) = \max (0,x)
-        \]
+        \begin{itemize}
+            \item $\text{ReLU}(x) = \max (0,x)$
+        \end{itemize}
     \end{itemize}
     \item Principles behind CNN:
     \begin{itemize}
