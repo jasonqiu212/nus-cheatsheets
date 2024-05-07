@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage[a4paper, margin=1mm, landscape]{geometry}
+\usepackage[a4paper, margin=3mm, landscape]{geometry}
 \usepackage{multicol}
 \usepackage{xcolor}
 \usepackage{enumitem}
@@ -529,7 +529,36 @@
 \end{itemize}
 
 \section{11. Tracking}
+
+
 \section{12. Deep Learning}
+
+\begin{itemize}
+    \item \keyword{Neural Network}{Interconnected perceptrons with biases and weights}
+    \item Images as inputs: 1 fully-connected perceptron contains 1 weighted combo. of all input pixels $\rightarrow$ Ignores spatial info. (Neighboring pixels are more correlated) and slow
+    \begin{itemize}
+        \item Insight: Stationarity (Statistics are similar at diff. locations) $\rightarrow$ Use same weights $\rightarrow$ Same as convolution
+    \end{itemize}
+    \item \keyword{Convolution}{Apply multiple filters/kernels to image}
+    \begin{itemize}
+        \item Single filter $\rightarrow$ 1 2D-Feature map/Channel
+        \item \keyword{Pooling}{Reduce large distortions $\rightarrow$ More invariance (e.g. Max pooling)}
+        \begin{itemize}
+            \item Interleaving conv. with pooling causes later conv. to capture more of the image with same kernel size
+            \item \keyword{Receptive Field}{Set of img. pixels that intermediate output pixel depends on}
+            \item Convolutions after pooling increase receptive field
+        \end{itemize}
+        \item \keyword{Activation Func.}{Introduces non-linearities}
+        \[
+            \text{ReLU}(x) = \max (0,x)
+        \]
+    \end{itemize}
+    \item Principles behind CNN:
+    \begin{itemize}
+        \item Local interactions: Spatial locality included and layers will expand from local region to global region
+        \item Parameter sharing: Stationarity assumption $\rightarrow$ Equivariant representation
+    \end{itemize}
+\end{itemize}
 
 \end{multicols*}
 \end{document}
