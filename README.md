@@ -13,7 +13,7 @@ Condensed notes for some computer science and statistics courses I took at the N
   - [CS2109S - Introduction to AI and Machine Learning](CS2109S)
 - AY23/24 Semester 2
   - [MA2104 - Multivariable Calculus](MA2104/ma2104-cheatsheet.pdf)
-  - [CS4243 - Computer Vision and Pattern Recognition](CS4243/cs4243-final-cheatsheet.pdf)
+  - [CS4243 - Computer Vision and Pattern Recognition](CS4243)
 
 ## Can I customize the notes?
 
