@@ -43,13 +43,8 @@
 % Adjust spacing for all itemize/enumerate
 \setlength{\leftmargini}{0.5cm}
 \setlength{\leftmarginii}{0.5cm}
-\setlist[itemize,1]{leftmargin=2mm,labelindent=1mm,labelsep=1mm}
-\setlist[itemize,2]{leftmargin=2mm,labelindent=1mm,labelsep=1mm,label=$\bullet$}
-\setlist[itemize,3]{leftmargin=2mm,labelindent=1mm,labelsep=1mm,label=$\bullet$}
-\setlist[enumerate,1]{leftmargin=2mm,labelindent=1mm,labelsep=1mm}
-\setlist[enumerate,2]{leftmargin=2mm,labelindent=1mm,labelsep=1mm,label=(\arabic*)}
-\setlist[itemize]{nolistsep}
-\setlist[enumerate]{nolistsep}
+\setlist[itemize]{leftmargin=2mm,labelindent=1mm,labelsep=1mm,label=$\bullet$}
+\setlist[enumerate]{leftmargin=3mm,labelindent=1mm,labelsep=1mm,label=\arabic*.}
 
 % Adjust column separator width in matrix
 \setlength{\arraycolsep}{2.5pt}
@@ -151,6 +146,54 @@
 \section{03. Gradients}
 
 \section{04. Lines}
+
+\begin{itemize}
+    \item Goal: Which points belong to which line?
+    \item $y = mx + b$ $\quad$ $\frac{x}{a} + \frac{y}{b} = 1$
+    \item $x \cos \theta + y \sin \theta = \rho$
+    \item \keyword{Line fitting}{$E = \frac{1}{N} \sum_i (y_i - (mx_i + b))^2$}
+    \begin{itemize}
+        \item Goal: Find parameters $m$ and $b$ that min. $E$
+        \item Using gradient descent: $b = \bar{y} - m\bar{x}$ $\quad$ $m = \frac{\sum_i (x_i - \bar{x})(y_i - \bar{y})}{\sum_i (x_i - \bar{x})^2}$ where $\bar{y} = \frac{\sum_i y_i}{N}$ and $\bar{x} = \frac{\sum_i x_i}{N}$
+        \item Cons: Choice of error function, outliers
+    \end{itemize}
+    \item \keyword{Hough Transform}{Paramterize shape and vote}
+    \includegraphics[scale=0.089]{line-paramterization.jpg}
+    \begin{enumerate}
+        \item Initialize accumulator array $A(\theta, \rho) = 0$
+        \item For each image edge point $(x_i, y_i)$:
+        \begin{enumerate}
+            \item For each $\theta$:
+            \begin{enumerate}
+                \item Solve for $\rho = x_i \cos \theta + y_i \sin \theta$
+                \item $A(\theta, \rho) = A(\theta, \rho) + 1$
+            \end{enumerate}
+        \end{enumerate}
+        \item Find maximum in $A(\theta, \rho)$
+        \item Detected lines are given by $\rho^* = x\cos\theta^* + y\sin\theta^*$
+    \end{enumerate}
+    \item \keyword{Circle}{$(x-a)^2 + (y-b)^2 = r^2$}
+    \begin{itemize}
+        \item If $r$ is unknown, need to solve for 3 parameters (i.e. $A(a,b) \rightarrow A(a,b,r)$) and a point becomes a cone in 3D parameter space
+        \item Optimization: Use gradient
+        \begin{itemize}
+            \item Use edge orientation $\phi_i$ to vote for 2 points, rather than whole circle
+        \end{itemize}
+    \end{itemize}
+    \item \keyword{Generalized Hough Transform}{Arbitrary shape}
+    \begin{enumerate}
+        \item Given shape with boundary points $p_i$ and reference point $a$
+        \item For each $p_i$, get displacement vector from $a$
+        \item Store in table with key $\phi_i$ and value (Displacement vectors)
+        \item For each edge pt., use $\phi_i$ to get vectors to vote for $a$
+    \end{enumerate}
+    \begin{itemize}
+        \item Application: Index with local pattern, instead of gradients
+        \item Tips: Soft voting, convert to edge image
+        \item Pros: Food with noise and occlusion
+        \item Cons: Complexity with num. of parameters, grid size
+    \end{itemize}
+\end{itemize}
 
 \section{05. Segmentation}
 
