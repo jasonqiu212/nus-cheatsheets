@@ -82,7 +82,7 @@
 
 % -----------------------------------------------------------------------
 \begin{document}
-\begin{multicols*}{4}
+\begin{multicols*}{3}
 \footnotesize
 
 % Title box
@@ -203,6 +203,54 @@
 
 \section{03. Gradients}
 
+\begin{itemize}
+    \item \keyword{Gradient}{Vector at pixel pointing at most rapid change in intensity}
+    \begin{itemize}
+        \item $\nabla f = \langle \frac{\partial f}{\partial x}, \frac{\partial f}{\partial y}\rangle$
+        \item In images, der. is finite: $f'(x) = \frac{f(x+1)-f(x-1)}{2}$
+        \item $\theta = \tan^{-1} (\frac{\partial f}{\partial y} / \frac{\partial f}{\partial x})$
+        \item $||\nabla f|| = \sqrt{(\frac{\partial f}{\partial x})^2 + (\frac{\partial f}{\partial y})^2}$
+    \end{itemize}
+    \item \ilkeyword{Sobel Filter}
+    \begin{itemize}
+        \item Horizontal sobel filter ($S_x$): Detects vertical lines
+        \item Vertical sobel filter ($S_y$): Detects horizontal lines
+
+        \includegraphics[scale=0.25]{sobel-filters.jpg}
+        \item Differentiation is sensitive to noise: Need to blur first
+        \begin{itemize}
+            \item Trade-off: Blur removes noise, but blurs the edge
+            \item \keyword{Derivative of Gaussian}{Blur + Derivative merged into 1 filter; $\frac{\partial}{\partial x} (h * f) = (\frac{\partial}{\partial x} h) * f$}
+        \end{itemize} 
+    \end{itemize}
+    \item \keyword{Laplace Filter}{2nd derivative filter}
+    \begin{itemize}
+        \item $f''(x) = \lim_{h \rightarrow 0} \frac{f(x+h) -2f(x)+f(x-h)}{h^2}$
+        \item \keyword{Laplacian of Gaussian (LoG) Filter}{Combine Laplace filter with Gaussian}
+        \begin{itemize}
+            \item Produces zero-crossings at edge
+        \end{itemize}
+    \end{itemize}
+    \item \ilkeyword{Canny Edge Detector}
+    \begin{enumerate}
+        \item Filter image with derivative of Gaussian
+        \item Find magnitude and orientation of gradient
+        \item Thin wide ridges down to single pixel width via non-maximum suppression
+        \item Perform thresholding (hysteresis) and linking
+    \end{enumerate}
+    \item \keyword{Non-maximum Suppression}{For each pixel, check if it's local maximum along gradient direction. If yes, then keep. Else, 0.}
+    \begin{itemize}
+        \item Interpolation: 
+
+        \includegraphics[scale=0.18]{interpolation.jpg}
+        \item Alternative: Approx. using closest pixel value
+    \end{itemize}
+    \item \keyword{Hysterisis Thresholding}{High threshold to start edge curves and low threshold to continue growing}
+    \begin{itemize}
+        \item Motivation: Single high threshold can miss out some parts of the edge
+    \end{itemize}
+\end{itemize}
+
 \section{04. Lines}
 
 \begin{itemize}
@@ -216,7 +264,8 @@
         \item Cons: Choice of error function, outliers
     \end{itemize}
     \item \keyword{Hough Transform}{Paramterize shape and vote}
-    \includegraphics[scale=0.089]{line-paramterization.jpg}
+
+    \includegraphics[scale=0.12]{line-paramterization.jpg}
     \begin{enumerate}
         \item Initialize accumulator array $A(\theta, \rho) = 0$
         \item For each image edge point $(x_i, y_i)$:
