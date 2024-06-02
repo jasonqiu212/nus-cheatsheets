@@ -139,6 +139,64 @@
                 \item Pros: More contrast than normalization, less prone to outliers than stretching
                 \item Cons: More expensive
             \end{itemize}
+            \item Good for foreground and background separation: Bi-modal histogram can be thresholded
+            \item \keyword{Otsu's Method}{Automated thresholding}
+            \begin{itemize}
+                \item $T^* = \min_{T \in [0,255]} (w_1 (T) \sigma_1^2 (T) + w_2(T) \sigma_2^2 (T))$ where $T^*$ is the optimal threshold that min. sum of weighted variances of object and background
+                \item $\sigma_1^2(T)$ and $\sigma_2^2(T)$: Variance of pixels less than or equal to and greater than threshold respectively
+                \item $w_1(T)$ and $w_2(T)$: Number of pixels less than or equal to and greater than threshold
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+    \item \keyword{Correlation Filtering}{Window (Moving average)}
+    \begin{itemize}
+        \item Motivation: Reduce noise
+        \begin{itemize}
+            \item Impulse noise: Random white occurrences of pixels
+            \item Salt and pepper noise: Rand. white and black pixels
+            \item Gaussian noise: Variations in intensity from Gaussian distribution $p_{ij} = \hat{p}_{ij} + \eta$ where $\eta \sim N(\mu_n, \sigma_n)$
+        \end{itemize}
+        \item $x_{ij} = \sum_{u=-k}^{k} \sum_{v=-k}^{k} f_{uv} \cdot p_{i+u,j+v}$ where $f$ is a \ilkeyword{kernel} of weights
+        \item Notation: $X = P \otimes F$
+        \item \keyword{Box Filter}{Blurs image}
+
+        \includegraphics[scale=0.05]{box-filter.jpg}
+        \item Given kernel of width $2k+1$, add padding: $\lfloor \frac{2k+1}{2} \rfloor$
+        \begin{itemize}
+            \item Filling methods: Zero-padding, wrap around, copy edge, reflect
+        \end{itemize}
+        \item \keyword{Gaussian Filter}{Nearest neighboring pixels have more weight}
+        \begin{itemize}
+            \item $f_{uv} = \frac{1}{2 \pi \sigma^2} e^{-\frac{u^2 + v^2}{2\sigma^2}}$
+
+            \includegraphics[scale=0.05]{gaussian-filter.jpg}
+            \item Size of kernel: At some threshold, kernel will have lots of 0s, which is not useful
+            \item Variance: Determines smoothing effect
+        \end{itemize}
+    \end{itemize}
+    \item \keyword{Template Matching}{Set template as kernel and match occurs at local max.}
+    \begin{itemize}
+        \item \keyword{Normalized Cross-Correlation}{Normalizes using filter and input window}
+        \begin{itemize}
+            \item Motivation: Non-normalized is dominated by original image pixels
+        \end{itemize}
+        \item $x_{ij} = \frac{1}{|F||w_{ij}|} \sum_{u=-k}^{k} \sum_{v=-k}^{k} f_{uv} \cdot p_{i+u,j+v}$ where $|\cdot|$ is magnitude of kernel (i.e. Square root of sum of squares)
+    \end{itemize}
+    \item \keyword{Convolution Filtering}{Flip kernel in both directions, then do cross-correlation}
+    \begin{itemize}
+        \item $x_{ij} = \sum_{u=-k}^{k} \sum_{v=-k}^{k} f_{uv} \cdot p_{i-u,j-v}$
+        \item Notation: $X = F * P$
+        \item Convolution has nicer properties than correlation
+        \item Properties: Commutative, Associative, Distributive over addition, Scalar factor, Identity
+    \end{itemize}
+    \item \keyword{Non-Linear Filters}{Filters that perform non-linear operations (e.g. Median, Min., Max.)}
+    \begin{itemize}
+        \item Correlation and convolution are both linear operations
+        \item \ilkeyword{Median Filtering}
+        \begin{itemize}
+            \item Removes spikes: Good for removing impulse and salt and pepper noise
+            \item No new pixel values introduced
+            \item Edge preserving
         \end{itemize}
     \end{itemize}
 \end{itemize}
