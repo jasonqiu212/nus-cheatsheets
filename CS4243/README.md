@@ -2,7 +2,7 @@
 
 _Taken in AY23/24 Semester 2_
 
-<!-- ## Midterm Cheatsheet
+## Midterm Cheatsheet
 
 - Covers introduction, filtering, gradients, lines, and segmentation
 
@@ -10,7 +10,7 @@ _Taken in AY23/24 Semester 2_
     <a href="cs4243-midterm-cheatsheet.pdf" target="_blank">
         <img src="../docs/cs4243-img1.png" width="60%" alt="CS4243 Midterm Cheatsheet"/>
     </a>
-</p> -->
+</p>
 
 ## Final Cheatsheet
 
