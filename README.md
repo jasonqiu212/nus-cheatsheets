@@ -14,6 +14,8 @@ Condensed notes for some computer science and statistics courses I took at the N
 - AY23/24 Semester 2
   - [MA2104 - Multivariable Calculus](MA2104/ma2104-cheatsheet.pdf)
   - [CS4243 - Computer Vision and Pattern Recognition](CS4243)
+- AY24/25 Semester 1
+  - [CS3219 - Software Engineering Principles and Patterns](CS3219/cs3219-cheatsheet.pdf) (In progress)
 
 ## Can I customize the notes?
 
