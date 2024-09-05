@@ -99,6 +99,46 @@
 
 \section{01. Introduction}
 
+\subsection{Software Types}
+
+\begin{itemize}
+    \item \keyword{Edge Computing}{Computation done at leaf nodes}
+    \item \keyword{Cloud Computing}{Host software on ext. data center}
+    \begin{itemize}
+        \item \keyword{Cloud-enabled}{Legacy applications modified to run on the cloud (vs. cloud-native)}
+    \end{itemize}
+\end{itemize}
+
+\subsection{Software Development Process}
+
+\begin{itemize}
+    \item \keyword{Waterfall}{Sequential approach good for stable req.}
+    \item \keyword{Agile}{Iterative development with feedback loops and quick responses to changes}
+    \begin{itemize}
+        \item \keyword{Scrum}{Work done in sprints, where a subset of the product backlog is cleared}
+    \end{itemize}
+\end{itemize}
+
+\subsection{Software Delivery}
+
+\begin{itemize}
+    \item \keyword{Deployment}{Make software available to use after dev.}
+    \begin{itemize}
+        \item Bare metal: Customized build for target platforms
+        \item Virtual machine: Use VM to run guest OS to run app.
+        \item Containers: Include only necessary OS processes and dependencies (Lighter than VM)
+        \item Serverless: Cloud-native servers that don't need developers to manage (Let provider manage resources)
+    \end{itemize}
+    \keyword{DevOps}{Practices combining software dev. and ops.}
+    \begin{itemize}
+        \item Purpose: Reduce time between committing change to the change reaching production while ensuring quality
+        \item \keyword{Cont. Integration}{Auto build, unit test, deploy to staging, and acceptance test, to show problems early}
+        \item \keyword{Continuous Delivery}{Same as above, except with manual deployment to production. Ensures that every good build is
+        potentially ready for production release.}
+        \item \keyword{Continuous Deployment}{Same as above, but with auto deployment to production}
+    \end{itemize}
+\end{itemize}
+
 \section{02. Requirements}
 
 \end{multicols*}
