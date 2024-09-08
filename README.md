@@ -1,6 +1,6 @@
 # NUS Cheatsheets
 
-Condensed notes for some computer science and statistics courses I took at the National University of Singapore. Hope it helps you :)
+Condensed notes for some computer science, statistics, and mathematics courses I took at the National University of Singapore. Hope it helps you :)
 
 ## Courses
 
