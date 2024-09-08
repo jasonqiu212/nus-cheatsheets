@@ -102,6 +102,10 @@
 \subsection{Software Types}
 
 \begin{itemize}
+    \item \keyword{Embedded}{Hardware system with software designed for performing specific set of functions}
+    \item \keyword{Real-time}{Timing is important}
+    \item \keyword{Concurrent}{Different computations run across the same or overlapping time periods}
+    \item \keyword{Distributed}{Runs across more than 1 computer, usually via a network}
     \item \keyword{Edge Computing}{Computation done at leaf nodes}
     \item \keyword{Cloud Computing}{Host software on ext. data center}
     \begin{itemize}
@@ -179,9 +183,50 @@
 
 \subsection{Quality Attributes}
 
+\begin{itemize}
+    \item Different apps have different quality attributes
+    \item Quality attributes impact each other (Trade-offs)
+    \item \keyword{Validation}{Do you have the right requirements?}
+    \item \keyword{Verification}{Do you have the requirements right?}
+\end{itemize}
+
 \subsubsection{External}
 
+\begin{itemize}
+    \item Impacts user's experience
+    \item \keyword{Safety}{Whether system can do harm}
+    \item \keyword{Security}{Privacy, authentication, and integrity}
+    \item \keyword{Performance}{Responsiveness of system. Impacts safety for real-time systems.}
+    \item \keyword{Availability}{Planned up time of system}
+    \begin{itemize}
+        \item $\text{Availability} = \frac{\text{Up time}}{\text{Up time} + \text{Down time}}$
+    \end{itemize}
+    \item \keyword{Usability}{User-friendliness and ease of use}
+    \item \keyword{Robustness}{How app performs when faced with invalid inputs, defects, and attacks}
+    \item \keyword{Reliability}{Probability of app executing without failure}
+    \item \keyword{Integrity}{Preventing information loss and preserving data correctness}
+    \item \keyword{Interoperability}{How readily system can exchange data and services with other software and hardware}
+    \item Others: Deployability, Compatibility, Installability
+\end{itemize}
+
 \subsubsection{Internal}
+
+\begin{itemize}
+    \item Perceived by developers and maintainers
+    \item \keyword{Scalability}{Ability to accommodate more users, servers, locations, and etc.}
+    \begin{itemize}
+        \item Horizontal Scaling: Add more machines
+        \item Vertical Scaling: Add capability of machines
+    \end{itemize}
+    \item \keyword{Efficiency}{How well app uses hardware, network, etc.}
+    \item \keyword{Modifiability}{How easily code can be understood, changed, and extended}
+    \item \keyword{Portability}{Effort needed to migrate software from 1 environment to another}
+    \item \keyword{Reusability}{Effort needed to convert software component for use in other apps}
+    \item \keyword{Verifiability}{How well software can be evaluated to demonstrate that it functions as expected}
+    \item Others: Maintainability, Testability
+\end{itemize}
+
+\section{03. Software Architecture}
 
 \end{multicols*}
 \end{document}
