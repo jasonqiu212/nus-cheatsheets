@@ -228,5 +228,51 @@
 
 \section{03. Software Architecture}
 
+\section{04. Microservices Architecture}
+
+\begin{itemize}
+    \item \keyword{Microservices App.}{App. as suite of small services}
+    \item Each microservice:
+    \begin{itemize}
+        \item have \textbf{well-defined} (Cohesive) business capabilities: Boundaries align with business capabilities and features are closely related
+        \item developed/deployed independently
+        \item communicate with each other through well-defined mechanisms (Sync. or Async.)
+    \end{itemize}
+    \item How do we identify boundaries of microservices?
+\end{itemize}
+
+\subsection{Domain Driven Design}
+
+\begin{itemize}
+    \item \keyword{DDD}{Complex system is collection of multiple domain models (sub-domains)}
+    \item \keyword{Domain}{Problem space that business occupies}
+    \item \keyword{Sub-domain}{Component of main domain}
+    \item \keyword{Bounded Context}{Cohesive boundary in the solution space relevant to the sub-domain that helps to define the models, functionalities, and implementation needed}
+    \begin{itemize}
+        \item Shared kernel: 2 contexts developed independently but overlaps (Tightly coupled teams)
+        \item Upstream-downstream: 2 contexts in provider-consumer relationship through API
+        \item Conformist relationship: Consumer conforms entirely to provider (Most loosely coupled between teams)
+    \end{itemize}
+    \item Interactions between contexts model interactions between sub-domains
+    \item \keyword{Aggregate}{Cluster of related entities and value objects that are part of bounded context}
+    \begin{itemize}
+        \item Transactional boundary: Any change to aggregate will either all succeed or none will succeed
+        \item Consistency boundary: Everything outside of aggregate can only read; state can only be modified through aggregate's public interface
+        \item Aggregate Root: Aggregate's public interface
+    \end{itemize}
+\end{itemize}
+
+\subsection{Event Storming}
+
+\includegraphics[scale=0.35]{event-storming.png}
+
+\begin{itemize}
+    \item Domain events: Relevant events that occur in domain
+    \item Command: User or external action that causes events
+    \item Aggregate: Unit for purpose of data changes after command and before event
+    \item Policy: Relationship where event triggers command
+    \item Bounded contexts determined by grouping commands, aggregates, and events, where policies link contexts
+\end{itemize}
+
 \end{multicols*}
 \end{document}
