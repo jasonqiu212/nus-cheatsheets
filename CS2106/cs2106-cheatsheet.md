@@ -162,10 +162,10 @@ int g(int i, int j) {
   - Stores:
     - Local variables
     - Parameters
-    - Saved registers
     - Saved Stack Pointer
-    - Saved Frame Pointer
     - Return Program Counter
+    - Saved Frame Pointer (See later)
+    - Saved registers (See later)
 
 ![[stack-frame.png|400]]
 
@@ -175,6 +175,30 @@ int g(int i, int j) {
 - Function Call Convention: Different ways to setup stack frame
   - E.g., is the information stored in stack frame or register? Prepared by caller or callee?
   - No correct answer, as long as consistent
+
+#### Frame Pointer
+
+> To facilitate access of stack frame items
+
+- Problem: Stack Pointer is hard to use, since it's **dynamically changing from adding local variables as we run through the function** $\rightarrow$ Need to dynamically change offset for all the local variables
+- Solution: Frame Pointer
+  - ==Frame Pointer==: Points to fixed location in stack frame
+  - Other items have fixed displacement from FP
+  - Requires stack frame to store previous frame's FP
+  - Platform dependent
+  - FP only for compiler's convenience
+
+#### Saved Registers
+
+- Problem: Number of General Purpose Registers limited
+- Solution idea: ==Register spilling==
+  - When GPRs are all used up, use memory to temporarily hold GPR values
+  - GPR can then be reused for other purposes
+  - GPR values can be restored later
+- ==Saved registers==: Saved values from registers that the function intends to use before function starts
+  - On function return, restore those registers
+  - Stored in stack frame
+  - Without saving registers that we intend to use in this function, we may override registers with new values, which can lead to bugs
 
 #### Sample Frame Setup and Teardown
 
@@ -200,29 +224,6 @@ int g(int i, int j) {
 
 - Is stack frame deleted explicitly? No, stack pointer suffices
   - Also why local variable needs to be initialized with new value. Without initialization, repeated calls to same function may mistakenly set variable to value from previous call
-
-#### Frame Pointer
-
-> To facilitate access of stack frame items
-
-- Problem: Stack Pointer is hard to use, since it's dynamically changing from adding local variables -> Need to dynamically change offset
-- Solution: Frame Pointer
-  - ==Frame Pointer==: Points to fixed location in stack frame
-  - Other items have fixed displacement from FP
-  - Requires stack frame to store previous frame's FP
-  - Platform dependent
-  - FP only for compiler's convenience
-
-#### Saved Registers
-
-- Problem: Number of General Purpose Registers limited
-- Solution: ==Register spilling==
-  - When GPRs are all used up, use memory to temporarily hold GPR values
-  - GPR can then be reused for other purposes
-  - GPR values can be restored later
-- ==Saved registers==: Saved values from registers that the function intends to use before function starts
-  - On function return, restore those registers
-  - Stored in stack frame
 
 ### Heap Memory
 
@@ -585,7 +586,10 @@ int main() {
     - Solution: Can decrease priority of running process after every time quantum
     - Solution: Can remove current running process in next round of scheduling after quantum
   - Hard to control CPU time for a process
-- Priority Inversion: Higher priority task held up by lower priority task
+- Priority Inversion: High priority task **indirectly** held up by medium priority task
+  - Must be 3 priority levels
+    - If only 2 levels and high priority is blocked by low priority due to locked resource, then it is **not** priority inversion, instead the high priority task is just not ready
+    - 3rd medium priority task is needed to indirectly block high priority task and further delay more than necessary
   - E.g. Priority: ${A=1, B=3, C=5}$
     - Task $C$ starts and locks resource
     - Task $B$ arrives and preempts $C$ due to priority
@@ -769,6 +773,7 @@ int main() {
   - $P$ produces/writes $n$ bytes
   - $Q$ consumes/reads $m$ bytes
 - Queue behavior: Must access data in order
+- Can be used to solve synchronization, though not common
 
 #### Creating a Pipe
 
@@ -817,7 +822,8 @@ int main() {
 > Asynchronous notification about an event that is sent to a process/thread
 
 - Recipient must handle signal by using default handler or providing custom handler
-- Common signals in Unix: Kill, interrupt
+- Common signals in Unix: Terminate (`SIGTERM`), kill (`SIGKILL`), interrupt (`SIGINT`)
+- Can be used to solve synchronization, though not common
 
 ```c
 #include <stdio.h>
@@ -918,7 +924,7 @@ int main() {
 #### Hybrid Thread
 
 - Have both kernel and user threads
-- User threads can bind to kernel thread
+- Multiple user threads can bind to 1 kernel thread
 - OS schedules on kernel threads only
 - Pros: More flexible, since can limit concurrency on any process
 
@@ -1202,7 +1208,9 @@ while (True) {
 - Intuition:
   - Wraps critical section in mutex
   - `canProduce`: Flag for blocking through busy waiting to not waste produced item
+    - Initialized to 1
   - `canConsume`: Flag for blocking to not consume nothing
+    - Initialized to 0
 - Solution 2: No busy waiting with more semaphores!
 
 ![[producer-consumer-blocking.png|400]]
@@ -1339,13 +1347,14 @@ void putChopstick(i) {
 }
 ```
 
+- `state[i]`: State of philosopher $i$
 - `mutex`: For blocking critical section of updating state
 - `S[i]` semaphore: Blocks philosopher $i$ if hungry and cannot eat
   - All initialized to 0
 - Intuition:
   1.  If any philosopher next to me is eating, block myself
       1. When a philosopher finishes eating, they signal to me that I have a chance to eat
-  2.  Else, eat!
+  2.  Else, signal then block (which cancels out), then eat!
       1. Once finish eating, signal to hungry philosophers next to me to eat
 
 ##### Limited Eater
