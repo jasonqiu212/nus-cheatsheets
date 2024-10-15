@@ -228,13 +228,71 @@
 
 \section{03. Software Architecture}
 
+\begin{itemize}
+    \item Contains components, connectors, config. (structure)
+    \item \keyword{Reference Architecture}{Common architectural framework that leads to architectural patterns}
+    \item \keyword{Control flow}{Connector indicating computation order}
+    \item \keyword{Data flow}{Connector indicating data flow}
+    \item \keyword{Call and return}{Control flow moves from 1 component to another and back}
+    \item \keyword{Message}{Data sent to specific address}
+    \item \keyword{Event}{Data emitted from component for anyone listening to consume}
+    \item \keyword{Decomposition}{Breaking down a system}
+    \begin{itemize}
+        \item \keyword{Horizontal Slicing}{Designing by layers}
+        \item \keyword{Vertical Slicing}{Designing by features}
+        \item Criteria: Modularity, coupling, cohesion
+    \end{itemize}
+\end{itemize}
+
+\subsection{Architectural Styles}
+
+\begin{itemize}
+    \item Categories:
+    \begin{itemize}
+        \item How is code divided? (Technical partitioning, domain partitioning)
+        \item How is system deployed? (Monolithic, distributed)
+    \end{itemize}
+    \item \keyword{Layered}{Software organized as layers of components}
+    \item \keyword{Pipe and Filter}{Data flows through components (Data source, filters, data sink) via pipes}
+    \item \keyword{MVC}{Model (Business logic), View, Controller (Coordinates between view and model)}
+    \item \keyword{Web MVC}{2 communicating entities: Server (Holds the model) and Client (Interacts with the server)}
+    \begin{itemize}
+        \item Controller: Handles user HTTP request, selects model, prepares view
+        \item Client-side Rendering (CSR): Rendered in browser with slower initial load but faster page changes
+        \item Server-side Rendering (SSR): Rendered in server with faster initial load but requires more server resources
+    \end{itemize}
+    \item \keyword{Single Page App. (SPA)}{Implementation of CSR; retrieve data from server without refreshing single page}
+\end{itemize}
+
+\subsection{Representational State Transfer (REST)}
+
+\begin{itemize}
+    \item Set of rules for transferring, accessing, and manipulating textual data representations of hypermedia
+    \begin{itemize}
+        \item Not an architecture by itself
+        \item \keyword{Hypermedia}{Combo. of multimedia and hyperlinks}
+    \end{itemize}
+    \item Client-server architecture: For separation of concerns
+    \item Stateless: Interaction between client and server should contain all information for scalability and reliability
+    \item Cacheable: Server response should include if data is caheable or not for network efficiency
+    \item Layered: To reduce system complexity
+    \item Uniform interface to interact with server (HTTP/S)
+    \begin{itemize}
+        \item Resource-based: Anything can be a resource
+        \item Resources can be identified and manipulated by components (e.g., HTTP DELETE /user/:id)
+    \end{itemize}
+    \item Code-on-demand: Optional; Allow client functionality by downloading executable code
+    \item Pros: Less coupled, scalability
+    \item Cons: Being stateless decreases network performance
+\end{itemize}
+
 \section{04. Microservices Architecture}
 
 \begin{itemize}
     \item \keyword{Microservices App.}{App. as suite of small services}
     \item Each microservice:
     \begin{itemize}
-        \item have \textbf{well-defined} (Cohesive) business capabilities: Boundaries align with business capabilities and features are closely related
+        \item has \textbf{well-defined} (Cohesive) business capabilities: Boundaries align with business capabilities and features are closely related
         \item developed/deployed independently
         \item communicate with each other through well-defined mechanisms (Sync. or Async.)
     \end{itemize}
