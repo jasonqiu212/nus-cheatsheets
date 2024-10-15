@@ -352,6 +352,18 @@
         \item For modifying data through multiple microservices
         \item Better for steps that are harder to compensate at end
     \end{itemize}
+    \item \keyword{Event Sourcing}{Store stream of facts/events that got app. into current state, instead of storing current state}
+    \begin{itemize}
+        \item Different from relational/NoSQL
+        \item Event: UUID, Event type, Data relevant to event type
+        \item \keyword{Projection function}{Calculate new state using current state and new event}
+        \item \keyword{Rolling snapshots}{Save projections to speed up perf.}
+    \end{itemize}
+    \item \keyword{Command Query Responsibility Segregation (CQRS)}{Split commands (write) from queries (read data)}
+    \begin{itemize}
+        \item E.g. commands write into Kafka queue of events; materialized view database derived from events
+        \item Pros: Single write model can add data into many read models, Can scale independently
+    \end{itemize}
 \end{itemize}
 
 \end{multicols*}
