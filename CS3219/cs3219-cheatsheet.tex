@@ -332,5 +332,27 @@
     \item Bounded contexts determined by grouping commands, aggregates, and events, where policies link contexts
 \end{itemize}
 
+\subsection{Data Patterns in Microservices}
+
+\begin{itemize}
+    \item Motivation: How do microservices manage data?
+    \item \keyword{Database-server-per-service Pattern}{Each service has its own database server}
+    \begin{itemize}
+        \item Data Indep.: Services should not modify same data
+        \item Pros: Loose coupling, Easy interoperability
+        \item Cons: Lots of DBs, Expensive
+        \item Private-tables-per-service: Service owns private tables
+        \item Schema-per-service: Service has private DB schema
+    \end{itemize}
+    \item \keyword{Delegate Pattern}{Access DB through authoritative delegate service and avoid accessing DB directly}
+    \item \keyword{Data Lake Pattern}{Aggregate data from microservices into read-only, query-able data sinks}
+    \item \keyword{Sagas Pattern}{All steps have a compensating action that's stored on routing slip and passed along}
+    \begin{itemize}
+        \item If step fails, can roll back using routing slip and revert system to \textbf{reasonably compensated state} (e.g. notif.)
+        \item For modifying data through multiple microservices
+        \item Better for steps that are harder to compensate at end
+    \end{itemize}
+\end{itemize}
+
 \end{multicols*}
 \end{document}
