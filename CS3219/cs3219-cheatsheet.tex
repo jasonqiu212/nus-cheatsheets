@@ -348,7 +348,7 @@
     \item \keyword{Data Lake Pattern}{Aggregate data from microservices into read-only, query-able data sinks}
     \item \keyword{Sagas Pattern}{All steps have a compensating action that's stored on routing slip and passed along}
     \begin{itemize}
-        \item If step fails, can roll back using routing slip and revert system to \textbf{reasonably compensated state} (e.g. notif.)
+        \item If step fails, roll back using routing slip and revert to \textbf{reasonably} compensated state (e.g. notification)
         \item For modifying data through multiple microservices
         \item Better for steps that are harder to compensate at end
     \end{itemize}
@@ -363,6 +363,31 @@
     \begin{itemize}
         \item E.g. commands write into Kafka queue of events; materialized view database derived from events
         \item Pros: Single write model can add data into many read models, Can scale independently
+    \end{itemize}
+\end{itemize}
+
+\subsection{More Patterns in Microservices}
+
+\begin{itemize}
+    \item \keyword{Service Instance per Host}{Run each service instance in solation on its own host (e.g. VM, container)}
+    \item \keyword{Immutable Infrastructure}{Component changes must be made by recreating component}
+    \item \keyword{Infrastructure as Code}{Code can be easily versioned}
+    \item \keyword{Orchestration}{Rely on central brain to drive processes}
+    \item \keyword{Choreography}{Inform each component of its job, and let it work out the details}
+    \item Service communication: Sync/async? 1-way or 2-way?
+    \begin{itemize}
+        \item \keyword{Event-Driven Communication}{"Something happened"; Async. pattern with real-time data (Published as it is generated) in streams or queues}
+        \item \keyword{Request-Response Communication}{"Do this"; Generally sync. which introduces latency and coupling}
+    \end{itemize}
+    \item \keyword{API Gateway}{Entry point server that routes requests to services}
+    \begin{itemize}
+        \item Backends for Frontends: Gateway for each device type
+    \end{itemize}
+    \item \keyword{Service Discovery}{Service registry to store IP and port of each microservice}
+    \begin{itemize}
+        \item \keyword{Client-side Disc.}{Client determines location from registry and uses load-balancing to select}
+        \item \keyword{Server-side Disc.}{Client req. to router/load balancer}
+        \item \keyword{Service Registry Pattern}{Database of services and locations, where instances register with registry}
     \end{itemize}
 \end{itemize}
 
