@@ -376,8 +376,8 @@
     \item \keyword{Choreography}{Inform each component of its job, and let it work out the details}
     \item Service communication: Sync/async? 1-way or 2-way?
     \begin{itemize}
-        \item \keyword{Event-Driven Communication}{"Something happened"; Async. pattern with real-time data (Published as it is generated) in streams or queues}
-        \item \keyword{Request-Response Communication}{"Do this"; Generally sync. which introduces latency and coupling}
+        \item \keyword{Event-Driven Communication}{See EDA}
+        \item \keyword{Request-Response Communication}{"Do this"; Generally sync. (Latent and coupled)}
     \end{itemize}
     \item \keyword{API Gateway}{Entry point server that routes requests to services}
     \begin{itemize}
@@ -389,6 +389,39 @@
         \item \keyword{Server-side Disc.}{Client req. to router/load balancer}
         \item \keyword{Service Registry Pattern}{Database of services and locations, where instances register with registry}
     \end{itemize}
+\end{itemize}
+
+\section{05. Event-Driven Architecture}
+
+\begin{itemize}
+    \item \keyword{Event}{Notifies services that something happened and/or copies data to other services}
+    \begin{itemize}
+        \item \keyword{Initiating Event}{From end user}
+        \item \keyword{Derived Event}{Created due to initiating event}
+        \item Structure: Key-value pair (\keyword{Unkeyed}{No key}; \keyword{Entity}{Unique key}; \keyword{Keyed}{Key not unique; For partitioning})
+    \end{itemize}
+    \item \keyword{Event-Driven Architecture (EDA)}{\textbf{Event-based} with \textbf{async.} communication}
+    \begin{itemize}
+        \item \keyword{Real-time data}{Published as it is generated}
+        \item Components: Producers, Brokers, Consumers
+        \item Can combine into event-driven microservices 
+    \end{itemize}
+    \item \keyword{Broker}{Receives events, stores events in queue/partitions, and provides events for consumption}
+    \begin{itemize}
+        \item Properties: Immutable, Ordering, Indexing, Partitioning, Infinite retention, Replayability
+        \item \keyword{Topic}{Category of queues/partitions}
+        \item \keyword{Partition}{Indexed queue that \textbf{persists} after pop}
+        \item Consumer consumes by index of last message it read
+    \end{itemize}
+    \item Pros: Fast since async., Scalable broker, Less coupled
+\end{itemize}
+
+\section{06. Scalability}
+\section{07. Asynchronous Communication}
+
+\begin{itemize}
+    \item Async pros: Responsive, Availability
+    \item Cons: More complex error-handling
 \end{itemize}
 
 \end{multicols*}
