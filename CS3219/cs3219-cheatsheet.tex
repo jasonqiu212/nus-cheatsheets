@@ -45,6 +45,7 @@
 \setlength{\leftmarginii}{0.5cm}
 \setlist[itemize,1]{leftmargin=2mm,labelindent=1mm,labelsep=1mm}
 \setlist[itemize,2]{leftmargin=2mm,labelindent=1mm,labelsep=1mm,label=$\bullet$}
+\setlist[itemize,3]{leftmargin=2mm,labelindent=1mm,labelsep=1mm,label=$\bullet$}
 
 % Font
 \renewcommand{\familydefault}{\sfdefault}
@@ -215,8 +216,8 @@
     \item Perceived by developers and maintainers
     \item \keyword{Scalability}{Ability to accommodate more users, servers, locations, and etc.}
     \begin{itemize}
-        \item Horizontal Scaling: Add more machines
         \item Vertical Scaling: Add capability of machines
+        \item Horizontal Scaling: Add more machines
     \end{itemize}
     \item \keyword{Efficiency}{How well app uses hardware, network, etc.}
     \item \keyword{Modifiability}{How easily code can be understood, changed, and extended}
@@ -417,6 +418,30 @@
 \end{itemize}
 
 \section{06. Scalability}
+
+\begin{itemize}
+    \item \keyword{Scalability}{System property to handle more work}
+    \item Scaling services in monolithic applications:
+    \begin{itemize}
+        \item \keyword{Scale Up}{Upgrade server}
+        \item \keyword{Scale Out}{Run multiple instances}
+        \begin{itemize}
+            \item \keyword{Load Balancer}{Chooses service replica to execute user request}
+            \item \keyword{Session Store}{Stores user's session across replicas}
+        \end{itemize}
+    \end{itemize}
+    \item Scaling databases:
+    \begin{itemize}
+        \item \keyword{Caching}{Good for data that is frequently read and rarely changes}
+        \item \keyword{Scaling Out with Read Replicas}{Write to primary and read from secondary to separate read and write}
+        \item \keyword{Scaling Out by Partitioning Data}{Horizontal (By rows) vs. Vertical (By columns)}
+        \item Scaling out databases creates \ilkeyword{distributed databases}
+    \end{itemize}
+    \item Scale multiple services to build multi-tiered apps.
+    \item Split system into microservices to help scalability
+    \item \keyword{Pod Archi.}{(Swim lanes) Place group of services/replicas inside boundary to contain failures}
+\end{itemize}
+
 \section{07. Asynchronous Communication}
 
 \begin{itemize}
