@@ -417,7 +417,7 @@ void exit(int status); // syntax
 - ==Zombie Process==: Child process terminates before parent, but parent has not called wait
   - Cannot be killed
 - ==Orphan Process==: Parent process terminates before child process
-  - `init` process becomes pseudo parent
+  - `init` process becomes pseudo parent, not the grandparent process (if any)
   - Child termination sends signal to `init`, which uses `wait()` to clean up
 - Implicit `exit()`: Return from `main()` implicitly calls `exit()`
   - If `main()` returns some number, then that number is the status code
@@ -543,9 +543,10 @@ int main() {
 
 #### Shortest Remaining Time (SRT)
 
-- Idea: Pick task with shortest remaining time
-  - Variation of SJF
-  - Preemptive: New jobs with shorter remaining time can cut off running job
+> Preemptive version of SJF
+
+- Idea: Pick task with shortest remaining time (Basically same as SJF)
+  - **Preemptive**: New jobs with shorter remaining time can cut off running job
 - Pros and cons: Same as SJF
 
 ### Scheduling for Interactive Systems
@@ -685,7 +686,7 @@ int main() {
 	}
 
 	// Detach and destroy shared memory region
-	shmdt((char*) shm);
+	shmdt(shm);
 	shmctl(shmid, IPC_RMID, 0);
 
 	return 0;
@@ -723,7 +724,7 @@ int main() {
 	shm[0] = 1;
 
 	// Detach
-	shmdt((char*) shm);
+	shmdt(shm);
 
 	return 0;
 }
@@ -1390,3 +1391,838 @@ gcc something.c -lrt // real time library
   - Binary semaphore
   - Lock: `pthread_mutex_lock()`
   - Unlock: `pthread_mutex_unlock()`
+
+## Memory Management
+
+- Random Access Memory (RAM): Different from hard drive
+  - Treat as contiguous array of bytes, where each byte has unique index (Physical address)
+- Memory hierarchy: Speed is proportional to cost, and thus inversely proportional to size and proximity to CPU
+  - ==Spatial locality==: Given a used address, program likely to access memory addresses that are adjacent
+  - ==Temporal locality==: Given a used address, program likely to access it again soon
+  - Working set: Small area of memory currently in focus (e.g. loops) $\rightarrow$ Should be in faster memory
+- Binding of Memory Address: Source code (compile by compiler) $\rightarrow$ Executable (load and run by OS) $\rightarrow$ Main memory
+  - Compiler: Has ==symbol table== to track variables (Variable $\rightarrow$ Address)
+    - Scans through code and adds variables to symbol table
+    - Helps compiler to assign memory layout (e.g. offsets)
+    - Generates machine code: Replaces symbolic names with memory layout information
+  - OS:
+    - Maps executable into memory space (e.g. text, data segments)
+    - Assigns actual memory space
+- ==Transient data==: Exists only for a short while
+  - Can grow/shrink during execution
+  - E.g. local variables, arguments
+- ==Persistent data==:
+  - Can grow/shrink during execution
+  - E.g. heap (not the pointer pointing to `malloc`)
+  - Leakage: Persistent data not released
+- Role of OS in managing memory:
+  - Allocate space to new process
+  - Manage memory space for process
+  - Protect memory space of process from each other
+  - Provides memory-related system calls to process (e.g. `malloc`)
+  - Manage memory space for internal use (e.g. data structure for PCB table)
+
+### Memory Abstraction
+
+- Considerations:
+  - Protection of address space for a process
+  - Correct sharing of physical memory by multiple processes
+
+#### Without Memory Abstraction
+
+- Idea: Process directly uses physical address
+- Pros: Simple, Works well for 1 process at a time
+- Cons: With multiple processes, each process may access each other's memory space
+  - E.g. Process 1 and 2 both access memory address 4096
+
+##### Address Relocation
+
+- Idea:
+  1.  OS scans and finds contiguous space in main memory to store new process
+  2.  Recalculates all memory references in process by adding offset
+- Cons:
+  - Slow to recalculate
+  - Hard to distinguish memory reference from normal integer
+    - E.g. address stored in register $\rightarrow$ How to determine whether this is an address for recalculation?
+
+##### Base and Limit Registers
+
+- ==Base Register==: Special register as the base of all memory references in a process
+  - During compilation, all memory references compiled as offset from starting address of process memory space
+  - During loading, base register initialized to starting address of process memory space
+  - During execution, hardware adds memory references and base register to get physical address
+- ==Limit Register==: Special register to indicate upper limit of memory space of current process
+  - Valid range: $[BR, BR + LR)$
+  - All memory access is checked against limit for protection
+  - If out of range, segmentation fault
+
+![[base-and-limit-register.jpeg|400]]
+
+- Base and limit registers for each process stored in process's hardware context
+- During execution, they are then loaded into registers
+- Cons: Every memory access incurs an addition and comparison of limit
+
+#### Logical Address
+
+> Abstraction for how process views its memory space
+
+- E.g. Memory reference 4096 means different physical addresses in Process A and B
+
+### Contiguous Memory Allocation
+
+- Assumptions:
+  - Store Memory concept: Program must be in memory during execution
+  - Load-Store Memory execution model: Only interactions with memory are load and store
+  - Each process occupies contiguous memory region
+  - Physical memory large enough to contain multiple processes
+- To support concurrency:
+  - Allow multiple processes in physical memory
+  - When physical memory is full, free up memory by removing terminated processes or swapping blocked processes to secondary storage
+- ==Memory partition==: Contiguous memory region allocated to single process
+  - Motivation: How does OS allocate memory for process?
+
+#### Fixed-size Partition
+
+> Fixed number of partitions
+
+- Pros:
+  - Easy to manage: Can use simple bitmap to track whether partition used or not
+  - Fast to allocate: Every free partition is the same
+- Cons: Partition size needs to be large enough to contain **largest process**
+  - ==Internal fragmentation==: Allocated memory blocks are larger than needed memory size $\rightarrow$ Wasted space internally
+
+#### Variable-size Partition
+
+> Partition created based on actual size of process
+
+- Pros: Flexible, No internal fragmentation
+- Cons:
+  - ==External fragmentation==: Free memory in small, non-contiguous blocks $\rightarrow$ Cannot fit new process, though it can when combined $\rightarrow$ Wasted space externally
+  - Need to maintain more information in OS
+  - More time and considerations to locate appropriate region
+
+##### Allocation Algorithms
+
+- Assume: OS maintains list of partitions and holes
+- Goal: Locate partition of size $N$
+- Strategies to find hole with size $M > N$:
+  - First-fit: Take the first hole that's large enough
+  - Best-fit: Find the smallest hole that's large enough
+    - Cons: Leaves holes that are small $\rightarrow$ External fragmentation
+  - Worst-fit: Find the largest hole
+    - Pros: Resulting hole is the largest
+- ==Merging==: When occupied partition is freed, merge with adjacent hole if possible
+- ==Compaction==: Move occupied partitions around to consolidate holes
+  - Expensive!
+- Example: OS maintains linked list for partitions and uses first-fit algorithm
+
+![[dynamic-allocation-example.png|400]]
+
+- Time complexity:
+  - Allocation: $O(n)$, which gets slower as we allocate more
+  - Deallocation: $O(1)$
+  - Merging: $O(1)$ if we assume only merge neighbor
+
+##### Buddy System
+
+- Idea:
+  - Free block split into half repeatedly to meet request
+    - The 2 halves form buddy blocks
+  - When buddy blocks are both free, they can be merged
+- Algorithm:
+
+```
+A = Array of size k where 2^k is the largest allocatable block size
+
+allocate(N):
+	// Find smallest s such that 2^s >= N
+	s = ceil(log2(N))
+
+	if (Free block exists in A[s]):
+		Remove block from free block list
+		Allocate block
+	else:
+		Find smallest r from s + 1 to k, such that A[r] has free block B
+		For (r - 1) to s:
+			Split B repeatedly, such that A[s:r - 1] all have a new free block
+		Remove free block from A[S] and allocate block
+
+deallocate(B):
+	s = log2(Size of B)
+	if (Buddy C of B exists in A[s]):
+		Remove B and C from list
+		Merge B and C to get larger block B'
+		deallocate(B')
+	else:
+		Insert B to A[s]
+```
+
+- `A[i]` is a linked list which tracks **free** blocks of size $2^i$
+  - Each node contains starting address of free block and next node
+- How to find buddy?
+  - To find buddy block $C$ of block $B$ with size $2^S$: $S$-th bit of $B$ and $C$ are **complements** and leading (left) bits up to $S$-th bit of $B$ and $C$ are the **same**
+  - E.g. given block address $A = 0 =000000_2$ with size 32
+    - After splitting, $B = 0 = 000000_2$ and $C = 16 = 010000_2$ with size 16
+    - $B$ and $C$ are buddy blocks, since 4th bit are complements and leading bits up to 4th bit are the same
+
+![[buddy-system-example.png|400]]
+
+- Time complexity:
+  - Allocation: $O(\log_2 n)$
+  - Deallocation: $O(1)$ without merging
+  - Merging: $O(\log_2 n)$
+
+### Disjoint Memory Schemes
+
+- Assumptions:
+  - Process memory space can be in **disjoint** physical memory locations
+  - Physical memory large enough to contain multiple processes
+
+#### Paging Scheme
+
+- Idea:
+  - ==Frame==: **Physical** memory split into regions of fixed size
+  - ==Page==: **Logical** memory of a process split into regions of same size
+    - Size of frame = Size of page
+  - During execution, process pages are loaded into any available frame
+    - Logical memory space still contiguous, but occupied physical memory region can be disjointed
+
+##### Logical Address Translation
+
+- ==Page Table==: Mapping from page number to frame number
+- To locate something in physical memory, we need physical frame number ($F$) and offset from start of physical frame
+  - $\text{Physical address} = F * \text{Frame size} + \text{Offset}$
+  - But, multiplication is expensive!
+- Design decision: Keep frame/page size as power of 2 $\rightarrow$ To use bit shifting
+- Given:
+  - Page/frame size of $2^n$
+  - $m$ bits of logical address
+  - Logical address $LA$
+    - Most significant $m-n$ bits $\rightarrow$ For finding frame number $f$ from page table
+    - Remaining $n$ bits $\rightarrow$ Offset $d$
+- $\text{Physical address} = f * 2^n + d$
+  - $f * 2^n$ can use bit shifting
+  - Concatenation done by placing wires together; no need to add
+
+![[paging-logical-address-translation.jpeg|400]]
+
+##### Observations
+
+- No external fragmentation: All free frames can be used
+- Internal fragmentation still possible, since logical memory space may not be multiple of page size
+  - Wasted internal space in last page of process
+
+##### Hardware Support
+
+- Each process has its own page table $\rightarrow$ OS stores page table information inside process's PCB under memory context
+  - ==Page Table Register==: Base physical address of page table
+  - Page table
+- How to access page table from a given logical address? Hardware does this
+  - When doing context switching, OS loads Page Table Register
+  - Hardware adds page number to Page Table Register to access page table in physical memory
+- ==Translation Look-aside Buffer (TLB)==: Cache for page table
+  - Motivation: Each memory reference requires 2 memory accesses (Read page table and access actual memory item) $\rightarrow$ CPU limited by 2 memory accesses
+  - Search TLB using page number:
+    - If hit, retrieve cached frame number
+    - If miss, retrieve from page table and update TLB
+  - Impact on memory access time: Given hit rate $H$, TLB access time $T$, main memory access time $M$:
+    - With TLB: $H(T+M)+(1-H)(T+2M)$
+    - Without TLB: $2M$
+    - High hit rate: Due to locality $\rightarrow$ 1 entry in TLB can handle all memory access in a page
+    - Can have another cache for main memory to reduce $M$
+  - Part of hardware context of a process
+    - When context switching, TLB flushed $\rightarrow$ Lots of TLB misses at the start $\rightarrow$ Can place some entries initially (e.g. code pages)
+
+![[paging-hardware.jpeg|400]]
+
+##### Protection
+
+- ==Access-Right Bits==: Attached to each page table entry to indicate whether page is readable, writable, and executable
+  - E.g. page with text segment: R1W0X1, page with data segment: R1W1X0
+  - Memory access checked against these bits
+- ==Valid Bit==: Attached to each page table entry to indicate whether page is valid for process to access
+  - Motivation: Logical memory range usually same for all processes $\rightarrow$ Some processes do not use the whole range
+  - Memory access checked against this bit $\rightarrow$ OS catches out-of-range access
+
+##### Page Sharing
+
+> Page table can allow multiple processes to share same physical memory frame
+
+- Motivation: Wasteful to just duplicate everything when forking process
+- ==Page sharing==: No duplication of process space; only page table is duplicated
+  - Hardware context different (e.g. PTB)
+- ==Copy-On-Write==:
+  - Motivation: What if 1 process need to write when page sharing?
+
+![[copy-on-write.png|400]]
+
+#### Segmentation Scheme
+
+- Motivation: Multiple memory regions with different purposes in a process $\rightarrow$ Some regions may grow/shrink during execution
+  - E.g. heap, stack
+- Idea:
+  - Separate logical memory regions into memory **segments**
+  - Map each segment into **contiguous** physical memory region
+
+##### Logical Address Translation
+
+- Logical address: $<\text{SegID}, \text{Offset}>$
+  - Segment Name/ID: To look up segment table
+- ==Segment table==: Mapping from $\text{SegID}$ to $<\text{Base}, \text{Limit}>$
+  - Base: Base physical address of segment
+  - Limit: Indicates range of segment
+  - $\text{Physical address} = \text{Base} + \text{Offset}$
+  - $\text{Offset} < \text{Limit}$ for valid access
+
+![[segmentation-logical-address-translation.jpeg|400]]![[segmentation-hardware.jpeg|400]]
+
+##### Observations
+
+- Pros:
+  - Can grow/shrink independently by adjusting limit
+  - Can be protected/shared independently
+- Cons: External fragmentation
+
+#### Segmentation with Paging Scheme
+
+- Motivation:
+  - Paging solves external fragmentation
+  - Segmentation solves growing/shrinking of segments
+- Idea:
+  - Each segment now composed of pages, instead of contiguous physical regions
+  - Each segment in the process has a page table
+  - Segments can grow/shrink by adding/deleting pages
+
+![[segmentation-with-paging.jpeg|400]]
+
+![[segmentation-with-paging-hardware.jpeg|400]]
+
+### Virtual Memory Management
+
+- Motivation:
+  - Previous assumption: Physical memory is large enough to hold process's logical memory space
+  - What if logical memory space of process $>$ physical memory?
+- Idea:
+  - Extend paging scheme to split logical address space into small chunks
+  - Store some chunks in physical memory (RAM) and some in secondary storage (Hard drive), since secondary storage has much larger capacity
+  - Add bit in page table entry to indicate if page is a ==memory resident== (In physical memory) or non-memory resident (In secondary storage)
+    - ==Page fault==: CPU tries to access non-memory resident pages
+      - CPU can only access memory resident pages
+
+#### Accessing Virtual Memory
+
+- By hardware:
+  1.  Check page table if page $X$ is a memory resident
+      1. If yes, then access it
+      2. Else, trigger page fault, which traps to OS and informs OS via interrupt handler
+- By OS:
+  1.  Locate page $X$ in secondary storage
+  2.  Load page $X$ into physical frame
+  3.  Update page table
+  4.  Go to step 1 by hardware
+- Hardware handles checking page table
+- OS handles loading from hard disk, because it's difficult for hardware to do
+
+![[accessing-virtual-memory.png|400]]
+
+#### Observations
+
+- Secondary storage access time $>>$ Physical memory access time
+  - ==Thrashing==: Lots of time spent loading non-memory resident pages to physical memory due to page faults
+    - **Unlikely** due to temporal locality and spatial locality
+- More processes can reside in physical memory $\rightarrow$ Better CPU utilization
+  - Idle process: Does nothing, except keeps CPU running
+
+#### Demand Paging
+
+- Application of virtual memory
+- Motivation:
+  - When a new process starts execution, it's costly to load all pages to physical memory
+  - Which pages should be loaded?
+- Idea:
+  - Process starts with no memory resident page
+  - Only load page into physical memory when there is page fault
+- Pros:
+  - Fast startup time for new process
+  - Small memory footprint
+- Cons:
+  - Process may be slow at the start due to page faults
+    - Solution: Preload page 1 only, since hard to tell which pages needed before runtime
+  - Page faults may have cascading effect on other processes (i.e., thrashing taking up CPU time)
+
+#### Page Table Structure
+
+- Motivation:
+  - Huge logical memory space $\rightarrow$ Lots of pages $\rightarrow$ Each page has a page table entry $\rightarrow$ Huge page table, which takes up physical memory
+  - Issues:
+    - High overhead
+    - Fragmented page table: Page table split across frames
+
+##### Direct Paging
+
+> Keep all entries in single table
+
+- Given $2^p$ pages in logical memory space:
+  - $p$ bits needed to specify 1 page
+  - $2^p$ page table entries (PTE), each containing:
+    - Physical frame number
+    - Additional information bits (e.g., valid bit, access right bit, etc.)
+- E.g., 32-bit virtual address, Page size: 4 KB, PTE size: 2 bytes
+  - Number of pages: $2^{32} / 2^{12} = 2^{20} \text{ pages}$
+  - $p = 32-12 = 20$ and rest used for offset
+  - Page table size: $2^{20} * 2 = 2 \text{ MB}$
+
+##### 2-Level Paging
+
+- Motivation: Process does not use everything in virtual memory space $\rightarrow$ Full page table is wasteful
+- Idea: Split page table into **smaller** page tables, each with page table number
+  - Single ==page directory== to track smaller page tables
+- Given original page table has $2^p$ entries:
+  - If page directory has $2^m$ smaller page tables, then $m$ bits needed to specify 1 smaller page table
+  - Each smaller page table contains $2^{p-m}$ entries
+- Virtual address format: $| \text{ m } | \text{ p-m } | \text{ d } |$
+
+![[2-level-paging.png|400]]
+
+- Pros: Can have empty entries in the page directory $\rightarrow$ Less space used than full page table
+
+##### Inverted Page Table
+
+- Motivation: $m$ processes $\rightarrow$ $m$ page tables, but only $n$ physical frames $\rightarrow$ Generally, memory overhead of $m$ page tables $>>$ $n$ physical frames, which is wasteful
+- Idea: Keep **inverted** mapping of physical frame to $<\text{pid},\text{page num.}>$
+  - $<\text{pid},\text{page num.}>$ can uniquely identify memory page
+  - Search whole table for matching $<\text{pid},\text{page num.}>$, then matching entry's index is the physical frame number
+- Pros: 1 table for all processes
+- Cons: Slow translation, since need to search whole table to lookup a page
+
+![[inverted-table.png|400]]
+
+#### Page Replacement Algorithms
+
+- Motivation:
+  - Suppose no free physical frame during page fault
+  - Which page should be evicted?
+- When evicting page:
+  - Clean page: Not modified $\rightarrow$ No need to write back
+  - Dirty page: Modified $\rightarrow$ Need to write back
+- Evaluation Criteria: Need to reduce page faults
+  - $T_{\text{access}} = (1-p)T_{\text{mem}} + (p) T_{\text{page fault}}$
+  - Since $T_{\text{page fault}}$ (Access time of page fault) $>>$ $T_{\text{mem}}$ (Access time for memory resident page), need to reduce $p$ for minimal $T_{\text{access}}$
+
+##### Optimal (OPT)
+
+> Evict page that will not be used again for longest period of time
+
+- Guarantees minimum number of page faults
+- But impossible, since need future knowledge of memory references
+- Useful as a base comparison for other algorithms
+
+![[opt-example.png|400]]
+
+##### First-in First-out (FIFO)
+
+> Evict oldest memory page based on initial loading time
+
+- Not LRU: Only based on **initial** loading time
+
+![[fifo-example.png|400]]
+
+- Implementation: OS maintains queue of resident page numbers
+  - Simple
+- Cons:
+  - Belady's Anomaly: More physical frames $\rightarrow$ More page faults, which is counter-intuitive
+    - Since FIFO can evict MRU frame $\rightarrow$ Does not exploit temporal locality
+
+##### Least Recently Used (LRU)
+
+> Evict page that has not been used in the longest time
+
+- Exploits temporal locality heuristic: Have not used for long time $\rightarrow$ Likely will not be used again
+
+![[lru-example.png|400]]
+
+- Pros:
+  - Does not suffer from Belady's Anomaly
+  - Similar performance to OPT algorithm
+- Cons: Hard to implement in hardware
+- Implementation:
+  - Approach #1: Use a fake "time" counter, which is incremented for every memory reference
+    - Update "time-of-use" field in page table entry whenever reference occurs
+    - Problems:
+      - Need to search through all page for smallest "time-of-use" field
+      - "Time-of-use" forever increasing $\rightarrow$ Overflow possible
+  - Approach #2: "Stack"
+    - If page is referenced, then remove from stack and push on top of stack
+    - Replace page from bottom of stack $\rightarrow$ No need to search through all entries
+    - Problems: Not pure stack, since entries can be removed from anywhere in stack
+
+##### Second-Chance (Clock)
+
+> Modified FIFO to give second chance to pages that are accessed
+
+- Each PTE maintains a reference bit
+  - 0 when newly loaded and not accessed again
+  - 1 when accessed again
+- Replacement algorithm:
+  1.  Maintain pointer to oldest FIFO page
+  2.  If page's reference bit is 0, then page is replaced
+  3.  If page's reference bit is 1, then page is given a 2nd chance
+      1. Reference bit cleared to 0 $\rightarrow$ Page taken as newly loaded
+      2. Point to next FIFO page and return to step 2
+- If all pages have reference bit as 1 or 0, then basically FIFO
+- Implementation: Circular queue of pages with pointer to oldest page (==Victim page==)
+
+![[clock-implementation.png|400]]
+
+![[clock-example.png|400]]
+
+#### Frame Allocation
+
+- Motivation: With $N$ limited physical memory frames, how do we distribute them among $M$ processes?
+- Approaches:
+  - ==Equal allocation==: Each process gets $N / M$ frames
+  - ==Proportional allocation==: Each process gets $\text{size}_p / \text{size}_{\text{total}} * N$
+- ==Local replacement==: Victim page selected among pages of process that caused page fault
+  - Implicit assumption for above page replacement algorithms discussed
+  - Pros: Number of frames allocated to process is constant $\rightarrow$ Performance is stable between runs
+  - Cons: If not enough allocated frames $\rightarrow$ Lots of page faults $\rightarrow$ Slow
+- ==Global replacement==: Victim page can be chosen among all frames
+  - Pros: Allow self-adjustment between processes (i.e., process that needs more frames can get from others)
+  - Cons:
+    - Badly behaved processes (e.g., hello world with 1 GB array) will steal pages from other processes
+    - Number of frames allocated to a process can vary
+
+##### Working Set Model
+
+- Motivation: Hard to find right number of frames! $\rightarrow$ Lack of frames lead to thrashing
+  - For local replacement: Thrashing limited to 1 process $\rightarrow$ Can hog I/O and slow down other processes
+  - For global replacement: Thrashing steals frames from other processes $\rightarrow$ Other processes thrash too (Cascading thrashing)
+- Observation:
+  - Locality: Set of pages referenced by process is relatively constant in a period of time
+  - In a new locality, lots of page faults for the set of pages
+  - Once set of pages loaded in, little page faults
+- Solution:
+  - Working Set Size $W(t, \Delta)$: Active pages in the Working Set Window $\Delta$ (Past time interval) at time $t$
+  - Allocate enough frames for pages in $W(t, \Delta)$ to reduce page faults
+
+![[working-set-model.png|400]]
+
+- Transient region: Transition between localities $\rightarrow$ Working set changing in size
+- Stable region: Working set size stable
+- Choice of $\Delta$ important:
+  - Too small: May miss pages in current locality
+  - Too big: May contain pages from different locality
+
+## File System Management
+
+- Motivation: Physical memory is volatile $\rightarrow$ Use external storage to store persistent information, even after OS terminates $\rightarrow$ Need some abstraction to manage storage
+- Criteria:
+  - Self-contained: Can "plug-and-play" on any system
+  - Persistent: Beyond lifetime of OS and processes
+  - Efficient: Good management of free and used space with minimum overhead for bookkeeping information
+
+![[hard-disk-layout.png|250]]
+
+- Hard disk layout:
+  - Track (A)
+  - Sector (C): Smallest physical storage units
+  - Cluster (D): (or block) Group of contiguous sectors that acts as the logical unit of file storage
+  - Platter: Entire disc; both sides can store data
+  - Cylinder: Tracks in same location on each platter
+
+|                    | Memory Management                                      | File System Management                                                  |
+| ------------------ | ------------------------------------------------------ | ----------------------------------------------------------------------- |
+| Underlying Storage | RAM                                                    | Disk; SSD: Similar to RAM but organized like disk for uniform interface |
+| Access Speed       | Constant                                               | Disk: Variable I/O time since need to move arm; SSD: Constant           |
+| Unit of Addressing | Physical memory address                                | Disk sector                                                             |
+| Usage              | Address space for process (Implicit when process runs) | Non-volatile data (Explicit access)                                     |
+| Organization       | Paging/segmentation                                    | ext* (Linux), FAT* (Windows), HFS\* (MacOS), etc.                       |
+
+### File System Abstraction
+
+- ==File system==: Collection of files and directories with abstraction of accessing and using them
+
+#### File
+
+> Abstraction representing logical unit of information created by process
+
+- Contains metadata and data
+
+##### File Metadata
+
+> Additional information associated with the file (aka file attributes)
+
+- ==File name==: Different file systems have different naming rules
+  - E.g., `Name.Extension`
+- ==Identifier==: Unique ID for file used internally by FS
+- ==Size==: Current size of file
+- ==Time, date, and owner information==: Creation, last modification time, owner ID, etc.
+- ==Table of content==: Information for FS to check how to access the file
+- ==File type==: Each type supports different operations and requires different programs for processing
+  - Common types:
+    - Regular files: User information
+      - ASCII files: Readable as is (e.g., text files, source code)
+      - Binary files: Have predefined structure that can be processed by specific program (e.g., Java class file)
+    - Directories: System files for FS structure
+    - Special files: Character/block oriented
+  - Distinguishing file type:
+    - Use file extension (Windows)
+    - Magic number stored at beginning of the file data (Unix)
+- ==File protection==: Access control to file data
+  - Type of access: Read, write, execute, append, delete, list (Read metadata of file)
+  - How?
+    - ==Permission Bits==: Classify users into 3 classes
+      - Owner: User who created the file
+      - Group: Set of users who need similar access to a file
+      - Universe: All other users in system
+    - ==Access Control List==: File stores list of user identities and allowed access type $\rightarrow$ More customizable, but long
+      - Unix: Minimal ACL (Permission bits) vs. Extended ACL (Permission bits + Specific users/groups)
+- Operations on file metadata: Rename, change attributes, read attribute
+
+##### File Data
+
+- Structure:
+  - Array of bytes: Each byte has unique offset from file start
+  - Fixed length records: Array of records (sections) that can grow and shrink
+    - Can jump to any record easily: $\text{Size of record} * (N-1)$
+  - Variable length records: More flexible but harder to locate a record
+- Access methods:
+  - Sequential access: Data read in order from the start; cannot skip but can rewind (like a tape drive)
+  - Random access: Data can be read in any order
+    - Read: Specify offset position for every read/write
+    - Seek: Jump to offset position in file, then do read/write
+  - ==Direct access==: Random access for **fixed-length** records
+    - Random access is special case of direct case where each record is 1 byte
+- Operations: Create (New file with no data), open (OS creates structures to read/write file), read, write, repositioning (aka seek), truncate (Remove from position to end of file)
+
+##### File Operations
+
+- OS provides file operations as system calls
+- Information for an opened file:
+  - File pointer: Current location in file
+  - Disk location: Actual file location on disk
+  - Open count: How many processes have this file opened
+- Problem: Several processes can open several files $\rightarrow$ How to organize this open-file information?
+- Approach:
+  - ==System-wide open-file table==: One entry per unique file
+  - Per-process open-file table (aka file descriptor table): One entry per file used in the process
+    - Each entry points to system-wide table
+
+![[file-operations.png|400]]
+
+- 2 processes share a file using **different** file descriptors
+  - E.g., 2 separate open commands
+  - I/O (read/write) occurs at different and independent offsets
+
+![[process-sharing-file-1.png|400]]
+
+- 2 processes share a file using the **same** file descriptor
+  - E.g., `fork()` after file is opened
+  - Only 1 offset: I/O (read/write) **shifts** offset for other process
+
+![[process-sharing-file-2.png|400]]
+
+#### Directory
+
+> Provides logical grouping of files and tracks file locations
+
+- Actually just a file
+- How to structure directories?
+  - Single-level: Only root directory with all files inside
+  - Tree-structured: Directories recursively embedded in other directories
+    - Absolute pathname: Path from root directory (`/`) to the file
+    - Relative pathname: Directory names followed from the current working directory (`./`)
+      - Parent directory: `../`
+  - Directed Acyclic Graph (DAG): Tree-structured, but a file can be shared and appears in multiple directories
+    - Consider: Directory $A$ is owner of file $F$ and directory $B$ wants to share $F$
+    - ==Hard Link==: Directory $A$ and $B$ have separate pointers pointing to file $F$ in disk
+      - Can link to files only
+      - Pros: Low overhead since only pointers are added in directory
+      - Cons:
+        - Directory can only point to files in the same FS
+        - Deletion problem: Each file has a reference counter $\rightarrow$ Need to delete all pointers to delete file
+      - Application: Installation scripts create hard links to installation binary, instead of copy
+      - Unix: `ln`
+    - ==Symbolic Link==: Directory $B$ creates **special link file** $G$, which contains path name of file $F$
+      - Can link to files and directories $\rightarrow$ Can introduce cycles!
+      - Pros:
+        - Path can point to different FS (e.g., network FS)
+        - Deletion:
+          - If $B$ deletes, then $G$ is deleted and not $F$
+          - If $A$ deletes, then $F$ is deleted and not $G$ (but not working)
+      - Cons: Larger overhead
+      - Unix: `ln -s`
+  - General Graph: Has cycles
+    - Hard to traverse since need to prevent infinite loops
+    - Hard to determine when to remove a file or directory
+
+### File System Implementations
+
+#### Disk Structure
+
+![[disk-views.jpeg|400]]
+
+- Treat as array of logical blocks
+  - Logical block: Smallest accessible unit
+- Logical block is mapped into disk sectors
+
+#### Disk Organization
+
+![[disk-organization.jpeg|400]]
+
+- ==Master Boot Record== (MBR): Boot code to start up OS boot code in individual partitions
+  - Each partition can have its own OS and file system
+- Partition table: Stores location of each partition
+- ==Partition Details==: Total number of blocks + Number and location of free disk blocks
+- ==Directory Structure==: Tracks files in a directory by **mapping file name to File Information entry**
+  - Windows: File Information entry (including metadata) stored in directory entry
+  - Unix: Mapping of file name to i-node number
+- ==Files Information==: Information for all files
+  - Unix: List of indexed nodes (I-node)
+    - ==I-node==: Stores file meta data and pointers to file data (See indexed allocation for data structure)
+- ==File Data==: Actual data
+
+#### File Block Allocation
+
+> How to allocate file data on disk?
+
+- If file size is not a multiple of logical blocks, then internal fragmentation in last block
+- Good file implementation:
+  - Track logical blocks and whether they are used or free
+  - Allow efficient access
+  - Utilize disk space efficiently
+
+##### Contiguous Block Allocation
+
+![[contiguous-block-allocation.jpeg|400]]
+
+- Idea: Allocate consecutive disk blocks to a file
+  - Directory Structure stores mapping from file name to entry in Files Information, which contains `start` and `length`
+- Pros:
+  - Simple to track: Each file only needs starting block number and length
+  - Fast access: Only need to seek to first block
+- Cons:
+  - External fragmentation
+  - File size needs to be specified in advance
+
+##### Linked List Allocation
+
+![[linked-list-allocation.jpeg|400]]
+
+- Idea: Linked list of disk blocks
+  - Each disk block stores file data and **next disk block number** (like a pointer)
+  - File Information stores start and end (optional) disk block number of a file
+- Pros: No external fragmentation
+- Cons:
+  - Random access in a file is slow, since reading any block requires sequential access in hard drive, which moves disk arm
+  - Part of disk block is used for pointer
+  - Less reliable (e.g., 1 wrong pointer)
+
+##### File Allocation Table (FAT) Allocation
+
+![[fat-allocation.jpeg|400]]
+
+- Idea: Move all block pointers to a single table (aka FAT)
+  - FAT is in **main memory** at all times
+  - File Information entry stores start disk block number of a file to access FAT
+- Pros: Faster random access
+  - Still sequential, but much faster in main memory
+- Cons:
+  - FAT tracks all disk blocks in a partition, which can be huge
+  - Does not solve linked list's reliability issue
+
+##### Indexed Allocation
+
+![[indexed-allocation.jpeg|400]]
+
+- Idea: Each file has an **index block** occupying a disk block
+  - ==Index block==: Array of disk block addresses used by file in sequence
+  - File Information entry stores disk block number of file's index block
+- Pros:
+  - Less memory overhead, since only index block of opened file needs to be in main memory, instead of all disk blocks
+  - $O(1)$ direct access
+- Cons:
+  - Maximum file size limited by size/number of entries in an index block
+  - Overhead from storing index block
+- Variations to allow larger file size:
+  - Linked scheme: Linked list of index blocks
+    - Each index block contains pointer to next index block
+  - Multi-level index: Similar to multi-level paging
+    - First-level index block points to number of second-level index blocks
+  - Combination of direct indexing and multi-level indexing: Can store small files efficiently while still allowing large files (Trade-off)
+    - E.g., I-node, apart from containing file metadata
+      - 12 direct pointers
+      - 1 single indirect block
+      - 1 double indirect block
+      - 1 triple indirect block
+
+![[i-node.jpeg|400]]
+
+#### Free Space Management
+
+- Motivation: Before allocating file, need to know which disk block is free
+- Free space information maintained by **Partition Details**
+
+##### Bitmap
+
+- Idea: Each disk block represented by 1 bit
+  - E.g., 1 $\rightarrow$ Free; 0 $\rightarrow$ Used
+- Pros: Good set of manipulations using bit-level operations
+- Cons: Need to keep in memory for efficiency reasons
+  - Bitmap can be huge depending on number of blocks
+
+##### Linked List
+
+- Idea: Linked list of disk blocks (aka free space disk blocks), where each disk block contains:
+  - Free disk block numbers
+  - Pointer to next free space disk block
+- Pros:
+  - Easy to locate free block, since just need to load a disk block number from free space disk block
+  - Only first pointer needs to be in memory
+- Cons: High overhead, since takes up disk blocks
+
+#### Directory Implementation
+
+> Given full path name, search directories recursively along the path to get file information
+
+- File must be opened before use
+  - Purpose: Find file information and load into main memory
+- Only **root directory** has a dedicated section in disk drive (i.e., **Directory Structure**)
+  - Subdirectories are in the form of files, with similar structure as the root directory
+
+##### Linear List
+
+- Idea: Directory consists of a list, where each file entry contains:
+  - File name
+  - Pointer to file information in Unix (or file information itself in Windows)
+- Cons: Requires linear search, which is inefficient for large directories
+  - Solution: Cache last few searches
+
+##### Hash Table
+
+- Idea: Directory contains hash table of size $N$
+  - If chained collision resolution used, then check hash table entry's linked list for matching file name
+- Pros: Fast lookup
+- Cons:
+  - Hash table has limited size
+  - Depends on good hash function
+
+### File System in Action
+
+- Run-time information is needed when user interacts with file during runtime
+  - E.g., load file information into memory when opening file
+  - Maintained in OS context of process
+- Create `/parent/F`:
+  1.  Use path to locate parent directory
+  2.  Search for $F$ to avoid duplicates
+      1. If found, file creation terminates with error
+  3.  Use free space list to find free disk blocks
+  4.  Add entry to parent directory
+- Process $P$ opens file `/parent/F`:
+  1.  Search **system-wide open-file table** for existing entry $E$
+      1. If found, create an entry in $P$'s **per-process open-file table** to point to $E$ and return a pointer to this entry
+  2.  Use path to locate file $F$
+      1. If not found, open operation terminates with error
+  3.  When $F$ is located, file information loaded into new entry $E$ in system-wide table
+  4.  Create entry in $P$'s per-process table to point to $E$ and return a pointer to this entry
+  5.  Pointer used for further read/write operations
