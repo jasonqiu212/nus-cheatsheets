@@ -475,6 +475,51 @@
 \end{itemize}
 
 \section{08. Messaging Patterns}
+
+\begin{itemize}
+    \item Async. and enables enterprise integration
+    \item Message contains: Header with message type, Payload
+\end{itemize}
+
+\subsubsection{Message Channel}
+
+\begin{itemize}
+    \item \keyword{Return Address}{Tells replier where to send reply to}
+    \item \keyword{Correlation ID}{Specifies which request this reply is for}
+    \item \keyword{Request-Reply Chaining}{Chain using correlation IDs}
+    \item \keyword{Invalid Message Channel}{Handles erroneous messages}
+    \item \keyword{Dead Letter Channel}{For failed-to-deliver messages}
+    \item \keyword{Datatype Channel}{For specific type of data (RabbitMQ: Direct exchange chooses queue)}
+    \item \keyword{Pub-Sub Request-Response Pattern}{Sender communicates with multiple services with Pub-Sub Channel (Topic), but all responses aggregated back using queue}
+\end{itemize}
+
+\subsubsection{Message Routing}
+
+\begin{itemize}
+    \item \keyword{Simple Router}{Routes 1 channel to many channels}
+    \item \keyword{Composed Router}{Combination of routers}
+    \item \ilkeyword{Context-Based Router} vs. \ilkeyword{Content-Based Router}
+    \item \keyword{Msg. Filter}{Content-based router with 1 output channel (e.g., Pub-Sub Channel with filters)}
+    \item \keyword{Msg. Splitter}{1 message $\rightarrow$ Multiple messages}
+    \item \keyword{Msg. Aggregator}{Multiple correlated msgs. $\rightarrow$ 1 msg.}
+    \item \keyword{Message Scatter-Gather}{Broadcasts 1 message to services and aggregates replies into single message}
+\end{itemize}
+
+\subsubsection{Message Transformation}
+
+\begin{itemize}
+    \item \keyword{Msg. Translator}{Converts msg. format}
+    \item \keyword{Canonical Data Model}{Use common data format; requires 2 translators per service to translate in and out}
+\end{itemize}
+
+\subsubsection{Message Endpoint}
+
+\begin{itemize}
+    \item \keyword{Msg. Endpoint}{Interface bet. service and msg. system; channel-specific and distinct for send and receive}
+    \item \keyword{Polling Consumer}{Service controls when to consume}
+    \item \keyword{Event-Driven Consumer}{Consume on receive}
+\end{itemize}
+
 \section{09. Object Interaction Patterns}
 
 \end{multicols*}
