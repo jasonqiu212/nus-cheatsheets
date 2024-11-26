@@ -9,3 +9,11 @@ _Taken in AY24/25 Semester 1_
         <img src="../docs/cs2106-img1.png" width="60%" alt="CS2106 Midterm Cheatsheet"/>
     </a>
 </p>
+
+## Final Cheatsheet
+
+<p align="center">
+    <a href="cs2106-final-cheatsheet.pdf" target="_blank">
+        <img src="../docs/cs2106-img2.png" width="60%" alt="CS2106 Final Cheatsheet"/>
+    </a>
+</p>
