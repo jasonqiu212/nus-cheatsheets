@@ -29,14 +29,14 @@ I use 2 methods to take notes:
 > Format inspired by [jovyntls/cheatsheets](https://github.com/jovyntls/cheatsheets)
 
 1. Download the `.tex` file and the `/img` folder with the original images in the cheatsheet.
-2. Use LaTeX to render to edit and render the PDF file (I recommend using VS Code).
+2. Use LaTeX to edit and render the PDF file (I recommend using VS Code).
 
 ### Obsidian
 
 > [Obsidian](https://obsidian.md/) is a neat note-taking app using Markdown
 
-1. Download the `.md` file and the `/img` folder with the original images in the cheatsheet.
-2. Download [Obsidian](https://obsidian.md/).
+1. Download [Obsidian](https://obsidian.md/).
+2. Download the `.md` file and the `/img` folder with the original images in the cheatsheet.
 3. Copy the above files into your vault.
 4. Use Obsidian to edit and export the cheatsheet into a PDF file.
 
