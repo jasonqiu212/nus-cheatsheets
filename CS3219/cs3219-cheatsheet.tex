@@ -392,32 +392,7 @@
     \end{itemize}
 \end{itemize}
 
-\section{05. Event-Driven Architecture}
-
-\begin{itemize}
-    \item \keyword{Event}{Notifies services that something happened and/or copies data to other services}
-    \begin{itemize}
-        \item \keyword{Initiating Event}{From end user}
-        \item \keyword{Derived Event}{Created due to initiating event}
-        \item Structure: Key-value pair (\keyword{Unkeyed}{No key}; \keyword{Entity}{Unique key}; \keyword{Keyed}{Key not unique; For partitioning})
-    \end{itemize}
-    \item \keyword{Event-Driven Architecture (EDA)}{\textbf{Event-based} with \textbf{async.} communication}
-    \begin{itemize}
-        \item \keyword{Real-time data}{Published as it is generated}
-        \item Components: Producers, Brokers, Consumers
-        \item Can combine into event-driven microservices 
-    \end{itemize}
-    \item \keyword{Broker}{Receives events, stores events in queue/partitions, and provides events for consumption}
-    \begin{itemize}
-        \item Properties: Immutable, Ordering, Indexing, Partitioning, Infinite retention, Replayability
-        \item \keyword{Topic}{Category of queues/partitions}
-        \item \keyword{Partition}{Indexed queue that \textbf{persists} after pop}
-        \item Consumer consumes by index of last message it read
-    \end{itemize}
-    \item Pros: Fast since async., Scalable broker, Less coupled
-\end{itemize}
-
-\section{06. Scalability}
+\section{05. Scalability}
 
 \begin{itemize}
     \item \keyword{Scalability}{System property to handle more work}
@@ -439,15 +414,68 @@
     \end{itemize}
     \item Scale multiple services to build multi-tiered apps.
     \item Split system into microservices to help scalability
-    \item \keyword{Pod Archi.}{(Swim lanes) Place group of services/replicas inside boundary to contain failures}
+    \item \keyword{Pod Architecture}{(Swim lanes) Place group of services/replicas inside boundary to contain failures}
+\end{itemize}
+
+\section{06. Event-Driven Architecture}
+
+\begin{itemize}
+    \item \keyword{Event}{Broadcasted to services that something \textbf{happened} and/or copies data to other services}
+    \begin{itemize}
+        \item \keyword{Initiating Event}{From end user}
+        \item \keyword{Derived Event}{Created due to initiating event}
+        \item Structure: Key-value pair (\keyword{Unkeyed}{No key}; \keyword{Entity}{Unique key}; \keyword{Keyed}{Key not unique; For partitioning})
+        \item Publisher owns event payload and topic channel
+    \end{itemize}
+    \item \keyword{Event-Driven Architecture (EDA)}{\textbf{Event-based} with \textbf{async.} communication}
+    \begin{itemize}
+        \item \keyword{Real-time data}{Published as it is generated}
+        \item Components: Producers, Brokers, Consumers
+        \item Can combine into event-driven microservices 
+        \item Pros: Fast since async., Scalable broker, Less coupled
+    \end{itemize}
+    \item \keyword{Broker}{Receives events, stores events in queue/partitions, and provides events for consumption (e.g., Kafka)}
+    \begin{itemize}
+        \item Properties: Immutable, Ordering, Indexing, Partitioning, Infinite retention, Replayability
+        \item \keyword{Partition}{Indexed queue that \textbf{persists} after pop}
+        \item Consumer consumes by index of last message it read
+        \item \keyword{Topic}{Category of partitions; channel for \textbf{1-to-M} communication (Pub-Sub)}
+        \begin{itemize}
+            \item Multiple partitions $\rightarrow$ Non-sequential processing
+        \end{itemize}
+    \end{itemize}
 \end{itemize}
 
 \section{07. Asynchronous Communication}
 
 \begin{itemize}
-    \item Async pros: Responsive, Availability
-    \item Cons: More complex error-handling
+    \item Communication types: Sync./async.? Single/multiple receivers? Persistent/transient?
+    \item \keyword{Synchronous}{Caller sends message and \textbf{waits} for receiver to respond with ack. (e.g., HTTP/S)}
+    \item \keyword{Asynchronous}{Caller sends message and continues executing code without waiting (e.g., AMQP)}
+    \begin{itemize}
+        \item Pros: Available, Decoupling of sender and receiver
+        \item Cons: More complex error-handling
+    \end{itemize}
+    \item \keyword{Message}{Carries \textbf{point-to-point} (1-to-1) command or data query to be executed by another service}
+    \begin{itemize}
+        \item vs. Event: Both for async. communication, but with different intent
+        \item Receiver owns message payload and queue channel
+    \end{itemize}
+    \item \keyword{Queue}{FIFO channel with \textbf{single receiver} (P2P)}
+    \begin{itemize}
+        \item vs. Topic: Different intent and processing order
+    \end{itemize}
+    \item \keyword{Advanced Message Queueing Protocol (AMQP)}{P2P messaging protocol where client communicates with broker (e.g., RabbitMQ)}
+    \begin{itemize}
+        \item Messages published to \ilkeyword{exchanges}, which distribute message copies to queues
+        \item Exchange types: Direct (Match), Fanout (All bounded queues), Topic (Wildcard match)
+    \end{itemize}
+    \item \keyword{Persistent}{Messages stored until next node receives}
+    \item \keyword{Transient}{Messages only buffered for some time}
 \end{itemize}
+
+\section{08. Messaging Patterns}
+\section{09. Object Interaction Patterns}
 
 \end{multicols*}
 \end{document}
