@@ -2004,9 +2004,10 @@ deallocate(B):
   - Open count: How many processes have this file opened
 - Problem: Several processes can open several files $\rightarrow$ How to organize this open-file information?
 - Approach:
-  - ==System-wide open-file table==: One entry per unique file
-  - Per-process open-file table (aka file descriptor table): One entry per file used in the process
-    - Each entry points to system-wide table
+  1.  ==System-wide open-file table==: One entry per unique file
+  2.  ==Per-process open-file table==: One entry per file used in the process
+  3.  Combination of both: Per-process file descriptor table and system-wide open-file table
+      - More common
 
 ![[file-operations.png|400]]
 
@@ -2220,7 +2221,7 @@ deallocate(B):
   4.  Add entry to parent directory
 - Process $P$ opens file `/parent/F`:
   1.  Search **system-wide open-file table** for existing entry $E$
-      1. If found, create an entry in $P$'s **per-process open-file table** to point to $E$ and return a pointer to this entry
+      1. If found, create an entry in $P$'s **per-process open-file table** to point to $E$ and return a pointer to this entry (Depends on approach; alternatively, create entry in system-wide open-file table too)
   2.  Use path to locate file $F$
       1. If not found, open operation terminates with error
   3.  When $F$ is located, file information loaded into new entry $E$ in system-wide table
