@@ -59,6 +59,11 @@
 \newcommand{\keyword}[2]{\sethlcolor{highlight}\hl{\textbf{#1}} - #2}
 \newcommand{\ilkeyword}[1]{\sethlcolor{highlight}\hl{\textbf{#1}}}
 
+% Custom highlight colors
+\definecolor{highlightgreen}{RGB}{134,241,212}
+\definecolor{highlightorange}{RGB}{227,146,85}
+\definecolor{highlightpurple}{RGB}{194,185,209}
+
 % Custom command for partial derivatives
 \newcommand{\partialderivative}[2][]{\frac{\partial #1}{\partial #2}}
 
@@ -100,20 +105,6 @@
 
 \section{01. Introduction}
 
-\subsection{Software Types}
-
-\begin{itemize}
-    \item \keyword{Embedded}{Hardware system with software designed for performing specific set of functions}
-    \item \keyword{Real-time}{Timing is important}
-    \item \keyword{Concurrent}{Different computations run across the same or overlapping time periods}
-    \item \keyword{Distributed}{Runs across more than 1 computer, usually via a network}
-    \item \keyword{Edge Computing}{Computation done at leaf nodes}
-    \item \keyword{Cloud Computing}{Host software on ext. data center}
-    \begin{itemize}
-        \item \keyword{Cloud-enabled}{Legacy applications modified to run on the cloud (vs. cloud-native)}
-    \end{itemize}
-\end{itemize}
-
 \subsection{Software Development Process}
 
 \begin{itemize}
@@ -128,13 +119,7 @@
 
 \begin{itemize}
     \item \keyword{Deployment}{Make software available to use after dev.}
-    \begin{itemize}
-        \item Bare metal: Customized build for target platforms
-        \item Virtual machine: Use VM to run guest OS to run app.
-        \item Containers: Include only necessary OS processes and dependencies (Lighter than VM)
-        \item Serverless: Cloud-native servers that don't need developers to manage (Let provider manage resources)
-    \end{itemize}
-    \keyword{DevOps}{Practices combining software dev. and ops.}
+    \item \keyword{DevOps}{Practices combining software dev. and ops.}
     \begin{itemize}
         \item Purpose: Reduce time between committing change to the change reaching production while ensuring quality
         \item \keyword{Cont. Integration}{Auto build, unit test, deploy to staging, and acceptance test, to show problems early}
@@ -147,10 +132,10 @@
 \section{02. Requirements}
 
 \begin{itemize}
-    \item \keyword{Requirement}{Capability needed by a user or must be met by a system}
+    \item Capabilities needed by user or must be met by system
 \end{itemize}
 
-\subsection{Types of Requirements}
+\subsection{Requirement Types}
 
 \begin{itemize}
     \item \keyword{Business Req.}{Why the organization is implementing the system, e.g., reduce staff costs by 25\%}
@@ -198,10 +183,7 @@
     \item \keyword{Safety}{Whether system can do harm}
     \item \keyword{Security}{Privacy, authentication, and integrity}
     \item \keyword{Performance}{Responsiveness of system. Impacts safety for real-time systems.}
-    \item \keyword{Availability}{Planned up time of system}
-    \begin{itemize}
-        \item $\text{Availability} = \frac{\text{Up time}}{\text{Up time} + \text{Down time}}$
-    \end{itemize}
+    \item \keyword{Availability}{$\frac{\text{Up time}}{\text{Up time} + \text{Down time}}$}
     \item \keyword{Usability}{User-friendliness and ease of use}
     \item \keyword{Robustness}{How app performs when faced with invalid inputs, defects, and attacks}
     \item \keyword{Reliability}{Probability of app executing without failure}
@@ -214,7 +196,7 @@
 
 \begin{itemize}
     \item Perceived by developers and maintainers
-    \item \keyword{Scalability}{Ability to accommodate more users, servers, locations, and etc.}
+    \item \keyword{Scalability}{Ability to have more users, servers, etc.}
     \begin{itemize}
         \item Vertical Scaling: Add capability of machines
         \item Horizontal Scaling: Add more machines
@@ -230,29 +212,23 @@
 \section{03. Software Architecture}
 
 \begin{itemize}
-    \item Contains components, connectors, config. (structure)
+    \item Contains: Components, Connectors, Configuration
     \item \keyword{Reference Architecture}{Common architectural framework that leads to architectural patterns}
     \item \keyword{Control flow}{Connector indicating computation order}
     \item \keyword{Data flow}{Connector indicating data flow}
     \item \keyword{Call and return}{Control flow moves from 1 component to another and back}
-    \item \keyword{Message}{Data sent to specific address}
-    \item \keyword{Event}{Data emitted from component for anyone listening to consume}
     \item \keyword{Decomposition}{Breaking down a system}
     \begin{itemize}
         \item \keyword{Horizontal Slicing}{Designing by layers}
         \item \keyword{Vertical Slicing}{Designing by features}
-        \item Criteria: Modularity, coupling, cohesion
+        \item Criteria: Modularity, Coupling, Cohesion
     \end{itemize}
 \end{itemize}
 
 \subsection{Architectural Styles}
 
 \begin{itemize}
-    \item Categories:
-    \begin{itemize}
-        \item How is code divided? (Technical partitioning, domain partitioning)
-        \item How is system deployed? (Monolithic, distributed)
-    \end{itemize}
+    \item Categories: How is code divided? (Technical/domain partitioning), How is system deployed? (Monolithic, distributed)
     \item \keyword{Layered}{Software organized as layers of components}
     \item \keyword{Pipe and Filter}{Data flows through components (Data source, filters, data sink) via pipes}
     \item \keyword{MVC}{Model (Business logic), View, Controller (Coordinates between view and model)}
@@ -293,11 +269,12 @@
     \item \keyword{Microservices App.}{App. as suite of small services}
     \item Each microservice:
     \begin{itemize}
-        \item has \textbf{well-defined} (Cohesive) business capabilities: Boundaries align with business capabilities and features are closely related
-        \item developed/deployed independently
+        \item has well-defined business capabilities
+        \item has cohesive features
+        \item is developed/deployed independently
         \item communicate with each other through well-defined mechanisms (Sync. or Async.)
     \end{itemize}
-    \item How do we identify boundaries of microservices?
+    \item How to identify boundaries of microservices? DDD and Event Storming
 \end{itemize}
 
 \subsection{Domain Driven Design}
@@ -326,10 +303,10 @@
 \includegraphics[scale=0.35]{event-storming.png}
 
 \begin{itemize}
-    \item Domain events: Relevant events that occur in domain
-    \item Command: User or external action that causes events
-    \item Aggregate: Unit for purpose of data changes after command and before event
-    \item Policy: Relationship where event triggers command
+    \item \sethlcolor{highlightgreen}\hl{\textbf{Command}} - User or external action that causes events
+    \item \keyword{Aggregate}{Unit for purpose of data changes after command and before event}
+    \item \sethlcolor{highlightorange}\hl{\textbf{Domain events}} - Relevant events that occur in domain
+    \item \sethlcolor{highlightpurple}\hl{\textbf{Policy}} - Relationship where event triggers command
     \item Bounded contexts determined by grouping commands, aggregates, and events, where policies link contexts
 \end{itemize}
 
@@ -395,7 +372,7 @@
 \section{05. Scalability}
 
 \begin{itemize}
-    \item \keyword{Scalability}{System property to handle more work}
+    \item Strategies of scaling: Run multiple instances/copies, Split data, Split functionalities
     \item Scaling services in monolithic applications:
     \begin{itemize}
         \item \keyword{Scale Up}{Upgrade server}
@@ -524,15 +501,42 @@
 
 \begin{itemize}
     \item \keyword{Design Pattern}{Solution to a problem in a context}
+    \begin{itemize}
+        \item Categories: Creational, Structural, Behavioral
+    \end{itemize}
+    \item \keyword{Data Transfer Object (DTO)}{Carries data between processes to reduce number of remote calls}
+\end{itemize}
+
+\subsection{Structural Design Patterns}
+
+\begin{itemize}
+    \item \keyword{Bridge}{Split large class into separate hierarchies of abstraction and implementation (e.g., Shape with color)}
+    \item \keyword{Proxy}{Obj. sub. that controls access to original obj.}
     \item \keyword{Adapter}{Allows objects with incompatible interfaces to collaborate (Similar: Microservices, Msg. translator)}
     \item \keyword{Facade}{Provides simple unified interface to a set of subsystem interfaces (Similar: API Gateway)}
+\end{itemize}
+
+\subsection{Behavioral Design Patterns}
+
+\begin{itemize}
     \item \keyword{Observer}{Subscription mechanism to notify observer objs. about events that happen to a subject obj.}
     \begin{itemize}
         \item Pull Model: Observer calls from subject when notified
         \item Push Model: Subject pushes snapshot on state change
     \end{itemize}
     \item \keyword{Mediator}{Forces objects to communicate via a mediator object (Similar: Event channel)}
-    \item \keyword{Data Transfer Object (DTO)}{Carries data between processes to reduce number of remote calls}
+\end{itemize}
+
+\section{10. Principles}
+
+\begin{itemize}
+    \item \keyword{Modularity}{Independent modules that contains everything necessary to execute 1 functionality}
+    \item \keyword{Single Resp. Prin. (SRP)}{Limit module to 1 purpose}
+    \item \keyword{Sep. of Concerns}{Isolate distinct areas of functionality}
+    \item \keyword{Loose Coupling}{Module knows little about others}
+    \item \keyword{High Cohesion}{Bundle related behavior together}
+    \item \keyword{Program to Interfaces}{Write code that depends on abstractions, rather than implementations}
+    \item Information Hiding, Encapsulation
 \end{itemize}
 
 \end{multicols*}
