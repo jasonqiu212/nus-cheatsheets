@@ -16,7 +16,7 @@ Condensed notes for some computer science, statistics, and mathematics courses I
   - [CS4243 - Computer Vision and Pattern Recognition](CS4243)
 - AY24/25 Semester 1
   - [CS2106 - Introduction to Operating Systems](CS2106)
-  - [CS3219 - Software Engineering Principles and Patterns](CS3219/cs3219-cheatsheet.pdf) (In progress)
+  - [CS3219 - Software Engineering Principles and Patterns](CS3219/cs3219-cheatsheet.pdf)
 
 ## Can I customize the notes?
 
