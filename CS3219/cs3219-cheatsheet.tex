@@ -105,20 +105,16 @@
 
 \section{01. Introduction}
 
-\subsection{Software Development Process}
-
-\begin{itemize}
-    \item \keyword{Waterfall}{Sequential approach good for stable req.}
-    \item \keyword{Agile}{Iterative development with feedback loops and quick responses to changes}
-    \begin{itemize}
-        \item \keyword{Scrum}{Work done in sprints, where a subset of the product backlog is cleared}
-    \end{itemize}
-\end{itemize}
-
 \subsection{Software Delivery}
 
 \begin{itemize}
     \item \keyword{Deployment}{Make software available to use after dev.}
+    \begin{itemize}
+        \item Bare metal: Customized build for target platforms
+        \item Virtual machine: Use VM to run guest OS to run app.
+        \item Containers: Include only necessary OS processes and dependencies (Lighter than VM)
+        \item Serverless: Cloud-native servers that don't need developers to manage (Let provider manage resources)
+    \end{itemize}
     \item \keyword{DevOps}{Practices combining software dev. and ops.}
     \begin{itemize}
         \item Purpose: Reduce time between committing change to the change reaching production while ensuring quality
@@ -138,15 +134,15 @@
 \subsection{Requirement Types}
 
 \begin{itemize}
-    \item \keyword{Business Req.}{Why the organization is implementing the system, e.g., reduce staff costs by 25\%}
+    \item \keyword{Business Req.}{Why the org. is implementing the system, e.g., reduce cost by 25\% (\ilkeyword{Vision and scope doc.})}
     \item \keyword{User Req.}{Goals the user must be able to perform with the prooduct, e.g., check for flight on website}
     \item \keyword{Functional Req. (FR)}{Specifies what a system does, e.g., website can export boarding pass}
+    \item \keyword{Non-Functional Req. (NFR)}{Not directly related to functionality of system, e.g., how well it works}
     \item \keyword{Business Rules}{Policies that define or constrain requirements, e.g., staff gets 40\% discount}
-    \item \keyword{Quality Attributes}{How well the system performs, e.g., Mean time bet. failure $\geq$ 100 hours. A type of non-functional req.}
+    \item \keyword{Quality Attributes}{How well the system performs, e.g., Time bet. failure $\geq$ 100 hours. Type of NFR.}
     \item \keyword{System Req.}{Hardware or software issues, e.g., invoice system must share data with purchase order system}
     \item \keyword{External Interfaces}{Connections between systems and outside world, e.g., must import files in CSV format}
     \item \keyword{Constraints}{Limitations on implementation choices, e.g., must be backward compatible. Type of NFR.}
-    \item Flow: Business Req. $\rightarrow$ \ilkeyword{Vision and Scope Document} $\rightarrow$ User Req. $\rightarrow$ \ilkeyword{User Req. Doc.} $\rightarrow$ FRs $\rightarrow$ SRS
 \end{itemize}
 
 \subsection{Requirements Development Phases}
@@ -164,13 +160,13 @@
 \begin{itemize}
     \item \keyword{Software Req. Specification (SRS)}{Complete desc. of behavaior of software. Contains FRs, System Req., Quality Attributes, Ext. Interfaces, and Constraints.}
     \item \keyword{Rights, Responsibilities, and Agreements}{All stakeholders confident of development within balanced schedule, cost, functionality and quality}
-    \item \keyword{Change Control}{Process to ensure changes to a product are introduced in a controlled and coordinated way}
+    \item Requirements under \ilkeyword{Change Control}
 \end{itemize}
 
 \subsection{Quality Attributes}
 
 \begin{itemize}
-    \item Different apps have different quality attributes
+    \item Pros and cons = Good and bad of each attribute
     \item Quality attributes impact each other (Trade-offs)
     \item \keyword{Validation}{Do you have the right requirements?}
     \item \keyword{Verification}{Do you have the requirements right?}
@@ -201,12 +197,8 @@
         \item Vertical Scaling: Add capability of machines
         \item Horizontal Scaling: Add more machines
     \end{itemize}
-    \item \keyword{Efficiency}{How well app uses hardware, network, etc.}
-    \item \keyword{Modifiability}{How easily code can be understood, changed, and extended}
-    \item \keyword{Portability}{Effort needed to migrate software from 1 environment to another}
-    \item \keyword{Reusability}{Effort needed to convert software component for use in other apps}
     \item \keyword{Verifiability}{How well software can be evaluated to demonstrate that it functions as expected}
-    \item Others: Maintainability, Testability
+    \item Others: Maintainability, Testability, Modifiability, Portability, Reusability, Efficiency
 \end{itemize}
 
 \section{03. Software Architecture}
@@ -221,17 +213,25 @@
     \begin{itemize}
         \item \keyword{Horizontal Slicing}{Designing by layers}
         \item \keyword{Vertical Slicing}{Designing by features}
-        \item Criteria: Modularity, Coupling, Cohesion
     \end{itemize}
 \end{itemize}
 
 \subsection{Architectural Styles}
 
 \begin{itemize}
-    \item Categories: How is code divided? (Technical/domain partitioning), How is system deployed? (Monolithic, distributed)
-    \item \keyword{Layered}{Software organized as layers of components}
-    \item \keyword{Pipe and Filter}{Data flows through components (Data source, filters, data sink) via pipes}
+    \item Categories: How is code divided? (Technical/domain partitioning), How is system deployed? (Mono./distri.)
+    \item \keyword{Monolithic}{Good for small apps; Faster dev., testing, deploy., maintainability, performance; Cheaper infra.}
+    \item \keyword{Distributed}{Good for complex apps; Scalable, decoupled, fault isolation, maintainability}
+    \item \keyword{Layered}{Software organized as layers of components that communicate via interfaces}
+    \item \keyword{Pipe and Filter}{Data flows through components (Data source $\rightarrow$ Filters $\rightarrow$ Data sink) via pipes}
+    \begin{itemize}
+        \item Pros: Modular, Flexible, Extensible, Scalable
+        \item Cons: Stateless, Data format, Comm. overhead
+    \end{itemize}
     \item \keyword{MVC}{Model (Business logic), View, Controller (Coordinates between view and model)}
+    \begin{itemize}
+        \item Cons: Coupled controller, Complexity, Maintainability
+    \end{itemize}
     \item \keyword{Web MVC}{2 communicating entities: Server (Holds the model) and Client (Interacts with the server)}
     \begin{itemize}
         \item Controller: Handles user HTTP request, selects model, prepares view
@@ -245,57 +245,54 @@
 
 \begin{itemize}
     \item Set of rules for transferring, accessing, and manipulating textual data representations of hypermedia
-    \begin{itemize}
-        \item Not an architecture by itself
-        \item \keyword{Hypermedia}{Combo. of multimedia and hyperlinks}
-    \end{itemize}
+    \item \keyword{Hypermedia}{Combo. of multimedia and hyperlinks}
+    \item Pros: Less coupled, Scalable, Interoperable
+    \item Cons: Being stateless decreases network performance, URI degrades efficiency
+\end{itemize}
+
+\subsubsection{Constraints}
+
+\begin{itemize}
     \item Client-server architecture: For separation of concerns
     \item Stateless: Interaction between client and server should contain all information for scalability and reliability
-    \item Cacheable: Server response should include if data is caheable or not for network efficiency
+    \item Cacheable: Server response should include if data is cacheable or not for network efficiency
     \item Layered: To reduce system complexity
     \item Uniform interface to interact with server (HTTP/S)
     \begin{itemize}
         \item Resource-based: Anything can be a resource
-        \item Resources can be identified and manipulated by components (e.g., HTTP DELETE /user/:id)
+        \item Resources identified and manipulated through unique resource identifiers (e.g., HTTP DELETE /user/:id)
     \end{itemize}
     \item Code-on-demand: Optional; Allow client functionality by downloading executable code
-    \item Pros: Less coupled, scalability
-    \item Cons: Being stateless decreases network performance
 \end{itemize}
 
 \section{04. Microservices Architecture}
 
 \begin{itemize}
     \item \keyword{Microservices App.}{App. as suite of small services}
-    \item Each microservice:
-    \begin{itemize}
-        \item has well-defined business capabilities
-        \item has cohesive features
-        \item is developed/deployed independently
-        \item communicate with each other through well-defined mechanisms (Sync. or Async.)
-    \end{itemize}
+    \item Each microservice has well-defined business capabilities and cohesive features, is developed/deployed independently, and communicates with each other through well-defined mechanisms (Sync./Async.)
     \item How to identify boundaries of microservices? DDD and Event Storming
 \end{itemize}
 
-\subsection{Domain Driven Design}
+\subsection{Domain Driven Design (DDD)}
 
 \begin{itemize}
-    \item \keyword{DDD}{Complex system is collection of multiple domain models (sub-domains)}
-    \item \keyword{Domain}{Problem space that business occupies}
+    \item Complex system is collection of multiple domain models (sub-domains)
+    \item \keyword{Domain}{\textbf{Problem space} that business occupies}
     \item \keyword{Sub-domain}{Component of main domain}
-    \item \keyword{Bounded Context}{Cohesive boundary in the solution space relevant to the sub-domain that helps to define the models, functionalities, and implementation needed}
+    \item \keyword{Bounded Context}{Cohesive boundary in the \textbf{solution space} relevant to the sub-domain that helps to define the models, functionalities, and implementation needed}
     \begin{itemize}
         \item Shared kernel: 2 contexts developed independently but overlaps (Tightly coupled teams)
         \item Upstream-downstream: 2 contexts in provider-consumer relationship through API
         \item Conformist relationship: Consumer conforms entirely to provider (Most loosely coupled between teams)
+        \item Interactions between bounded contexts model interactions between sub-domains
     \end{itemize}
-    \item Interactions between contexts model interactions between sub-domains
-    \item \keyword{Aggregate}{Cluster of related entities and value objects that are part of bounded context}
+    \item \keyword{Aggregate}{Cluster of related entities and objects that are \textbf{part of bounded context}, ensuring consistency and integrity through:}
     \begin{itemize}
         \item Transactional boundary: Any change to aggregate will either all succeed or none will succeed
         \item Consistency boundary: Everything outside of aggregate can only read; state can only be modified through aggregate's public interface
         \item Aggregate Root: Aggregate's public interface
     \end{itemize}
+    \item E.g. Bounded context: Order Management; Aggregate: Order, Customer
 \end{itemize}
 
 \subsection{Event Storming}
@@ -307,14 +304,14 @@
     \item \keyword{Aggregate}{Unit for purpose of data changes after command and before event}
     \item \sethlcolor{highlightorange}\hl{\textbf{Domain events}} - Relevant events that occur in domain
     \item \sethlcolor{highlightpurple}\hl{\textbf{Policy}} - Relationship where event triggers command
-    \item Bounded contexts determined by grouping commands, aggregates, and events, where policies link contexts
+    \item Bounded contexts determined by grouping commands, aggregates, and events; Policies link contexts
 \end{itemize}
 
 \subsection{Data Patterns in Microservices}
 
 \begin{itemize}
     \item Motivation: How do microservices manage data?
-    \item \keyword{Database-server-per-service Pattern}{Each service has its own database server}
+    \item \ilkeyword{Database-server-per-service Pattern}
     \begin{itemize}
         \item Data Indep.: Services should not modify same data
         \item Pros: Loose coupling, Easy interoperability
@@ -322,40 +319,38 @@
         \item Private-tables-per-service: Service owns private tables
         \item Schema-per-service: Service has private DB schema
     \end{itemize}
-    \item \keyword{Delegate Pattern}{Access DB through authoritative delegate service and avoid accessing DB directly}
-    \item \keyword{Data Lake Pattern}{Aggregate data from microservices into read-only, query-able data sinks}
+    \item \keyword{Delegate Pattern}{Access DB through authoritative delegate service and avoid accessing DB directly. Pros: SoC, Extensible. Cons: Complexity, Performance}
+    \item \keyword{Data Lake Pattern}{Aggregate data from microservices into read-only, query-able data sinks. Pros: Democratized access, Decouples storage and processing. Cons: Performance, Security, Data governance}
     \item \keyword{Sagas Pattern}{All steps have a compensating action that's stored on routing slip and passed along}
     \begin{itemize}
-        \item If step fails, roll back using routing slip and revert to \textbf{reasonably} compensated state (e.g. notification)
-        \item For modifying data through multiple microservices
-        \item Better for steps that are harder to compensate at end
+        \item If step fails, roll back using routing slip and revert to \textbf{reasonably} compensated state (e.g., notification)
+        \item Harder-to-compensate steps should be at the end
     \end{itemize}
     \item \keyword{Event Sourcing}{Store stream of facts/events that got app. into current state, instead of storing current state}
     \begin{itemize}
-        \item Different from relational/NoSQL
         \item Event: UUID, Event type, Data relevant to event type
         \item \keyword{Projection function}{Calculate new state using current state and new event}
         \item \keyword{Rolling snapshots}{Save projections to speed up perf.}
     \end{itemize}
     \item \keyword{Command Query Responsibility Segregation (CQRS)}{Split commands (write) from queries (read data)}
     \begin{itemize}
-        \item E.g. commands write into Kafka queue of events; materialized view database derived from events
-        \item Pros: Single write model can add data into many read models, Can scale independently
+        \item E.g. Write into Kafka queue of events (Event Sourcing); Read from materialized view derived from events
+        \item Pros: Single write model can add data into many read models, Scalable
     \end{itemize}
 \end{itemize}
 
 \subsection{More Patterns in Microservices}
 
 \begin{itemize}
-    \item \keyword{Service Instance per Host}{Run each service instance in solation on its own host (e.g. VM, container)}
+    \item \keyword{Service Instance per Host}{Run each service instance in solation on its own host (e.g., VM, Container)}
     \item \keyword{Immutable Infrastructure}{Component changes must be made by recreating component}
-    \item \keyword{Infrastructure as Code}{Code can be easily versioned}
-    \item \keyword{Orchestration}{Rely on central brain to drive processes}
-    \item \keyword{Choreography}{Inform each component of its job, and let it work out the details}
+    \item \keyword{Infrastructure as Code}{To easily version infra.}
+    \item \keyword{Orchestration}{Rely on central brain to drive processes. Cons: Single point of failure, Scalability and performance bottleneck}
+    \item \keyword{Choreography}{Inform each component of its job, and let it work out the details. Cons: Complexity}
     \item Service communication: Sync/async? 1-way or 2-way?
     \begin{itemize}
         \item \keyword{Event-Driven Communication}{See EDA}
-        \item \keyword{Request-Response Communication}{"Do this"; Generally sync. (Latent and coupled)}
+        \item \keyword{Request-Response Communication}{Sync. request and waits for response. Cons: Latent, Coupled}
     \end{itemize}
     \item \keyword{API Gateway}{Entry point server that routes requests to services}
     \begin{itemize}
@@ -372,35 +367,34 @@
 \section{05. Scalability}
 
 \begin{itemize}
-    \item Strategies of scaling: Run multiple instances/copies, Split data, Split functionalities
     \item Scaling services in monolithic applications:
     \begin{itemize}
         \item \keyword{Scale Up}{Upgrade server}
-        \item \keyword{Scale Out}{Run multiple instances}
+        \item \keyword{Scale Out}{Run multiple instances/replicas}
         \begin{itemize}
-            \item \keyword{Load Balancer}{Chooses service replica to execute user request}
+            \item \keyword{Load Balancer}{Chooses instance to execute req.}
             \item \keyword{Session Store}{Stores user's session across replicas}
         \end{itemize}
     \end{itemize}
     \item Scaling databases:
     \begin{itemize}
-        \item \keyword{Caching}{Good for data that is frequently read and rarely changes}
+        \item \keyword{Caching}{For data with freq. read and rare writes}
         \item \keyword{Scaling Out with Read Replicas}{Write to primary and read from secondary to separate read and write}
         \item \keyword{Scaling Out by Partitioning Data}{Horizontal (By rows) vs. Vertical (By columns)}
         \item Scaling out databases creates \ilkeyword{distributed databases}
     \end{itemize}
     \item Scale multiple services to build multi-tiered apps.
-    \item Split system into microservices to help scalability
     \item \keyword{Pod Architecture}{(Swim lanes) Place group of services/replicas inside boundary to contain failures}
+    \item Scale Cube: Run multiple instances/copies (X-axis), Split functionalities (Y-axis), Split data (Z-axis)
 \end{itemize}
 
 \section{06. Event-Driven Architecture}
 
 \begin{itemize}
-    \item \keyword{Event}{Broadcasted to services that something \textbf{happened} and/or copies data to other services}
+    \item \keyword{Event}{Broadcasted to services that smt. \textbf{happened}}
     \begin{itemize}
         \item \keyword{Initiating Event}{From end user}
-        \item \keyword{Derived Event}{Created due to initiating event}
+        \item \keyword{Derived Event}{Internal event due to initiating event}
         \item Structure: Key-value pair (\keyword{Unkeyed}{No key}; \keyword{Entity}{Unique key}; \keyword{Keyed}{Key not unique; For partitioning})
         \item Publisher owns event payload and topic channel
     \end{itemize}
@@ -408,15 +402,15 @@
     \begin{itemize}
         \item \keyword{Real-time data}{Published as it is generated}
         \item Components: Producers, Brokers, Consumers
-        \item Can combine into event-driven microservices 
-        \item Pros: Fast since async., Scalable broker, Less coupled
+        \item Hybrid event-driven microservices, since micro. usually relies on sync. comm. via REST
+        \item Pros: Fast, Scalable broker, Less coupled
     \end{itemize}
     \item \keyword{Broker}{Receives events, stores events in queue/partitions, and provides events for consumption (e.g., Kafka)}
     \begin{itemize}
         \item Properties: Immutable, Ordering, Indexing, Partitioning, Infinite retention, Replayability
         \item \keyword{Partition}{Indexed queue that \textbf{persists} after pop}
         \item Consumer consumes by index of last message it read
-        \item \keyword{Topic}{Category of partitions; channel for \textbf{1-to-M} communication (Pub-Sub)}
+        \item \keyword{Topic}{Category of partitions; channel for \textbf{1-to-many} communication (Pub-Sub)}
         \begin{itemize}
             \item Multiple partitions $\rightarrow$ Non-sequential processing
         \end{itemize}
@@ -427,10 +421,10 @@
 
 \begin{itemize}
     \item Communication types: Sync./async.? Single/multiple receivers? Persistent/transient?
-    \item \keyword{Synchronous}{Caller sends message and \textbf{waits} for receiver to respond with ack. (e.g., HTTP/S)}
-    \item \keyword{Asynchronous}{Caller sends message and continues executing code without waiting (e.g., AMQP)}
+    \item \keyword{Synchronous}{Caller sends message and \textbf{waits} for receiver to respond with ack. (e.g., Request-Reply with HTTP/S and REST)}
+    \item \keyword{Asynchronous}{Caller sends message and continues executing code without waiting (e.g., AMQP, Pub-Sub)}
     \begin{itemize}
-        \item Pros: Available, Decoupling of sender and receiver
+        \item Pros: Responsive, Available, Decouples sender and receiver
         \item Cons: More complex error-handling
     \end{itemize}
     \item \keyword{Message}{Carries \textbf{point-to-point} (1-to-1) command or data query to be executed by another service}
@@ -466,8 +460,8 @@
     \item \keyword{Request-Reply Chaining}{Chain using correlation IDs}
     \item \keyword{Invalid Message Channel}{Handles erroneous messages}
     \item \keyword{Dead Letter Channel}{For failed-to-deliver messages}
-    \item \keyword{Datatype Channel}{For specific type of data (RabbitMQ: Direct exchange chooses queue)}
-    \item \keyword{Pub-Sub Request-Response Pattern}{Sender communicates with multiple services with Pub-Sub Channel (Topic), but all responses aggregated back using queue}
+    \item \keyword{Datatype Channel}{For specific type of data (RabbitMQ: Direct exchange chooses correct channel)}
+    \item \keyword{Pub-Sub Request-Response Pattern}{Sender communicates with multiple services via Pub-Sub Channel (Topic), but all responses aggregated back using queue}
 \end{itemize}
 
 \subsubsection{Message Routing}
@@ -527,7 +521,7 @@
     \item \keyword{Mediator}{Forces objects to communicate via a mediator object (Similar: Event channel)}
 \end{itemize}
 
-\section{10. Principles}
+\section{10. Guiding Principles}
 
 \begin{itemize}
     \item \keyword{Modularity}{Independent modules that contains everything necessary to execute 1 functionality}
