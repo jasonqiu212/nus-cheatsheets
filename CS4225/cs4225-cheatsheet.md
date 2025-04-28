@@ -548,7 +548,7 @@ flightData2015.sort("count").take(3)
 - Catalyst optimizer: Takes in query and converts it into RDD execution plan
   1.  Analysis: Check with column information
   2.  Logical optimization: Predicate pushdown before joins, column pruning, etc.
-  3.  Physical planning: Propose several physical plans and use more cost-effective one
+  3.  Physical planning: Propose several physical plans and use most cost-effective plan
   4.  Code generation
       - Via Project Tungsten: Focuses on improving hardware efficiency of Spark applications
 
@@ -589,8 +589,8 @@ flightData2015.sort("count").take(3)
   - Failure recovery using lineage
   - Deterministic nature ensures "exact-once"
 - Cons: Latencies between batches, depending on batch size
-  - Too big: Delay to watch for batch increases, but higher throughput
-  - Too small: Delay decreases, but lower throughput due to overhead
+  - Too big: More delay to wait for batch, but higher throughput
+  - Too small: Less delay, but lower throughput due to overhead
 - Defining a streaming query:
   1.  Input source
   2.  Data transformation: Same as batch processing
@@ -699,7 +699,7 @@ sensorReadings
 
 - Every record contains event timestamp
 - Watermark: Special record injected by user to trigger calculation for event-time window
-  - Contains timestamp representing user's estimate of current event time
+  - Contains timestamp representing user's estimate of progress of event time
   - Different from watermark in Spark
 
 ![[flink-watermark.png|500]]
@@ -722,7 +722,7 @@ sensorReadings
   2.  Sources checkpoint their state and emit checkpoint barrier to following tasks
   3.  Tasks wait to receive barrier on each input partition
       1. If not yet arrived, process records regularly
-      2. If arrived from 1 input partition, buffer records from partition (since these records are after the barrier and are included in a later checkpoint)
+      2. If arrived from 1 input partition, buffer subsequent records from partition (since these records are after the barrier and are included in the next checkpoint)
   4.  Tasks checkpoint their state, once all barriers have been received
   5.  Tasks forward the checkpoint barrier, and continue regular processing
   6.  Sink acknowledges reception of checkpoint barrier to job manager
@@ -759,8 +759,8 @@ sensorReadings
 
 - Importance $r_j$ for page $j$: $$r_j = \sum_{i \rightarrow j} \frac{r_i}{d_i}$$
   - $d_i$: Number of out-links of node $i$
-- Using above equation for each $n$ nodes, we get $n$ equations and $n$ unknowns, but 1 redundant equation (linearly dependent due to cyclic nature of links) $\rightarrow$ No unique solution
-  - Solution: Add additional condition $\sum_{i \in N} r_i = 1$ where $N$ is set of all nodes
+- Using above equation for all $n$ nodes, we get $n$ equations and $n$ unknowns, but 1 redundant equation (linearly dependent due to cyclic nature of links) $\rightarrow$ No unique solution
+  - Solution: Add additional condition $\sum_{i \in N} r_i = 1$, where $N$ is set of all nodes
 - Thus, we can solve this equations using substitution or Gaussian elimination
   - Problem: Need better method for huge graphs
 
@@ -804,7 +804,8 @@ sensorReadings
 
 #### Spider Trap
 
-- ==Spider trap==: Group of nodes with in-links into the group, but no out-links out of the group
+- ==Spider trap==: Subset of nodes with in-links into the group, but no out-links out of the group
+  - 1 node pointing to itself is also a spider trap
   - Random surfer stuck in group $\rightarrow$ Spider trap absorbs all the "importance"
 - Solution: At each time step, random surfer has 2 options:
   1.  With probability $\beta$, follow an out-link at random
@@ -813,7 +814,7 @@ sensorReadings
 
 #### Dead-end
 
-- ==Dead-end==: Page with in-links, but no out-links
+- ==Dead-end==: Single page node with in-links, but no out-links
   - Random surfer cannot go anywhere $\rightarrow$ Turns all importance scores to 0, since it takes in "importance", but does not give out any "importance"
   - $M$ not column stochastic (i.e., column $i$, which corresponds to out-links of dead-end node $i$, are all 0)
 - Solution: If run into dead-end, teleport to some random page
@@ -912,10 +913,14 @@ compute(v, messages):
 
 ```
 compute(v, messages):
-	sum = 0
-	for m in messages:
-		sum += m
-	v.setValue(0.8 * sum + 0.2 / numOfVertices())
+	if superstep() == 0:
+		v.setValue(1 / numOfVertices())
+
+	if superstep() >= 1:
+		sum = 0
+		for m in messages:
+			sum += m
+		v.setValue(0.8 * sum + 0.2 / numOfVertices())
 
 	if superstep() < 30:
 		d = numberOfOutNeighbors()
